@@ -5,7 +5,7 @@ from mpl_toolkits.mplot3d import Axes3D
 
 # Open and read the data file
 #infile = open('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/TestCase6/RawData2/graph_expvact.dat', 'r')
-infile = open('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/UNIH22.5Network/GPU0/trainingDataz.dat', 'r')
+infile = open('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H20631gd-UNI/GPU1/graph_expvact.dat', 'r')
 
 data = []
 
@@ -16,7 +16,7 @@ for line in infile:
 # Truncate and convert to numpy array
 data_array = np.array(data)
 
-data = data_array[:-1, [0, 2]]
+data = data_array[:-1, [0, 1]]
 data = np.array(data, dtype=float)
 #data = abs(data)
 #data_n = data[:, [0, 1]]
@@ -24,11 +24,11 @@ data = np.array(data, dtype=float)
 
 d01 = data[:, 0]
 d02 = data[:, 1]
-#f1 = data[:, 2]
+#f1 = data[:, 2] - data[:, 3]
 
 #fig = plt.figure()
-#ax = fig.add_subplot(111, projection='2d')
-#ax.scatter(d01,d02)
+#ax = fig.add_subplot(111, projection='3d')
+#ax.scatter(d01,d02,f1)
 #ax.set_xlabel("d01")
 #ax.set_ylabel("d02")
 #ax.set_zlabel("f1")
