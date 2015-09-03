@@ -5,7 +5,7 @@ from mpl_toolkits.mplot3d import Axes3D
 
 # Open and read the data file
 #infile = open('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/TestCase6/RawData2/graph_expvact.dat', 'r')
-infile = open('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/UNIH22.5Network/GPU0/trainingDataz.dat', 'r')
+infile = open('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/UNIH22.5Network/GPU0/testDataz.dat', 'r')
 
 data = []
 
