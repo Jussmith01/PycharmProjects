@@ -1,38 +1,101 @@
-__author__ = 'dustintracy'
 import numpy as np
+import statsmodels.api as sm
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
 
+
+# -----------------------
+# readfile into np array
+# -----------------------
+def getfltsfromfile(file, cols):
+    # Open and read the data file
+    infile = open(file, 'r')
+
+    infile_s = []
+
+    for line in infile:
+        row = line.strip().split(",")
+        infile_s.append(row)
+
+    # Truncate and convert to numpy array
+    nparray = np.array(infile_s)
+    data = nparray[:-1, cols]
+    data = np.array(data, dtype=float)
+    return data
+
+
+# -----------------------
+
+# ----------------------------
+# Calculate Mean Squared Diff
+# ----------------------------
+
+def calculatemeansqrdiff(data1, data2):
+    data = np.power(data1 - data2, 2)
+    print(np.mean(data))
+    return
+
+# -----------------------
+
+# ----------------------------
+# Linear-ize Data
+# ----------------------------
+
+def makedatalinear(datain):
+    data = np.zeros((np.shape(datain)[0]*np.shape(datain)[1],1))
+    #data = datain[:,0]
+
+    C = np.shape(datain)[0]
+    R = np.shape(datain)[1]
+    print C, "X", R
+
+    i = j = 0
+    for i in range(0, C):
+        for j in range(0, R):
+            data[i*3+j] = datain[i, j]
+
+    return data
+
+# -----------------------
+
+# ------------
+# AM1 vs Act
+# ------------
+datall = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H20631gd-UNI/GPU1/testx.dat', [6, 7, 8])
+datahl = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H20631gd-UNI/GPU1/testx.dat', [9, 10, 11])
+
+data1 = makedatalinear(datall)
+data2 = makedatalinear(datahl)
+
+calculatemeansqrdiff(data1, data2)
+
+# Do stats data
+resultsom = sm.OLS(data2, sm.add_constant(data1)).fit()
+print resultsom.summary()
+
+plt.scatter(data1, data2)
+X_plotom = np.linspace(-1.5, 1.5, 100)
+plt.plot(X_plotom, X_plotom * resultsom.params[1] + resultsom.params[0])
+
+# ------------------
+# ML network vs Act
+# ------------------
 # Open and read the data file
-#infile = open('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/TestCase6/RawData2/graph_expvact.dat', 'r')
-infile = open('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/UNIH22.5Network/GPU0/testDataz.dat', 'r')
+dataml = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H20631gd-UNI/GPU1/graph_expvact.dat', [0, 1])
 
-data = []
+calculatemeansqrdiff(dataml[:, 0], dataml[:, 1])
 
-for line in infile:
-    row = line.strip().split(",")
-    data.append(row)
+# Do stats data
+resultsml = sm.OLS(dataml[:, 1], sm.add_constant(dataml[:, 0])).fit()
+print resultsml.summary()
 
-# Truncate and convert to numpy array
-data_array = np.array(data)
+plt.scatter(dataml[:, 0], dataml[:, 1],color='green')
+X_plotml = np.linspace(-4.0, 4.0, 100)
+plt.plot(X_plotml, X_plotml * resultsml.params[1] + resultsml.params[0])
+plt.xlabel("Blue = AM1, Green = MLNN-AM1")
+plt.ylabel("6-31g*")
+plt.title("Scatter plot of AM1/MLNN-AM1 vs 6-31g*")
 
-data = data_array[:-1, [0, 2]]
-data = np.array(data, dtype=float)
-#data = abs(data)
-#data_n = data[:, [0, 1]]
-#data_n[:, 1] = data[:, 2] - data[:, 1]
-
-d01 = data[:, 0]
-d02 = data[:, 1]
-#f1 = data[:, 2]
-
-#fig = plt.figure()
-#ax = fig.add_subplot(111, projection='2d')
-#ax.scatter(d01,d02)
-#ax.set_xlabel("d01")
-#ax.set_ylabel("d02")
-#ax.set_zlabel("f1")
-plt.scatter(d01,d02)
-plt.xlabel("d01")
-plt.ylabel("d02")
+# -----
+# PLOT
+# -----
 plt.show()
