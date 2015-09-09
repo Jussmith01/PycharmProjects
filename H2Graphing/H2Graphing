@@ -1,5 +1,6 @@
 import numpy as np
 import statsmodels.api as sm
+from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 
 
@@ -39,7 +40,6 @@ def calculatemeansqrdiff(data1, data2):
 # ----------------------------
 # Linear-ize Data
 # ----------------------------
-
 def makedatalinear(datain):
     data = np.zeros((np.shape(datain)[0]*np.shape(datain)[1],1))
     #data = datain[:,0]
@@ -60,10 +60,26 @@ def makedatalinear(datain):
 # ------------
 # AM1 vs Act
 # ------------
-data1 = getfltsfromfile('/home/jujuman-home/Gits/g09DNNTSBuilder/bin/Release/trainingdata.dat', [3])
-data2 = getfltsfromfile('/home/jujuman-home/Gits/g09DNNTSBuilder/bin/Release/trainingdata.dat', [13])
+data1 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2OUniIC/GPU1/graph_expvact.dat', [0])
+data2 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2OUniIC/GPU1/graph_expvact.dat', [1])
 
-plt.scatter(data1, data2)
+
+data3 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2OUniIC/GPU1/tdatavalidUHFH2O.dat', [6])
+data4 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2OUniIC/GPU1/tdatavalidUHFH2O.dat', [9])
+
+plt.scatter(data1,data2)
+plt.scatter(data3,data4,color='red')
+
+# --------------
+# Setup 3D Plot
+# --------------
+#fig = plt.figure()
+#ax = fig.add_subplot(111, projection='3d')
+#ax.scatter(data1,data2,data3)
+
+#ax.set_xlabel('X Label')
+#ax.set_ylabel('Y Label')
+#ax.set_zlabel('Z Label')
 
 # -----
 # PLOT

@@ -60,8 +60,8 @@ def makedatalinear(datain):
 # ------------
 # AM1 vs Act
 # ------------
-datall = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H20631gd-UNI/GPU1/testx.dat', [6, 7, 8])
-datahl = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H20631gd-UNI/GPU1/testx.dat', [9, 10, 11])
+datall = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2OUniIC/GPU1/tdatavalidUHFH2O.dat', [6, 7, 8])
+datahl = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2OUniIC/GPU1/tdatavalidUHFH2O.dat', [9, 10, 11])
 
 data1 = makedatalinear(datall)
 data2 = makedatalinear(datahl)
@@ -73,14 +73,14 @@ resultsom = sm.OLS(data2, sm.add_constant(data1)).fit()
 print resultsom.summary()
 
 plt.scatter(data1, data2)
-X_plotom = np.linspace(-1.5, 1.5, 100)
+X_plotom = np.linspace(-0.15, 0.55, 100)
 plt.plot(X_plotom, X_plotom * resultsom.params[1] + resultsom.params[0])
 
 # ------------------
 # ML network vs Act
 # ------------------
 # Open and read the data file
-dataml = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H20631gd-UNI/GPU1/graph_expvact.dat', [0, 1])
+dataml = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2OUniIC/GPU1/graph_expvact.dat', [0, 1])
 
 calculatemeansqrdiff(dataml[:, 0], dataml[:, 1])
 
@@ -89,7 +89,7 @@ resultsml = sm.OLS(dataml[:, 1], sm.add_constant(dataml[:, 0])).fit()
 print resultsml.summary()
 
 plt.scatter(dataml[:, 0], dataml[:, 1],color='green')
-X_plotml = np.linspace(-4.0, 4.0, 100)
+X_plotml = np.linspace(-0.15, 0.55, 100)
 plt.plot(X_plotml, X_plotml * resultsml.params[1] + resultsml.params[0])
 plt.xlabel("Blue = AM1, Green = MLNN-AM1")
 plt.ylabel("HF/6-31g*")
