@@ -73,30 +73,30 @@ def makedatalinear(datain):
 # ------------
 # AM1 vs Act
 # ------------
-data1 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2OUniIC/GoodFit2/forcescan.dat', [3])
-data2 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2OUniIC/GoodFit2/forcescan.dat', [6])
-data3 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2OUniIC/GoodFit2/forcescan.dat', [9])
-data4 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2OUniIC/GoodFit2/data.out', [0])
-data5 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2OUniIC/GoodFit2/data.out', [3])
+data1 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OUniIC/GoodFit2/forcescan.dat', [3])
+data2 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OUniIC/GoodFit2/forcescan.dat', [6])
+data3 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OUniIC/GoodFit2/forcescan.dat', [9])
+data4 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OUniIC/GoodFit2/data.out', [0])
+data5 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OUniIC/GoodFit2/data.out', [3])
 
 # ------------
 # Numer Div
 # ------------
 derivAM1 = calculatenumderiv(data2,0.002)
-plt.scatter(derivAM1[:, 0], derivAM1[:, 1], label='Deriv AM1')
+#plt.scatter(derivAM1[:, 0], derivAM1[:, 1], label='Deriv AM1')
 
 derivHF = calculatenumderiv(data3,0.002)
-plt.scatter(derivHF[:, 0], derivHF[:, 1],color='green', label='Deriv HF')
+#plt.scatter(derivHF[:, 0], derivHF[:, 1],color='green', label='Deriv HF')
 
 derivMLNN = calculatenumderiv(data5,0.002)
-plt.scatter(derivMLNN[:, 0], derivMLNN[:, 1],color='red', label='Deriv MLNN')
+#plt.scatter(derivMLNN[:, 0], derivMLNN[:, 1],color='red', label='Deriv MLNN')
 
 # --------------
 # Setup 2D Plot
 # --------------
-#plt.scatter(data1, data2, label='AM1')
-#plt.scatter(data1, data3, color='green', label='HF/6-31g*')
-#plt.scatter(data4, data5, color='red', label='MLNN')
+plt.scatter(data1, data2, label='AM1')
+plt.scatter(data1, data3, color='green', label='HF/6-31g*')
+plt.scatter(data4, data5, color='red', label='MLNN')
 
 plt.title('SCAN: H20 O-H1 Force vs. Bond Length ')
 plt.xlabel('O-H1 Bond (Angstroms)')
