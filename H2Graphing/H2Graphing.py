@@ -79,18 +79,6 @@ data3 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/
 data4 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OUniIC/GoodFitTanh1/data.out', [0])
 data5 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OUniIC/GoodFitTanh1/data.out', [3])
 
-# ------------
-# Numer Div
-# ------------
-derivAM1 = calculatenumderiv(data2,0.002)
-#plt.scatter(derivAM1[:, 0], derivAM1[:, 1], label='Deriv AM1')
-
-derivHF = calculatenumderiv(data3,0.002)
-#plt.scatter(derivHF[:, 0], derivHF[:, 1],color='green', label='Deriv HF')
-
-derivMLNN = calculatenumderiv(data5,0.002)
-#plt.scatter(derivMLNN[:, 0], derivMLNN[:, 1],color='red', label='Deriv MLNN')
-
 # --------------
 # Setup 2D Plot
 # --------------
@@ -114,6 +102,28 @@ plt.legend(bbox_to_anchor=(0.7, 0.95), loc=2, borderaxespad=0.)
 #ax.set_xlabel('Bond O-H1 (Angstroms)')
 #ax.set_ylabel('Bond O-H2 (Angstroms)')
 #ax.set_zlabel('HF/6-31g* Force on H1 (Hartree/Bohr)')
+
+# -----
+# PLOT
+# -----
+plt.show()
+
+# ------------
+# Numer Div
+# ------------
+derivAM1 = calculatenumderiv(data2,0.002)
+plt.scatter(derivAM1[:, 0], derivAM1[:, 1], label='Deriv AM1')
+
+derivHF = calculatenumderiv(data3,0.002)
+plt.scatter(derivHF[:, 0], derivHF[:, 1],color='green', label='Deriv HF')
+
+derivMLNN = calculatenumderiv(data5,0.002)
+plt.scatter(derivMLNN[:, 0], derivMLNN[:, 1],color='red', label='Deriv MLNN')
+
+plt.title('SCAN: H20 O-H1 Force Derivative per Scan Step')
+plt.xlabel('Scan Step')
+plt.ylabel('Force Derivative')
+plt.legend(bbox_to_anchor=(0.7, 0.95), loc=2, borderaxespad=0.)
 
 # -----
 # PLOT
