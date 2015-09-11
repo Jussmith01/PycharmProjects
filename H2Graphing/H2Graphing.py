@@ -59,7 +59,7 @@ def makedatalinear(datain):
 
     C = np.shape(datain)[0]
     R = np.shape(datain)[1]
-    print C, "X", R
+    print (C, "X", R)
 
     i = j = 0
     for i in range(0, C):
@@ -73,11 +73,11 @@ def makedatalinear(datain):
 # ------------
 # AM1 vs Act
 # ------------
-data1 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OUniIC/GoodFit2/forcescan.dat', [3])
-data2 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OUniIC/GoodFit2/forcescan.dat', [6])
-data3 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OUniIC/GoodFit2/forcescan.dat', [9])
-data4 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OUniIC/GoodFit2/data.out', [0])
-data5 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OUniIC/GoodFit2/data.out', [3])
+data1 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OUniIC/GoodFitTanh1/forcescan.dat', [3])
+data2 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OUniIC/GoodFitTanh1/forcescan.dat', [6])
+data3 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OUniIC/GoodFitTanh1/forcescan.dat', [9])
+data4 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OUniIC/GoodFitTanh1/data.out', [0])
+data5 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OUniIC/GoodFitTanh1/data.out', [3])
 
 # ------------
 # Numer Div
