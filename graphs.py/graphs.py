@@ -60,8 +60,8 @@ def makedatalinear(datain):
 # ------------
 # AM1 vs Act
 # ------------
-datall = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2O2UniIC/GoodFit1/tdatavalidh2o2.dat', [9, 10, 11, 12, 13, 14])
-datahl = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2O2UniIC/GoodFit1/tdatavalidh2o2.dat', [15, 16, 17, 18, 19, 20])
+datall = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2OUniIC/GoodFitTanh1/tdatavalidUHFH2O.dat', [6, 7, 8])
+datahl = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2OUniIC/GoodFitTanh1/tdatavalidUHFH2O.dat', [9, 10 ,11])
 
 data1 = makedatalinear(datall)
 data2 = makedatalinear(datahl)
@@ -80,7 +80,7 @@ plt.plot(X_plotom, X_plotom * resultsom.params[1] + resultsom.params[0])
 # ML network vs Act
 # ------------------
 # Open and read the data file
-dataml = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2O2UniIC/GoodFit1/graph_expvact.dat', [0, 1])
+dataml = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2OUniIC/GoodFitTanh1/graph_expvact.dat', [0, 1])
 
 calculatemeansqrdiff(dataml[:, 0], dataml[:, 1])
 
@@ -91,9 +91,9 @@ print (resultsml.summary())
 plt.scatter(dataml[:, 0], dataml[:, 1],color='green')
 X_plotml = np.linspace(-0.15, 0.55, 100)
 plt.plot(X_plotml, X_plotml * resultsml.params[1] + resultsml.params[0])
-plt.xlabel("Blue = AM1, Green = MLNN-AM1")
+plt.xlabel("Blue = AM1, Green = MLNN")
 plt.ylabel("HF/6-31g*")
-plt.title("Scatter plot of AM1/MLNN-AM1 vs HF/6-31g*")
+plt.title("Scatter plot of AM1/MLNN vs HF/6-31g*")
 
 # -----
 # PLOT

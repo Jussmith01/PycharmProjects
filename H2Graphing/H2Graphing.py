@@ -73,11 +73,11 @@ def makedatalinear(datain):
 # ------------
 # AM1 vs Act
 # ------------
-data1 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OUniIC/GoodFitTanh1/forcescan.dat', [3])
-data2 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OUniIC/GoodFitTanh1/forcescan.dat', [6])
-data3 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OUniIC/GoodFitTanh1/forcescan.dat', [9])
-data4 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OUniIC/GoodFitTanh1/data.out', [0])
-data5 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OUniIC/GoodFitTanh1/data.out', [3])
+data1 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2OUniIC/GoodFit2/forcescan.dat', [3])
+data2 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2OUniIC/GoodFit2/forcescan.dat', [6])
+data3 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2OUniIC/GoodFit2/forcescan.dat', [9])
+data4 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2OUniIC/GoodFit2/data.out', [0])
+data5 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2OUniIC/GoodFit2/data.out', [3])
 
 # --------------
 # Setup 2D Plot
@@ -91,6 +91,11 @@ plt.xlabel('O-H1 Bond (Angstroms)')
 plt.ylabel('Force (Hartree/Bohr)')
 plt.legend(bbox_to_anchor=(0.7, 0.95), loc=2, borderaxespad=0.)
 
+# -----
+# PLOT
+# -----
+plt.show()
+
 # --------------
 # Setup 3D Plot
 # --------------
@@ -102,11 +107,6 @@ plt.legend(bbox_to_anchor=(0.7, 0.95), loc=2, borderaxespad=0.)
 #ax.set_xlabel('Bond O-H1 (Angstroms)')
 #ax.set_ylabel('Bond O-H2 (Angstroms)')
 #ax.set_zlabel('HF/6-31g* Force on H1 (Hartree/Bohr)')
-
-# -----
-# PLOT
-# -----
-plt.show()
 
 # ------------
 # Numer Div
