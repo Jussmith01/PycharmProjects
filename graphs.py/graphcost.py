@@ -73,9 +73,9 @@ def makedatalinear(datain):
 # ------------
 # AM1 vs Act
 # ------------
-data1 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2O2UniIC/GPU1/costgraph.out', [0])
-data2 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2O2UniIC/GPU1/costgraph.out', [1])
-data3 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2O2UniIC/GPU1/costgraph.out', [2])
+data1 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2O2UniIC/GPU1/costgraph.out', [0])
+data2 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2O2UniIC/GPU1/costgraph.out', [1])
+data3 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2O2UniIC/GPU1/costgraph.out', [2])
 
 # --------------
 # Setup 2D Plot
