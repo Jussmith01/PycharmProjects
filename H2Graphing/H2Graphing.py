@@ -42,9 +42,9 @@ def calculatemeansqrdiff(data1, data2):
 def calculatenumderiv(data1, dx):
     C = np.shape(data1)[0]
     data = np.zeros((C, 2))
-    for i in range(0, C-1):
+    for i in range(1, C-1):
         data[i,0] = i
-        data[i,1] = (data1[i] - data1[i+1]) / dx
+        data[i,1] = (data1[i-1] - data1[i+1]) / (2.0*dx)
 
     return data
 
@@ -73,11 +73,11 @@ def makedatalinear(datain):
 # ------------
 # AM1 vs Act
 # ------------
-data1 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2OUniIC/GoodFit2/forcescan.dat', [3])
-data2 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2OUniIC/GoodFit2/forcescan.dat', [6])
-data3 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2OUniIC/GoodFit2/forcescan.dat', [9])
-data4 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2OUniIC/GoodFit2/data.out', [0])
-data5 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2OUniIC/GoodFit2/data.out', [3])
+data1 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2O2UniIC/GPU1/forcescan.dat', [3])
+data2 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2O2UniIC/GPU1/forcescan.dat', [6])
+data3 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2O2UniIC/GPU1/forcescan.dat', [9])
+data4 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2O2UniIC/GPU1/data.out', [0])
+data5 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2O2UniIC/GPU1/data.out', [3])
 
 # --------------
 # Setup 2D Plot
