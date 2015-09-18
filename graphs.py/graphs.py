@@ -60,8 +60,8 @@ def makedatalinear(datain):
 # ------------
 # AM1 vs Act
 # ------------
-datall = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2O2UniIC/GPU1/tdatavalidh2o2.dat', [9, 10, 11, 12, 13, 14])
-datahl = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2O2UniIC/GPU1/tdatavalidh2o2.dat', [15, 16, 17, 18, 19, 20])
+datall = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OSpherTest/GPU1/tdatatest.dat', [13, 14, 15])
+datahl = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OSpherTest/GPU1/tdatatest.dat', [29, 30, 31])
 
 data1 = makedatalinear(datall)
 data2 = makedatalinear(datahl)
@@ -80,7 +80,7 @@ plt.plot(X_plotom, X_plotom * resultsom.params[1] + resultsom.params[0])
 # ML network vs Act
 # ------------------
 # Open and read the data file
-dataml = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2O2UniIC/GPU1/graph_expvact.dat', [0, 1])
+dataml = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OSpherTest/GPU1/graph_expvact.dat', [0, 1])
 
 calculatemeansqrdiff(dataml[:, 0], dataml[:, 1])
 
