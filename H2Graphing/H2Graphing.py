@@ -73,11 +73,11 @@ def makedatalinear(datain):
 # ------------
 # AM1 vs Act
 # ------------
-data1 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2O2UniIC/GPU1/forcescan.dat', [3])
-data2 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2O2UniIC/GPU1/forcescan.dat', [6])
-data3 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2O2UniIC/GPU1/forcescan.dat', [9])
-data4 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2O2UniIC/GPU1/data.out', [0])
-data5 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2O2UniIC/GPU1/data.out', [3])
+data1 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2O2UniIC/GoodFitTanhMomentum2/forcescan.dat', [8])
+data2 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2O2UniIC/GoodFitTanhMomentum2/forcescan.dat', [14])
+data3 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2O2UniIC/GoodFitTanhMomentum2/forcescan.dat', [20])
+data4 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2O2UniIC/GoodFitTanhMomentum2/data.out', [5])
+data5 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2O2UniIC/GoodFitTanhMomentum2/data.out', [11])
 
 # --------------
 # Setup 2D Plot
