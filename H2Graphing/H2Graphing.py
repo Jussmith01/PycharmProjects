@@ -73,41 +73,43 @@ def makedatalinear(datain):
 # ------------
 # AM1 vs Act
 # ------------
-data1 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OSpherTest/GPU1-c/graph_expvact.dat', [0])
-data2 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OSpherTest/GPU1-c/graph_expvact.dat', [5])
-data3 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OSpherTest/GPU1-c/graph_expvact.dat', [8])
-data4 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OSpherTest/GPU1-c/graph_expvact.dat', [11])
+data1 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2OEnergy/GPU-1/graph_expvact.dat_epoch499', [0])
+data2 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2OEnergy/GPU-1/graph_expvact.dat_epoch499', [1])
+data3 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2OEnergy/GPU-1/graph_expvact.dat_epoch499', [2])
+#data4 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2OEnergy/GPU-1/graph_expvact.dat_epoch299', [2])
+#data4 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2OEnergy/GPU-1/graph_expvact.dat', [3])
+#data4 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OEnergy/GPU-1/tdatavalid.dat', [11])
 #data4 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2O2UniIC/GoodFitTanhMomentum2/data.out', [5])
 #data5 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2O2UniIC/GoodFitTanhMomentum2/data.out', [11])
 
 # --------------
 # Setup 2D Plot
 # --------------
-#plt.scatter(data1, data2, label='AM1')
-#plt.scatter(data1, data3, color='green', label='HF/6-31g*')
+plt.scatter(data1, data2, label='AM1')
+plt.scatter(data1, data3, color='green', label='HF/6-31g*')
 #plt.scatter(data4, data5, color='red', label='MLNN')
 
-#plt.title('SCAN: H20 O-H1 Force vs. Bond Length ')
-#plt.xlabel('O-H1 Bond (Angstroms)')
-#plt.ylabel('Force (Hartree/Bohr)')
-#plt.legend(bbox_to_anchor=(0.7, 0.95), loc=2, borderaxespad=0.)
+plt.title('SCAN: H20 O-H1 Force vs. Bond Length ')
+plt.xlabel('O-H1 Bond (Angstroms)')
+plt.ylabel('Force (Hartree/Bohr)')
+plt.legend(bbox_to_anchor=(0.7, 0.95), loc=2, borderaxespad=0.)
 
 # -----
 # PLOT
 # -----
-#plt.show()
+plt.show()
 
 # --------------
 # Setup 3D Plot
 # --------------
-fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
-ax.scatter(data1,data2,data3,depthshade=True)
-ax.scatter(data1,data2,data4,color='red',depthshade=True)
+#fig = plt.figure()
+#ax = fig.add_subplot(111, projection='3d')
+#ax.scatter(data1,data2,data3,depthshade=True)
+#ax.scatter(data1,data2,data4,color='red',depthshade=True)
 
-ax.set_xlabel('Bond O-H1 (Angstroms)')
-ax.set_ylabel('Bond O-H2 (Angstroms)')
-ax.set_zlabel('HF/6-31g* Force on H1 (Hartree/Bohr)')
+#ax.set_xlabel('Bond O-H1 (Angstroms)')
+#ax.set_ylabel('Bond O-H2 (Angstroms)')
+#ax.set_zlabel('HF/6-31g* Force on H1 (Hartree/Bohr)')
 
 # ------------
 # Numer Div
@@ -129,4 +131,4 @@ ax.set_zlabel('HF/6-31g* Force on H1 (Hartree/Bohr)')
 # -----
 # PLOT
 # -----
-plt.show()
+#plt.show()
