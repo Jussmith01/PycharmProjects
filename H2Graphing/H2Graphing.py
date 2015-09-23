@@ -73,10 +73,10 @@ def makedatalinear(datain):
 # ------------
 # AM1 vs Act
 # ------------
-data1 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2OEnergy/GPU-1/graph_expvact.dat_epoch499', [0])
-data2 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2OEnergy/GPU-1/graph_expvact.dat_epoch499', [1])
-data3 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2OEnergy/GPU-1/graph_expvact.dat_epoch499', [2])
-#data4 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2OEnergy/GPU-1/graph_expvact.dat_epoch299', [2])
+data1 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OEnergy/GPU-1/tdatatrain.dat', [6])
+data2 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OEnergy/GPU-1/graph_expvact.dat_epoch1499', [2])
+data3 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OEnergy/GPU-1/graph_expvact.dat_epoch1499', [3])
+#data4 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OEnergy/GPU-1/graph_expvact.dat_epoch1499', [3])
 #data4 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2OEnergy/GPU-1/graph_expvact.dat', [3])
 #data4 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OEnergy/GPU-1/tdatavalid.dat', [11])
 #data4 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2O2UniIC/GoodFitTanhMomentum2/data.out', [5])
@@ -114,21 +114,21 @@ plt.show()
 # ------------
 # Numer Div
 # ------------
-#derivAM1 = calculatenumderiv(data2,0.002)
-#plt.scatter(derivAM1[:, 0], derivAM1[:, 1], label='Deriv AM1')
+derivAM1 = calculatenumderiv(data2,0.002)
+plt.scatter(derivAM1[:, 0], derivAM1[:, 1], label='Deriv AM1')
 
-#derivHF = calculatenumderiv(data3,0.002)
-#plt.scatter(derivHF[:, 0], derivHF[:, 1],color='green', label='Deriv HF')
+derivHF = calculatenumderiv(data3,0.002)
+plt.scatter(derivHF[:, 0], derivHF[:, 1],color='green', label='Deriv HF')
 
 #derivMLNN = calculatenumderiv(data5,0.002)
 #plt.scatter(derivMLNN[:, 0], derivMLNN[:, 1],color='red', label='Deriv MLNN')
 
-#plt.title('SCAN: H20 O-H1 Force Derivative per Scan Step')
-#plt.xlabel('Scan Step')
-#plt.ylabel('Force Derivative')
-#plt.legend(bbox_to_anchor=(0.7, 0.95), loc=2, borderaxespad=0.)
+plt.title('SCAN: H20 O-H1 Force Derivative per Scan Step')
+plt.xlabel('Scan Step')
+plt.ylabel('Force Derivative')
+plt.legend(bbox_to_anchor=(0.7, 0.95), loc=2, borderaxespad=0.)
 
 # -----
 # PLOT
 # -----
-#plt.show()
+plt.show()
