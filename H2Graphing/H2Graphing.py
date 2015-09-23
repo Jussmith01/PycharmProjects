@@ -73,9 +73,9 @@ def makedatalinear(datain):
 # ------------
 # AM1 vs Act
 # ------------
-data1 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OEnergy/GPU-1/tdatatrain.dat', [6])
-data2 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OEnergy/GPU-1/graph_expvact.dat_epoch1499', [2])
-data3 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OEnergy/GPU-1/graph_expvact.dat_epoch1499', [3])
+data1 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2OEnergy/GPU-1/tdatatrain.dat', [6])
+data2 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2OEnergy/GPU-1/graph_expvact.dat_epoch999', [2])
+data3 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2OEnergy/GPU-1/graph_expvact.dat_epoch999', [3])
 #data4 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OEnergy/GPU-1/graph_expvact.dat_epoch1499', [3])
 #data4 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2OEnergy/GPU-1/graph_expvact.dat', [3])
 #data4 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OEnergy/GPU-1/tdatavalid.dat', [11])
@@ -114,10 +114,10 @@ plt.show()
 # ------------
 # Numer Div
 # ------------
-derivAM1 = calculatenumderiv(data2,0.002)
+derivAM1 = calculatenumderiv(data2,0.001)
 plt.scatter(derivAM1[:, 0], derivAM1[:, 1], label='Deriv AM1')
 
-derivHF = calculatenumderiv(data3,0.002)
+derivHF = calculatenumderiv(data3,0.001)
 plt.scatter(derivHF[:, 0], derivHF[:, 1],color='green', label='Deriv HF')
 
 #derivMLNN = calculatenumderiv(data5,0.002)
