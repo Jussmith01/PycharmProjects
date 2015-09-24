@@ -73,17 +73,21 @@ def makedatalinear(datain):
 # ------------
 # AM1 vs Act
 # ------------
-data1 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2OEnergy/GPU-1/costgraph.out', [0])
-data2 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2OEnergy/GPU-1/costgraph.out', [1])
-data3 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2OEnergy/GPU-1/costgraph.out', [2])
+data1 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2OEnergy/GPU-1-e/costgraph.out', [0])
+data2 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2OEnergy/GPU-1-e/costgraph.out', [1])
+data3 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2OEnergy/GPU-1-e/costgraph.out', [2])
+data4 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2OEnergy/GPU-1-e/costgraphsmax.out', [1])
+data5 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2OEnergy/GPU-1-e/costgraphsmax.out', [2])
 
 # --------------
 # Setup 2D Plot
 # --------------
-plt.scatter(data1, data2, color='green', label='Training Cost')
-plt.scatter(data1, data3, color='red', label='Validation Cost')
+plt.scatter(data1, data2, color='green', label='Training Cost - GFL')
+plt.scatter(data1, data3, color='red', label='Validation Cost - GFL')
+plt.scatter(data1, data4, color='blue', label='Training Cost - Smax')
+plt.scatter(data1, data5, color='orange', label='Validation Cost - Smax')
 
-plt.title('Cost')
+plt.title('Cost Comparison')
 plt.xlabel('Epoch')
 plt.ylabel('Cost')
 plt.legend(bbox_to_anchor=(0.7, 0.95), loc=2, borderaxespad=0.)
