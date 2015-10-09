@@ -73,15 +73,17 @@ def makedatalinear(datain):
 # ------------
 # AM1 vs Act
 # ------------
-data1 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2OEnergy/GPU-1-d/tdatarun.dat', [6])
-data2 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2OEnergy/GPU-1-d/tdatarun.dat', [9])
-data3 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2OEnergy/GPU-1-d/graph_act.dat', [0])
-
+data1 = getfltsfromfile('/home/jujuman-home/Gits/g09DNNTSBuilder/bin/Release/m1uhf.dat', [12])
+data2 = getfltsfromfile('/home/jujuman-home/Gits/g09DNNTSBuilder/bin/Release/m1uhf.dat', [15])
+data3 = getfltsfromfile('/home/jujuman-home/Gits/g09DNNTSBuilder/bin/Release/m1uhf2.dat', [12])
+data4 = getfltsfromfile('/home/jujuman-home/Gits/g09DNNTSBuilder/bin/Release/m1uhf2.dat', [15])
 # --------------
 # Setup 2D Plot
 # --------------
-plt.scatter(data1, data2, label='B3LYP/6-31g*')
-plt.scatter(data1, data3, color='green', label='MLNN[(2:5:2:5:2)-32]')
+plt.scatter(data1, data2, label='M=1 UB3LYP/6-31g*')
+plt.scatter(data3, data4, color='green', label='M=3 UB3LYP/6-31g*')
+#plt.scatter(data5, data6, color='red', label='M=3 UB3LYP/6-31g*')
+#plt.scatter(data1, data3, color='green', label='MLNN[(2:5:2:5:2)-32]')
 
 plt.title('SCAN: H20 O-H1 Energy vs. Bond Length ')
 plt.xlabel('O-H1 Bond (Angstroms)')
@@ -108,11 +110,11 @@ plt.show()
 # ------------
 # Numer Deriv
 # ------------
-derivHF = calculatenumderiv(data2,1.0)
-plt.scatter(derivHF[:, 0], derivHF[:, 1], label='B3LYP/6-31g*')
+#derivHF = calculatenumderiv(data2,1.0)
+#plt.scatter(derivHF[:, 0], derivHF[:, 1], label='B3LYP/6-31g*')
 
-derivMLNN1 = calculatenumderiv(data3,1.0)
-plt.scatter(derivMLNN1[:, 0], derivMLNN1[:, 1],color='green', label='MLNN[(2:4:2:4:4:2)-32]')
+#derivMLNN1 = calculatenumderiv(data3,1.0)
+#plt.scatter(derivMLNN1[:, 0], derivMLNN1[:, 1],color='green', label='MLNN[(2:4:2:4:4:2)-32]')
 
 #derivMLNN2 = calculatenumderiv(data4,1.0)
 #plt.scatter(derivMLNN2[:, 0], derivMLNN2[:, 1],color='red', label='Deriv MLNN[(2:5:2:5:2)-32]')
@@ -120,24 +122,24 @@ plt.scatter(derivMLNN1[:, 0], derivMLNN1[:, 1],color='green', label='MLNN[(2:4:2
 #derivMLNN = calculatenumderiv(data5,0.002)
 #plt.scatter(derivMLNN[:, 0], derivMLNN[:, 1],color='red', label='Deriv MLNN')
 
-plt.title('SCAN: H20 O-H1 Numerical Derivative of the Energy (Force) per Scan Step')
-plt.xlabel('Scan Step')
-plt.ylabel('Force')
-plt.legend(bbox_to_anchor=(0.7, 0.95), loc=2, borderaxespad=0.)
+#plt.title('SCAN: H20 O-H1 Numerical Derivative of the Energy (Force) per Scan Step')
+#plt.xlabel('Scan Step')
+#plt.ylabel('Force')
+#plt.legend(bbox_to_anchor=(0.7, 0.95), loc=2, borderaxespad=0.)
 
 # -----
 # PLOT
 # -----
-plt.show()
+#plt.show()
 
 # ----------------
 # Numer Second Deriv
 # ----------------
-derivHF2 = calculatenumderiv(derivHF[:, 1],1.0)
-plt.scatter(derivHF2[:, 0], derivHF2[:, 1], label='B3LYP/6-31g*')
+#derivHF2 = calculatenumderiv(derivHF[:, 1],1.0)
+#plt.scatter(derivHF2[:, 0], derivHF2[:, 1], label='B3LYP/6-31g*')
 
-derivMLNN12 = calculatenumderiv(derivMLNN1[:, 1],1.0)
-plt.scatter(derivMLNN12[:, 0], derivMLNN12[:, 1],color='green', label='MLNN[(2:4:2:4:4:2)-32]')
+#derivMLNN12 = calculatenumderiv(derivMLNN1[:, 1],1.0)
+#plt.scatter(derivMLNN12[:, 0], derivMLNN12[:, 1],color='green', label='MLNN[(2:4:2:4:4:2)-32]')
 
 #derivMLNN22 = calculatenumderiv(derivMLNN2[:, 1],1.0)
 #plt.scatter(derivMLNN22[:, 0], derivMLNN22[:, 1],color='red', label='Deriv HF')
@@ -145,12 +147,12 @@ plt.scatter(derivMLNN12[:, 0], derivMLNN12[:, 1],color='green', label='MLNN[(2:4
 #derivMLNN = calculatenumderiv(data5,0.002)
 #plt.scatter(derivMLNN[:, 0], derivMLNN[:, 1],color='red', label='Deriv MLNN')
 
-plt.title('SCAN: H20 O-H1 Energy Second Numer. Derivative per Scan Step')
-plt.xlabel('Scan Step')
-plt.ylabel('Energy Second Derivative')
-plt.legend(bbox_to_anchor=(0.7, 0.95), loc=2, borderaxespad=0.)
+#plt.title('SCAN: H20 O-H1 Energy Second Numer. Derivative per Scan Step')
+#plt.xlabel('Scan Step')
+#plt.ylabel('Energy Second Derivative')
+#plt.legend(bbox_to_anchor=(0.7, 0.95), loc=2, borderaxespad=0.)
 
 # -----
 # PLOT
 # -----
-plt.show()
+#plt.show()
