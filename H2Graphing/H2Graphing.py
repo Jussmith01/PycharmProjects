@@ -73,10 +73,10 @@ def makedatalinear(datain):
 # ------------
 # AM1 vs Act
 # ------------
-data1 = getfltsfromfile('/home/jujuman-home/Gits/g09DNNTSBuilder/bin/Release/m1uhf.dat', [12])
-data2 = getfltsfromfile('/home/jujuman-home/Gits/g09DNNTSBuilder/bin/Release/m1uhf.dat', [15])
-data3 = getfltsfromfile('/home/jujuman-home/Gits/g09DNNTSBuilder/bin/Release/m1uhf2.dat', [12])
-data4 = getfltsfromfile('/home/jujuman-home/Gits/g09DNNTSBuilder/bin/Release/m1uhf2.dat', [15])
+data1 = getfltsfromfile('/home/jujuman/Gits/g09DNNTSBuilder/bin/Release/c1uhf.dat', [12])
+data2 = getfltsfromfile('/home/jujuman/Gits/g09DNNTSBuilder/bin/Release/c1uhf.dat', [15])
+data3 = getfltsfromfile('/home/jujuman/Gits/g09DNNTSBuilder/bin/Release/c5uhf.dat', [12])
+data4 = getfltsfromfile('/home/jujuman/Gits/g09DNNTSBuilder/bin/Release/c5uhf.dat', [15])
 # --------------
 # Setup 2D Plot
 # --------------
