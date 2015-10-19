@@ -83,25 +83,25 @@ def makedatalinear(datain):
 #dataml1d = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OSpherTest/GPU1-c/tdatatrain.dat', [0, 7])
 #dataml2d = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OSpherTest/GPU1-c/tdatavalid.dat', [0, 7])
 #dataml3d = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OSpherTest/GPU1-c/tdatatest.dat', [0, 7])
-dataml1d = getfltsfromfile('/home/jujuman/Gits/g09DNNTSBuilder/bin/CmakeBuild/tdatatrain.dat', [0, 5])
+dataml1d = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2O2Energy/GPU-1-b/graph_expvact.dat_epoch9999', [6, 7])
 #dataml2d = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OSpherTest/GPU1-c/graph_expvact.dat', [0, 2])
 #dataml2d = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OSpherTest/GPU1-c/graph_expvactvalid.dat', [2, 0])
 #dataml2a = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OSpherTest/GPU1-c/graph_expvactvalid.dat', [3, 1])
 
-#calculatemeansqrdiff(dataml[:, 0], dataml[:, 1])
+calculatemeansqrdiff(dataml1d[:, 0], dataml1d[:, 1])
 
 # Do stats data
-#resultsml = sm.OLS(dataml[:, 1], sm.add_constant(dataml[:, 0])).fit()
-#print (resultsml.summary())
+resultsml = sm.OLS(dataml1d[:, 1], sm.add_constant(dataml1d[:, 0])).fit()
+print (resultsml.summary())
 
 plt.scatter(dataml1d[:, 0], dataml1d[:, 1],color='green')
 #plt.scatter(dataml2d[:, 0], dataml2d[:, 1],color='red')
 #plt.scatter(dataml3d[:, 0], dataml3d[:, 1],color='blue')
 X_plotml = np.linspace(-0.15, 0.55, 100)
 #plt.plot(X_plotml, X_plotml * resultsml.params[1] + resultsml.params[0])
-plt.xlabel("Blue = AM1, Green = MLNN")
-plt.ylabel("HF/6-31g*")
-plt.title("Scatter plot of AM1/MLNN vs HF/6-31g*")
+plt.xlabel("Green = NNP")
+plt.ylabel("UB3LYP/6-31g*")
+plt.title("Scatter plot of UB3LYP/6-31g* vs. NNP")
 
 # -----
 # PLOT

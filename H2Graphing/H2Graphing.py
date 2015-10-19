@@ -73,22 +73,26 @@ def makedatalinear(datain):
 # ------------
 # AM1 vs Act
 # ------------
-data1 = getfltsfromfile('/home/jujuman/Gits/g09DNNTSBuilder/bin/Release/c1uhf.dat', [12])
-data2 = getfltsfromfile('/home/jujuman/Gits/g09DNNTSBuilder/bin/Release/c1uhf.dat', [15])
-data3 = getfltsfromfile('/home/jujuman/Gits/g09DNNTSBuilder/bin/Release/c5uhf.dat', [12])
-data4 = getfltsfromfile('/home/jujuman/Gits/g09DNNTSBuilder/bin/Release/c5uhf.dat', [15])
+data1 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2O2Energy/GPU-1-b/datascanOObond.dat', [22])
+data2 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2O2Energy/GPU-1-b/datascanOObond.dat', [27])
+data3 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2O2Energy/GPU-1-b/graph_act.dat', [0])
+#data4 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2O2Energy/GPU-1-b/graph_actOH2.dat', [0])
+
+#data4 = getfltsfromfile('/home/jujuman/Gits/g09DNNTSBuilder/bin/Release/c5uhf.dat', [15])
 # --------------
 # Setup 2D Plot
 # --------------
-plt.scatter(data1, data2, label='M=1 UB3LYP/6-31g*')
-plt.scatter(data3, data4, color='green', label='M=3 UB3LYP/6-31g*')
-#plt.scatter(data5, data6, color='red', label='M=3 UB3LYP/6-31g*')
+plt.scatter(data1, data2, label='UB3LYP/6-31g*')
+plt.scatter(data1, data3, color='red', label='NNP O-H1')
+#plt.scatter(data1, data4, color='green', label='NNP O-H2')
+
+#plt.scatter(data1, data4, color='red', label='M=3 UB3LYP/6-31g*')
 #plt.scatter(data1, data3, color='green', label='MLNN[(2:5:2:5:2)-32]')
 
-plt.title('SCAN: H20 O-H1 Energy vs. Bond Length ')
-plt.xlabel('O-H1 Bond (Angstroms)')
-plt.ylabel('Energy (Hartree)')
-plt.legend(bbox_to_anchor=(0.3, 0.95), loc=2, borderaxespad=0.)
+plt.title('SCAN: H202 Energy vs. O-O Bond')
+plt.xlabel('O-O Bond (Angstroms)')
+plt.ylabel('Energy (Hartrees)')
+plt.legend(bbox_to_anchor=(0.5, 0.95), loc=2, borderaxespad=0.)
 
 # -----
 # PLOT
@@ -110,27 +114,27 @@ plt.show()
 # ------------
 # Numer Deriv
 # ------------
-#derivHF = calculatenumderiv(data2,1.0)
-#plt.scatter(derivHF[:, 0], derivHF[:, 1], label='B3LYP/6-31g*')
+derivHF = calculatenumderiv(data2,0.5)
+plt.scatter(derivHF[:, 0], derivHF[:, 1], label='UB3LYP/6-31g*')
 
-#derivMLNN1 = calculatenumderiv(data3,1.0)
-#plt.scatter(derivMLNN1[:, 0], derivMLNN1[:, 1],color='green', label='MLNN[(2:4:2:4:4:2)-32]')
+derivMLNN1 = calculatenumderiv(data3,0.5)
+plt.scatter(derivMLNN1[:, 0], derivMLNN1[:, 1],color='red', label='NNP')
 
-#derivMLNN2 = calculatenumderiv(data4,1.0)
-#plt.scatter(derivMLNN2[:, 0], derivMLNN2[:, 1],color='red', label='Deriv MLNN[(2:5:2:5:2)-32]')
+#derivMLNN2 = calculatenumderiv(data4,0.5)
+#plt.scatter(derivMLNN2[:, 0]/2.0, derivMLNN2[:, 1],color='red', label='Deriv MLNN[(2:5:2:5:2)-32]')
 
 #derivMLNN = calculatenumderiv(data5,0.002)
 #plt.scatter(derivMLNN[:, 0], derivMLNN[:, 1],color='red', label='Deriv MLNN')
 
-#plt.title('SCAN: H20 O-H1 Numerical Derivative of the Energy (Force) per Scan Step')
-#plt.xlabel('Scan Step')
-#plt.ylabel('Force')
-#plt.legend(bbox_to_anchor=(0.7, 0.95), loc=2, borderaxespad=0.)
+plt.title('SCAN: H202 Force vs. O-O Bond')
+plt.xlabel('O-O Bond Scan Step')
+plt.ylabel('Force')
+plt.legend(bbox_to_anchor=(0.5, 0.95), loc=2, borderaxespad=0.)
 
 # -----
 # PLOT
 # -----
-#plt.show()
+plt.show()
 
 # ----------------
 # Numer Second Deriv
