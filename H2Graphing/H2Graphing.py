@@ -73,12 +73,15 @@ def makedatalinear(datain):
 # ------------
 # AM1 vs Act
 # ------------
-data1 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2O2Energy/GPU-1-b/datascanOObond.dat', [22])
-data2 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2O2Energy/GPU-1-b/datascanOObond.dat', [27])
-data3 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2O2Energy/GPU-1-b/graph_act.dat', [0])
+data1 = getfltsfromfile('/home/jujuman/ServerAccess/homegtx770s/Gits/ForcePredictionNetwork/g09DNNTSData/H2O2Energy/GPU-1-Int-e/scanbondOO.dat', [4])
+data2 = getfltsfromfile('/home/jujuman/ServerAccess/homegtx770s/Gits/ForcePredictionNetwork/g09DNNTSData/H2O2Energy/GPU-1-Int-e/scanbondOO.dat', [9])
+data3 = getfltsfromfile('/home/jujuman/ServerAccess/homegtx770s/Gits/ForcePredictionNetwork/g09DNNTSData/H2O2Energy/GPU-1-Int-e/graph_act.dat', [0])
+
+#data3 = getfltsfromfile('/home/jujuman/ServerAccess/homegtx770s/Gits/ForcePredictionNetwork/g09DNNTSData/H2O2Energy/GPU-1-Int-e/graph_act.dat', [0])
 #data4 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2O2Energy/GPU-1-b/graph_actOH2.dat', [0])
 
 #data4 = getfltsfromfile('/home/jujuman/Gits/g09DNNTSBuilder/bin/Release/c5uhf.dat', [15])
+
 # --------------
 # Setup 2D Plot
 # --------------
