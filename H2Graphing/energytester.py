@@ -54,7 +54,7 @@ def removeoutliers(filein, fileout, ex, es, en, ecol):
 # ------------------------------------------
 def calculatermsd(compdata, actdata):
 
-    n = int(compdata.shape[0])/3
+    n = int(int(compdata.shape[0])/3)
 
     sum = float(0.0)
     for i in range(0, n):
@@ -124,8 +124,8 @@ def countoutlier(data, mean, stddev, ndev):
 #     MAIN PROGRAM
 # -----------------------
 
-data1 = getfltsfromfile('/home/jujuman-home/Research/ANN-Test-Data/Pentane/trainData.dat', [69])
-data2 = computermsdofdata('/home/jujuman-home/Research/ANN-Test-Data/Pentane/trainData.dat')
+data1 = getfltsfromfile('/home/jujuman/Research/ANN-Test-Data/Ethylene/trainData.dat', [25])
+data2 = computermsdofdata('/home/jujuman/Research/ANN-Test-Data/Ethylene/trainData.dat')
 
 X = stat.mean(data1[:, 0])
 S = stat.stdev(data1[:, 0], X)
@@ -136,11 +136,11 @@ print(S)
 print(S * 2.5)
 print(countoutlier(data1, X, S, 2.5))
 
-removeoutliers('/home/jujuman-home/Research/ANN-Test-Data/Pentane/trainData.dat'
-               , '/home/jujuman-home/Research/ANN-Test-Data/Pentane/trainDataFIXED.dat', X, S, 2.5, 69)
+removeoutliers('/home/jujuman/Research/ANN-Test-Data/Ethylene/trainData.dat'
+               , '/home/jujuman/Research/ANN-Test-Data/Ethylene/trainDataFIXED.dat', X, S, 2.5, 25)
 
-data4 = getfltsfromfile('/home/jujuman-home/Research/ANN-Test-Data/Pentane/trainDataFIXED.dat', [69])
-data5 = computermsdofdata('/home/jujuman-home/Research/ANN-Test-Data/Pentane/trainDataFIXED.dat')
+data4 = getfltsfromfile('/home/jujuman/Research/ANN-Test-Data/Ethylene/trainDataFIXED.dat', [25])
+data5 = computermsdofdata('/home/jujuman/Research/ANN-Test-Data/Ethylene/trainDataFIXED.dat')
 
 data3 = np.sort(data1, axis=None)
 data6 = np.sort(data4, axis=None)
