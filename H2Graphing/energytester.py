@@ -54,7 +54,7 @@ def removeoutliers(filein, fileout, ex, es, en, ecol):
 # ------------------------------------------
 def calculatermsd(compdata, actdata):
 
-    n = int(compdata.shape[0])/3
+    n = int(int(compdata.shape[0])/3)
 
     sum = float(0.0)
     for i in range(0, n):
