@@ -124,8 +124,8 @@ def countoutlier(data, mean, stddev, ndev):
 #     MAIN PROGRAM
 # -----------------------
 
-data1 = getfltsfromfile('/home/jujuman-home/Research/ANN-Test-Data/Pentane/trainData.dat', [69])
-data2 = computermsdofdata('/home/jujuman-home/Research/ANN-Test-Data/Pentane/trainData.dat')
+data1 = getfltsfromfile('/home/jujuman-home/ServerAccess/MordorScratch/Research/ANN-Test-Data/H2O2_3/trainData.dat', [16])
+data2 = computermsdofdata('/home/jujuman-home/ServerAccess/MordorScratch/Research/ANN-Test-Data/H2O2_3/trainData.dat')
 
 X = stat.mean(data1[:, 0])
 S = stat.stdev(data1[:, 0], X)
@@ -136,11 +136,11 @@ print(S)
 print(S * 2.5)
 print(countoutlier(data1, X, S, 2.5))
 
-removeoutliers('/home/jujuman-home/Research/ANN-Test-Data/Pentane/trainData.dat'
-               , '/home/jujuman-home/Research/ANN-Test-Data/Pentane/trainDataFIXED.dat', X, S, 2.5, 69)
+#removeoutliers('/home/jujuman-home/ServerAccess/MordorScratch/Research/ANN-Test-Data/H2O2_3/trainData.dat'
+#               , '/home/jujuman-home/ServerAccess/MordorScratch/Research/ANN-Test-Data/H2O2_3/trainDataFIXED.dat', X, S, 2.5, 25)
 
-data4 = getfltsfromfile('/home/jujuman-home/Research/ANN-Test-Data/Pentane/trainDataFIXED.dat', [69])
-data5 = computermsdofdata('/home/jujuman-home/Research/ANN-Test-Data/Pentane/trainDataFIXED.dat')
+data4 = getfltsfromfile('/home/jujuman-home/ServerAccess/MordorScratch/Research/ANN-Test-Data/H2O2_2/trainData.dat', [16])
+data5 = computermsdofdata('/home/jujuman-home/ServerAccess/MordorScratch/Research/ANN-Test-Data/H2O2_2/trainData.dat')
 
 data3 = np.sort(data1, axis=None)
 data6 = np.sort(data4, axis=None)
@@ -152,7 +152,7 @@ plt.scatter(data2, data1, label='UB3LYP/6-31g*', color='blue')
 plt.scatter(data5, data4, label='UB3LYP/6-31g*', color='red')
 
 plt.title('SCAN: H202 Energy vs. H-O-O Angle')
-plt.xlabel('H-O-O Angle (Radians)')
+plt.xlabel('RMSD')
 plt.ylabel('Energy (Hartrees)')
 plt.legend(bbox_to_anchor=(0.5, 0.95), loc=2, borderaxespad=0.)
 
