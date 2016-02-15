@@ -13,7 +13,7 @@ def getfltsfromfile(file, cols):
     infile_s = []
 
     for line in infile:
-        row = line.strip().split(",")
+        row = line.strip().split(" ")
         infile_s.append(row)
 
     # Truncate and convert to numpy array
@@ -83,7 +83,7 @@ def makedatalinear(datain):
 #dataml1d = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OSpherTest/GPU1-c/tdatatrain.dat', [0, 7])
 #dataml2d = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OSpherTest/GPU1-c/tdatavalid.dat', [0, 7])
 #dataml3d = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OSpherTest/GPU1-c/tdatatest.dat', [0, 7])
-dataml1d = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2O2Energy/GPU-1-b/graph_expvact.dat_epoch9999', [6, 7])
+dataml1d = getfltsfromfile('/home/jujuman/Research/ANN-Test-Data/FormaldehydeFrag/FPNTest/testgraph.dat', [0, 1])
 #dataml2d = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OSpherTest/GPU1-c/graph_expvact.dat', [0, 2])
 #dataml2d = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OSpherTest/GPU1-c/graph_expvactvalid.dat', [2, 0])
 #dataml2a = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2OSpherTest/GPU1-c/graph_expvactvalid.dat', [3, 1])
