@@ -73,15 +73,15 @@ def printdatatofile(f,title,X,N):
 #          Parameters
 #--------------------------------
 #File name
-pf = 'test.params'
+pf = 'test.params' # Output filename
 
-Nrr = 32
-Nat = 4
-Nar = 8
-Nzt = 8
+Nrr = 16  # Number of radial elements per atom type
+Nat = 2 # Number of atom types
+Nar = 4 # Number of radial elements per angular zeta
+Nzt = 8 # Number of zeta angular elements
 
-Rc = 6.0
-Atyp = '[H,C,O]'
+Rc = 6.0 # Cutoff radius
+Atyp = '[H,C]' # Atomic Types
 
 
 #--------------------------------
@@ -102,14 +102,14 @@ Zeta = np.zeros(Nzt)
 
 Nat = Nar * Nzt
 for i in range(0,Nzt):
-    step = float(i)
+    step = float(i+1.0)
     computeangulardataset(0.0,2.0*np.pi,1000,step,1.0,plt, 'red', 'eta = 0.1')
     Zeta[i] = step
 
 plt.show()
 
 for i in range(0,Nar):
-    stddev = float(Nar)/5.5
+    stddev = float(Nar)/4.5
     step = 3.5 * np.exp(-(float(i-0.0)**2)/(2.0*(stddev)**2.0))
     computeradialdataset(0.25, Rc, 1000, step, 6.0, plt, 'blue', 'eta = 0.1')
     EtaA[i] = step
