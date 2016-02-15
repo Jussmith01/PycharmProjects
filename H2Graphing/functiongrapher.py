@@ -75,10 +75,10 @@ def printdatatofile(f,title,X,N):
 #File name
 pf = 'test.params'
 
-Nrr = 32
-Nat = 4
-Nar = 8
-Nzt = 8
+Nrr = 12
+Nat = 3
+Nar = 4
+Nzt = 7
 
 Rc = 6.0
 Atyp = '[H,C,O]'
