@@ -75,10 +75,10 @@ def printdatatofile(f,title,X,N):
 #File name
 pf = 'test.params' # Output filename
 
-Nrr = 16  # Number of radial elements per atom type
-Nat = 2 # Number of atom types
-Nar = 4 # Number of radial elements per angular zeta
-Nzt = 8 # Number of zeta angular elements
+Nrr = 12
+Nat = 3
+Nar = 4
+Nzt = 7
 
 Rc = 6.0 # Cutoff radius
 Atyp = '[H,C]' # Atomic Types
