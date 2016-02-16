@@ -14,7 +14,7 @@ def getfltsfromfile(file, cols):
     infile_s = []
 
     for line in infile:
-        row = line.strip().split(",")
+        row = line.strip().split(" ")
         infile_s.append(row)
 
     # Truncate and convert to numpy array
@@ -73,11 +73,14 @@ def makedatalinear(datain):
 # ------------
 # AM1 vs Act
 # ------------
-data1 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/bin/Debug/bkuData/trainDataH2.dat', [6])
-data2 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/bin/Debug/bkuData/trainDataH2.dat', [9])
+data1 = getfltsfromfile('/home/jujuman/Research/ANN-Test-Data/FormaldehydeFrag/FPNTest/testgraph.dat', [0])
+data2 = getfltsfromfile('/home/jujuman/Research/ANN-Test-Data/FormaldehydeFrag/FPNTest/testgraph.dat', [1])
 
-data3 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/bin/Debug/bkuData/validDataH2.dat', [6])
-data4 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/bin/Debug/bkuData/validDataH2.dat', [9])
+data3 = getfltsfromfile('/home/jujuman/Research/ANN-Test-Data/FormaldehydeFrag/FPNTest/testgraph.dat', [0])
+data4 = getfltsfromfile('/home/jujuman/Research/ANN-Test-Data/FormaldehydeFrag/FPNTest/testgraph.dat', [2])
+
+data5 = getfltsfromfile('/home/jujuman/Research/ANN-Test-Data/FormaldehydeFrag/FPNTest/beforeh2o.dat', [0])
+data6 = getfltsfromfile('/home/jujuman/Research/ANN-Test-Data/FormaldehydeFrag/FPNTest/beforeh2o.dat', [2])
 #data3 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2O2Energy/GPU-1-Int-e/graph_act.dat', [0])
 
 #data3 = getfltsfromfile('/home/jujuman/ServerAccess/homegtx770s/Gits/ForcePredictionNetwork/g09DNNTSData/H2O2Energy/GPU-1-Int-e/graph_act.dat', [0])
@@ -89,7 +92,8 @@ data4 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/bin/Debu
 # Setup 2D Plot
 # --------------
 plt.scatter(data1, data2, label='UB3LYP/6-31g*')
-plt.scatter(data3, data4, color='red', label='NNP')
+plt.scatter(data3, data4, color='red', label='NNP After')
+plt.scatter(data5, data6, color='green', label='NNP Before')
 #plt.scatter(data1, data4, color='green', label='NNP O-H2')
 
 #plt.scatter(data1, data4, color='red', label='M=3 UB3LYP/6-31g*')
