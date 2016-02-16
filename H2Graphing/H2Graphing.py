@@ -2,6 +2,7 @@ import numpy as np
 import statsmodels.api as sm
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
+import os
 
 
 # -----------------------
@@ -73,34 +74,37 @@ def makedatalinear(datain):
 # ------------
 # AM1 vs Act
 # ------------
-data1 = getfltsfromfile('/home/jujuman/Research/ANN-Test-Data/FormaldehydeFrag/FPNTest/testgraph.dat', [0])
-data2 = getfltsfromfile('/home/jujuman/Research/ANN-Test-Data/FormaldehydeFrag/FPNTest/testgraph.dat', [1])
+user = os.environ['USER']
 
-data3 = getfltsfromfile('/home/jujuman/Research/ANN-Test-Data/FormaldehydeFrag/FPNTest/testgraph.dat', [0])
-data4 = getfltsfromfile('/home/jujuman/Research/ANN-Test-Data/FormaldehydeFrag/FPNTest/testgraph.dat', [2])
+data1 = getfltsfromfile('/home/'+user+'/Research/ANN-Test-Data/FormaldehydeFrag/FPNTest/testgraph.dat', [0])
+data2 = getfltsfromfile('/home/'+user+'/Research/ANN-Test-Data/FormaldehydeFrag/FPNTest/testgraph.dat', [1])
 
-data5 = getfltsfromfile('/home/jujuman/Research/ANN-Test-Data/FormaldehydeFrag/FPNTest/beforeh2o.dat', [0])
-data6 = getfltsfromfile('/home/jujuman/Research/ANN-Test-Data/FormaldehydeFrag/FPNTest/beforeh2o.dat', [2])
-#data3 = getfltsfromfile('/home/jujuman-home/Gits/ForcePredictionNetwork/g09DNNTSData/H2O2Energy/GPU-1-Int-e/graph_act.dat', [0])
+data3 = getfltsfromfile('/home/'+user+'/Research/ANN-Test-Data/FormaldehydeFrag/FPNTest/testgraph.dat', [0])
+data4 = getfltsfromfile('/home/'+user+'/Research/ANN-Test-Data/FormaldehydeFrag/FPNTest/testgraph.dat', [2])
 
-#data3 = getfltsfromfile('/home/jujuman/ServerAccess/homegtx770s/Gits/ForcePredictionNetwork/g09DNNTSData/H2O2Energy/GPU-1-Int-e/graph_act.dat', [0])
-#data4 = getfltsfromfile('/home/jujuman/Gits/ForcePredictionNetwork/g09DNNTSData/H2O2Energy/GPU-1-b/graph_actOH2.dat', [0])
+data5 = getfltsfromfile('/home/'+user+'/Research/ANN-Test-Data/FormaldehydeFrag/FPNTest/beforeh2o.dat', [0])
+data5 = data5 * 2
+data6 = getfltsfromfile('/home/'+user+'/Research/ANN-Test-Data/FormaldehydeFrag/FPNTest/beforeh2o.dat', [2])
 
-#data4 = getfltsfromfile('/home/jujuman/Gits/g09DNNTSBuilder/bin/Release/c5uhf.dat', [15])
+#data7 = getfltsfromfile('/home/'+user+'/Research/ANN-Test-Data/FormaldehydeFrag/bku2_FPNTest/afterh20.dat', [0])
+#data8 = getfltsfromfile('/home/'+user+'/Research/ANN-Test-Data/FormaldehydeFrag/bku2_FPNTest/afterh20.dat', [2])
+
+
 
 # --------------
 # Setup 2D Plot
 # --------------
 plt.scatter(data1, data2, label='UB3LYP/6-31g*')
-plt.scatter(data3, data4, color='red', label='NNP After')
+plt.scatter(data3, data4, color='red', label='NNP After water')
 plt.scatter(data5, data6, color='green', label='NNP Before')
+#plt.scatter(data7, data8, color='orange', label='NNP After Retrain with H2O')
 #plt.scatter(data1, data4, color='green', label='NNP O-H2')
 
 #plt.scatter(data1, data4, color='red', label='M=3 UB3LYP/6-31g*')
 #plt.scatter(data1, data3, color='green', label='MLNN[(2:5:2:5:2)-32]')
 
-plt.title('SCAN: H202 Energy vs. H-O-O Angle')
-plt.xlabel('H-O-O Angle (Radians)')
+plt.title('SCAN: H2CO Energy vs. H-C-O Angle')
+plt.xlabel('H-C-O Angle (STEPS)')
 plt.ylabel('Energy (Hartrees)')
 plt.legend(bbox_to_anchor=(0.5, 0.95), loc=2, borderaxespad=0.)
 
