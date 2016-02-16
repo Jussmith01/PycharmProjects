@@ -77,13 +77,15 @@ def makedatalinear(datain):
 user = os.environ['USER']
 
 data1 = getfltsfromfile('/home/'+user+'/Research/ANN-Test-Data/FormaldehydeFrag/FPNTest/testgraph.dat', [0])
+data1 = data1 + 27
 data2 = getfltsfromfile('/home/'+user+'/Research/ANN-Test-Data/FormaldehydeFrag/FPNTest/testgraph.dat', [1])
 
 data3 = getfltsfromfile('/home/'+user+'/Research/ANN-Test-Data/FormaldehydeFrag/FPNTest/testgraph.dat', [0])
+data3 = data3 + 27
 data4 = getfltsfromfile('/home/'+user+'/Research/ANN-Test-Data/FormaldehydeFrag/FPNTest/testgraph.dat', [2])
 
 data5 = getfltsfromfile('/home/'+user+'/Research/ANN-Test-Data/FormaldehydeFrag/FPNTest/beforeh2o.dat', [0])
-data5 = data5 * 2
+data5 = data5 * 2 + 27
 data6 = getfltsfromfile('/home/'+user+'/Research/ANN-Test-Data/FormaldehydeFrag/FPNTest/beforeh2o.dat', [2])
 
 #data7 = getfltsfromfile('/home/'+user+'/Research/ANN-Test-Data/FormaldehydeFrag/bku2_FPNTest/afterh20.dat', [0])
@@ -94,9 +96,10 @@ data6 = getfltsfromfile('/home/'+user+'/Research/ANN-Test-Data/FormaldehydeFrag/
 # --------------
 # Setup 2D Plot
 # --------------
-plt.scatter(data1, data2, label='UB3LYP/6-31g*')
-plt.scatter(data3, data4, color='red', label='NNP After water')
-plt.scatter(data5, data6, color='green', label='NNP Before')
+plt.scatter(data1, data2, color='blue', label='UB3LYP/6-31g*')
+plt.plot(data3, data4, color='red', label='NNP H-C-O Angle Retrain',linewidth=3)
+plt.plot(data5, data6, color='green', label='NNP Before',linewidth=2)
+
 #plt.scatter(data7, data8, color='orange', label='NNP After Retrain with H2O')
 #plt.scatter(data1, data4, color='green', label='NNP O-H2')
 
@@ -104,7 +107,7 @@ plt.scatter(data5, data6, color='green', label='NNP Before')
 #plt.scatter(data1, data3, color='green', label='MLNN[(2:5:2:5:2)-32]')
 
 plt.title('SCAN: H2CO Energy vs. H-C-O Angle')
-plt.xlabel('H-C-O Angle (STEPS)')
+plt.xlabel('H-C-O Angle (Degrees)')
 plt.ylabel('Energy (Hartrees)')
 plt.legend(bbox_to_anchor=(0.5, 0.95), loc=2, borderaxespad=0.)
 
