@@ -75,22 +75,23 @@ def makedatalinear(datain):
 # AM1 vs Act
 # ------------
 user = os.environ['USER']
+dir = '/Research/ANN-Test-Data/FormaldehydeFrag/graphs/'
 
-data1 = getfltsfromfile('/home/'+user+'/Research/ANN-Test-Data/FormaldehydeFrag/FPNTest/testgraph.dat', [0])
+data1 = getfltsfromfile('/home/' + user + dir + 'nnphcoangleretrainfrag.dat', [0])
 data1 = data1 + 27
-data2 = getfltsfromfile('/home/'+user+'/Research/ANN-Test-Data/FormaldehydeFrag/FPNTest/testgraph.dat', [1])
+data2 = getfltsfromfile('/home/' + user + dir + 'nnphcoangleretrainfrag.dat', [1])
 
-data3 = getfltsfromfile('/home/'+user+'/Research/ANN-Test-Data/FormaldehydeFrag/FPNTest/testgraph.dat', [0])
+data3 = getfltsfromfile('/home/' + user + dir + 'nnphcoangleretrainfrag.dat', [0])
 data3 = data3 + 27
-data4 = getfltsfromfile('/home/'+user+'/Research/ANN-Test-Data/FormaldehydeFrag/FPNTest/testgraph.dat', [2])
+data4 = getfltsfromfile('/home/' + user + dir + 'nnphcoangleretrainfrag.dat', [2])
 
-data5 = getfltsfromfile('/home/'+user+'/Research/ANN-Test-Data/FormaldehydeFrag/FPNTest/beforeh2o.dat', [0])
+data5 = getfltsfromfile('/home/' + user + dir + 'nnphcoanglenofixfrag.dat', [0])
 data5 = data5 * 2 + 27
-data6 = getfltsfromfile('/home/'+user+'/Research/ANN-Test-Data/FormaldehydeFrag/FPNTest/beforeh2o.dat', [2])
+data6 = getfltsfromfile('/home/' + user + dir + 'nnphcoanglenofixfrag.dat', [2])
 
-data7 = getfltsfromfile('/home/'+user+'/Research/ANN-Test-Data/FormaldehydeFrag/FPNFormOnlyTest/testgraph.dat', [0])
+data7 = getfltsfromfile('/home/' + user + dir + 'nnphcoangleretrainnofrag.dat', [0])
 data7 = data7 + 27
-data8 = getfltsfromfile('/home/'+user+'/Research/ANN-Test-Data/FormaldehydeFrag/FPNFormOnlyTest/testgraph.dat', [2])
+data8 = getfltsfromfile('/home/' + user + dir + 'nnphcoangleretrainnofrag.dat', [2])
 
 
 #data7 = getfltsfromfile('/home/'+user+'/Research/ANN-Test-Data/FormaldehydeFrag/bku2_FPNTest/afterh20.dat', [0])
