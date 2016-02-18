@@ -75,13 +75,13 @@ def printdatatofile(f,title,X,N):
 #File name
 pf = 'test.params' # Output filename
 
-Nrr = 16
-Nat = 4
-Nar = 8
-Nzt = 8
+Nrr = 12
+Nat = 3
+Nar = 6
+Nzt = 10
 
 Rc = 6.0
-Atyp = '[H,C,O,N]'
+Atyp = '[H,C,O]'
 
 #--------------------------------
 #           Program
@@ -101,11 +101,7 @@ Zeta = np.zeros(Nzt)
 
 Nat = Nar * Nzt
 for i in range(0,Nzt):
-<<<<<<< HEAD
-    step = float(i)+1.0
-=======
     step = float(i+1.0)
->>>>>>> b7f74bfd09e4302c8a6c4a8b562ccc9dd9795342
     computeangulardataset(0.0,2.0*np.pi,1000,step,1.0,plt, 'red', 'eta = 0.1')
     Zeta[i] = step
 
