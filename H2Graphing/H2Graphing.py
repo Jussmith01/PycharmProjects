@@ -101,10 +101,10 @@ data8 = getfltsfromfile('/home/'+user+'/Research/ANN-Test-Data/FormaldehydeFrag/
 # --------------
 # Setup 2D Plot
 # --------------
-plt.scatter(data1, data2, color='blue', label='UB3LYP/6-31g*')
-plt.plot(data3, data4, color='red', label='NNP H-C-O Angle Retrain - Frag',linewidth=3)
-plt.plot(data5, data6, color='green', label='NNP Before Data set Fix - Frag',linewidth=2)
-plt.plot(data7, data8, color='orange', label='NNP H-C-O Angle Retrain - No Frag',linewidth=2)
+plt.scatter(data1, data2, color='blue', label='UB3LYP/6-31g*',linewidth=2)
+plt.plot(data3, data4, color='red', label='NNP H-C-O Angle Retrain - Frag',linewidth=4)
+plt.plot(data5, data6, color='green', label='NNP Before Data set Fix - Frag',linewidth=3)
+plt.plot(data7, data8, color='orange', label='NNP H-C-O Angle Retrain - No Frag',linewidth=3)
 
 #plt.scatter(data7, data8, color='orange', label='NNP After Retrain with H2O')
 #plt.scatter(data1, data4, color='green', label='NNP O-H2')
