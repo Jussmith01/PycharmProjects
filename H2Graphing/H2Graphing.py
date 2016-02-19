@@ -108,8 +108,8 @@ plt.plot(data3, data4, color='red', label='ANN H-C-O Angle Retrain - Frag',linew
 plt.plot(data5, data6, color='green', label='ANN Before Data set Fix - Frag',linewidth=2)
 plt.plot(data7, data8, color='orange', label='ANN H-C-O Angle Retrain - No Frag',linewidth=2)
 
-plt.title(r'SCAN: $\mathrm{H_2CO}$ Energy vs. H-C-O Angle')
-plt.xlabel('H-C-O Angle (Degrees)')
+plt.title(r'SCAN: $\mathrm{CO}$ Energy vs. C-O Bond')
+plt.xlabel('C-O Bond (Angle)')
 plt.ylabel('Energy (Hartrees)')
 plt.legend(bbox_to_anchor=(0.38, 0.95), loc=2, borderaxespad=0.)
 

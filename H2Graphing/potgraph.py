@@ -78,11 +78,11 @@ user = os.environ['USER']
 dir = '/Research/ANN-Test-Data/FormaldehydeFrag/fragTrain/'
 
 data1 = getfltsfromfile('/home/' + user + dir + 'testgraph.dat', [0])
-data1 = data1 * 5 - 180
+data1 = data1 * 0.005 + 0.6
 data2 = getfltsfromfile('/home/' + user + dir + 'testgraph.dat', [1])
 
 data3 = getfltsfromfile('/home/' + user + dir + 'testgraph.dat', [0])
-data3 = data3 * 5 - 180
+data3 = data3 * 0.005 + 0.6
 data4 = getfltsfromfile('/home/' + user + dir + 'testgraph.dat', [2])
 
 
@@ -99,8 +99,9 @@ plt.rc('font', **font)
 # --------------
 # Setup 2D Plot
 # --------------
-plt.scatter(data1, data2, color='blue', label='UB3LYP/6-31g*')
-plt.plot(data3, data4, color='red', label='NNP H-O-O-H Dihedral',linewidth=3)
+plt.scatter(data2, data4, color='blue', label='UB3LYP/6-31g* vs. ANN')
+#plt.scatter(data1, data2, color='blue', label='UB3LYP/6-31g*')
+#plt.scatter(data3, data4, color='red', label='NNP',linewidth=3)
 
 #plt.scatter(data7, data8, color='orange', label='NNP After Retrain with H2O')
 #plt.scatter(data1, data4, color='green', label='NNP O-H2')
@@ -108,10 +109,11 @@ plt.plot(data3, data4, color='red', label='NNP H-O-O-H Dihedral',linewidth=3)
 #plt.scatter(data1, data4, color='red', label='M=3 UB3LYP/6-31g*')
 #plt.scatter(data1, data3, color='green', label='MLNN[(2:5:2:5:2)-32]')
 
-plt.title('SCAN: $\mathrm{H_2 O_2}$ Energy vs. H-C-O-H Dihedral')
-plt.xlabel('H-C-O-H Dihedral (Degrees)')
-plt.ylabel('Energy (Hartrees)')
-plt.legend(bbox_to_anchor=(0.6, 0.95), loc=2, borderaxespad=0.)
+plt.title('UB3LYP/6-31g* vs. ANN Energy for $H_2 CO$')
+#plt.title('SCAN: Formic Acid Energy vs. H-O-H Angle')
+plt.xlabel('ANN Energy (Hartrees)')
+plt.ylabel('UB3LYP/6-31g* Energy (Hartrees)')
+#plt.legend(bbox_to_anchor=(0.1, 0.95), loc=2, borderaxespad=0.)
 
 # -----
 # PLOT
