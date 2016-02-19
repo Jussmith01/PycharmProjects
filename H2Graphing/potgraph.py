@@ -77,35 +77,30 @@ def makedatalinear(datain):
 user = os.environ['USER']
 dir = '/Research/ANN-Test-Data/FormaldehydeFrag/fragTrain/'
 
-data1 = getfltsfromfile('/home/' + user + dir + 'testgraph2.dat', [0])
-data1=data1*5
-data2 = getfltsfromfile('/home/' + user + dir + 'testgraph2.dat', [1])
+data1 = getfltsfromfile('/home/' + user + dir + 'testgraph.dat', [0])
+data1 = data1 * 5 - 180
+data2 = getfltsfromfile('/home/' + user + dir + 'testgraph.dat', [1])
 
-data3 = getfltsfromfile('/home/' + user + dir + 'testgraph2.dat', [0])
-data3=data3*5
-data4 = getfltsfromfile('/home/' + user + dir + 'testgraph2.dat', [2])
-
-data5 = getfltsfromfile('/home/' + user + dir + 'testgraph.dat', [0])
-data5=data5*5
-data6 = getfltsfromfile('/home/' + user + dir + 'testgraph.dat', [1])
-
-data7 = getfltsfromfile('/home/' + user + dir + 'testgraph.dat', [0])
-data7=data7*5
-data8 = getfltsfromfile('/home/' + user + dir + 'testgraph.dat', [2])
+data3 = getfltsfromfile('/home/' + user + dir + 'testgraph.dat', [0])
+data3 = data3 * 5 - 180
+data4 = getfltsfromfile('/home/' + user + dir + 'testgraph.dat', [2])
 
 
 #data7 = getfltsfromfile('/home/'+user+'/Research/ANN-Test-Data/FormaldehydeFrag/bku2_FPNTest/afterh20.dat', [0])
 #data8 = getfltsfromfile('/home/'+user+'/Research/ANN-Test-Data/FormaldehydeFrag/bku2_FPNTest/afterh20.dat', [2])
 
 
+font = {'family' : 'normal',
+        'weight' : 'normal',
+        'size'   : 14}
+
+plt.rc('font', **font)
 
 # --------------
 # Setup 2D Plot
 # --------------
-plt.scatter(data1, data2, color='blue', label='UB3LYP/6-31g*',linewidth=6)
-plt.plot(data3, data4, color='red', label='NNP H-C-O Angle Retrain - Frag',linewidth=4)
-plt.scatter(data5, data6, color='green', label='NNP H-C-O Angle Retrain - Frag',linewidth=6)
-plt.plot(data7, data8, color='red', label='NNP H-C-O Angle Retrain - Frag',linewidth=6)
+plt.scatter(data1, data2, color='blue', label='UB3LYP/6-31g*')
+plt.plot(data3, data4, color='red', label='NNP H-O-O-H Dihedral',linewidth=3)
 
 #plt.scatter(data7, data8, color='orange', label='NNP After Retrain with H2O')
 #plt.scatter(data1, data4, color='green', label='NNP O-H2')
@@ -113,10 +108,10 @@ plt.plot(data7, data8, color='red', label='NNP H-C-O Angle Retrain - Frag',linew
 #plt.scatter(data1, data4, color='red', label='M=3 UB3LYP/6-31g*')
 #plt.scatter(data1, data3, color='green', label='MLNN[(2:5:2:5:2)-32]')
 
-plt.title('SCAN: H2CO Energy vs. H-C-O Angle')
-plt.xlabel('H-C-O Angle (Degrees)')
+plt.title('SCAN: $\mathrm{H_2 O_2}$ Energy vs. H-C-O-H Dihedral')
+plt.xlabel('H-C-O-H Dihedral (Degrees)')
 plt.ylabel('Energy (Hartrees)')
-plt.legend(bbox_to_anchor=(0.5, 0.95), loc=2, borderaxespad=0.)
+plt.legend(bbox_to_anchor=(0.6, 0.95), loc=2, borderaxespad=0.)
 
 # -----
 # PLOT
