@@ -73,12 +73,12 @@ def printdatatofile(f,title,X,N):
 #          Parameters
 #--------------------------------
 #File nam
-pf = 'test.params' # Output filename
+pf = 'rHCO-12-a6-10.params' # Output filename
 
-Nrr = 16
+Nrr = 12
 Nat = 3
-Nar = 5
-Nzt = 15
+Nar = 6
+Nzt = 10
 
 Rc = 6.0
 Atyp = '[H,C,O]'
