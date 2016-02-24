@@ -73,18 +73,18 @@ def printdatatofile(f,title,X,N):
 #          Parameters
 #--------------------------------
 #File nam
-pf = 'rHCO-16-a8-10.params' # Output filename
+pf = 'rHCNO-16-a8-8.params' # Output filename
 
 Nrr = 16
-Nat = 3
+Nat = 4
 Nar = 8
-Nzt = 10
+Nzt = 8
 
 Rc = 6.0
-Atyp = '[H,C,O]'
+Atyp = '[H,C,N,O]'
 EtaR = 20.0
 EtaA = 4.0
-Zeta = 32.0
+Zeta = 28.0
 
 #--------------------------------
 #           Program
@@ -105,7 +105,7 @@ for i in range(0,Nrr):
     stepsize = Rc / float(Nrr+1.0)
     #step = (i**1.5)*0.1+0.5
     step = i * stepsize + 0.5
-    computeradialdataset(0.5, Rc, 1000, 20.0, Rc,step, plt, 'blue', 'eta = '+str(EtaR))
+    computeradialdataset(0.5, Rc, 1000, EtaR, Rc,step, plt, 'blue', 'eta = '+str(EtaR))
     ShfR[i] = step
 
 plt.show()

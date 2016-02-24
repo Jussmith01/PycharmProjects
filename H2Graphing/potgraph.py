@@ -101,9 +101,9 @@ plt.rc('font', **font)
 # --------------
 # Setup 2D Plot
 # --------------
-plt.scatter(data2, data2, color='black', label='UB3LYP/6-31g* vs. ANN')
-plt.scatter(data2, data4, color='blue', label='UB3LYP/6-31g* vs. ANN')
-plt.scatter(data2, data5, color='red', label='UB3LYP/6-31g*',linewidth=4)
+plt.scatter(data1, data2, color='black', label='UB3LYP/6-31g* vs. ANN')
+plt.plot(data3, data4, color='blue', label='UB3LYP/6-31g* vs. ANN',linewidth=4)
+#plt.scatter(data2, data5, color='red', label='UB3LYP/6-31g*',linewidth=4)
 #plt.scatter(data3, data4, color='red', label='NNP',linewidth=3)
 
 #plt.scatter(data7, data8, color='orange', label='NNP After Retrain with H2O')
