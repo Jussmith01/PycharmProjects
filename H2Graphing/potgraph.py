@@ -75,15 +75,17 @@ def makedatalinear(datain):
 # AM1 vs Act
 # ------------
 user = os.environ['USER']
-dir = '/Research/ANN-Test-Data/FormaldehydeFrag/fragTrain/'
+dir = '/Research/ANN-Test-Data/FormaldehydeFrag/fragTrain2/'
 
 data1 = getfltsfromfile('/home/' + user + dir + 'testgraph.dat', [0])
-data1 = data1 * 0.005 + 0.6
+data1 = data1 * 0.02 + 1.0
 data2 = getfltsfromfile('/home/' + user + dir + 'testgraph.dat', [1])
 
 data3 = getfltsfromfile('/home/' + user + dir + 'testgraph.dat', [0])
-data3 = data3 * 0.005 + 0.6
+data3 = data3 * 0.02 + 1.0
 data4 = getfltsfromfile('/home/' + user + dir + 'testgraph.dat', [2])
+
+data5 = getfltsfromfile('/home/' + user + dir + 'testgraph2.dat', [2])
 
 
 #data7 = getfltsfromfile('/home/'+user+'/Research/ANN-Test-Data/FormaldehydeFrag/bku2_FPNTest/afterh20.dat', [0])
@@ -99,8 +101,9 @@ plt.rc('font', **font)
 # --------------
 # Setup 2D Plot
 # --------------
+plt.scatter(data2, data2, color='black', label='UB3LYP/6-31g* vs. ANN')
 plt.scatter(data2, data4, color='blue', label='UB3LYP/6-31g* vs. ANN')
-#plt.scatter(data1, data2, color='blue', label='UB3LYP/6-31g*')
+plt.scatter(data2, data5, color='red', label='UB3LYP/6-31g*',linewidth=4)
 #plt.scatter(data3, data4, color='red', label='NNP',linewidth=3)
 
 #plt.scatter(data7, data8, color='orange', label='NNP After Retrain with H2O')
