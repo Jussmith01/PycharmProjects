@@ -76,17 +76,17 @@ def makedatalinear(datain):
 # ------------
 user = os.environ['USER']
 dir = '/Research/ANN-Test-Data/organicnetworks/train/'
-dir = '/Research/ANN-Test-Data/organicnetworks/train2/'
+dir2 = '/Research/ANN-Test-Data/organicnetworks/train2/'
 
 data1 = getfltsfromfile('/home/' + user + dir + 'costgraph.dat', [0])
 #data1 = data1 * 0.02 + 1.0
 data2 = getfltsfromfile('/home/' + user + dir + 'costgraph.dat', [1])
 data3 = getfltsfromfile('/home/' + user + dir + 'costgraph.dat', [2])
 
-data4 = getfltsfromfile('/home/' + user + dir + 'costgraph.dat', [0])
+data4 = getfltsfromfile('/home/' + user + dir2 + 'costgraph.dat', [0])
 #data3 = data3 * 0.02 + 1.0
-data5 = getfltsfromfile('/home/' + user + dir + 'costgraph.dat', [1])
-data6 = getfltsfromfile('/home/' + user + dir + 'costgraph.dat', [2])
+data5 = getfltsfromfile('/home/' + user + dir2 + 'costgraph.dat', [1])
+data6 = getfltsfromfile('/home/' + user + dir2 + 'costgraph.dat', [2])
 
 
 #data7 = getfltsfromfile('/home/'+user+'/Research/ANN-Test-Data/FormaldehydeFrag/bku2_FPNTest/afterh20.dat', [0])
