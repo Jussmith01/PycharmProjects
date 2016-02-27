@@ -75,25 +75,21 @@ def makedatalinear(datain):
 # AM1 vs Act
 # ------------
 user = os.environ['USER']
+user = 'jujuman'
 dir = '/Research/ANN-Test-Data/organicnetworks/train/'
-dir2 = '/Research/ANN-Test-Data/organicnetworks/train2/'
 
-data1 = getfltsfromfile('/home/' + user + dir + 'costgraph.dat', [0])
-#data1 = data1 * 0.02 + 1.0
-data2 = getfltsfromfile('/home/' + user + dir + 'costgraph.dat', [1])
-data3 = getfltsfromfile('/home/' + user + dir + 'costgraph.dat', [2])
+file = 'testgraph.dat'
 
-data4 = getfltsfromfile('/home/' + user + dir2 + 'costgraph.dat', [0])
-#data3 = data3 * 0.02 + 1.0
-data5 = getfltsfromfile('/home/' + user + dir2 + 'costgraph.dat', [1])
-data6 = getfltsfromfile('/home/' + user + dir2 + 'costgraph.dat', [2])
-
+data1 = getfltsfromfile('/home/' + user + dir + file, [0])
+data1 = data1 * 0.02 + 180.0
+data2 = getfltsfromfile('/home/' + user + dir + file, [1])
+data3 = getfltsfromfile('/home/' + user + dir + file, [2])
 
 #data7 = getfltsfromfile('/home/'+user+'/Research/ANN-Test-Data/FormaldehydeFrag/bku2_FPNTest/afterh20.dat', [0])
 #data8 = getfltsfromfile('/home/'+user+'/Research/ANN-Test-Data/FormaldehydeFrag/bku2_FPNTest/afterh20.dat', [2])
 
 
-font = {'family' : 'normal',
+font = {'family' : 'Bitstream Vera Sans',
         'weight' : 'normal',
         'size'   : 14}
 
@@ -102,11 +98,11 @@ plt.rc('font', **font)
 # --------------
 # Setup 2D Plot
 # --------------
-plt.scatter(data1, data2, color='blue', label='UB3LYP/6-31g* vs. ANN')
-plt.scatter(data1, data3, color='green', label='UB3LYP/6-31g* vs. ANN')
+plt.scatter(data1, data2, color='blue', label='B3LYP/6-31g*')
+plt.plot(data1, data3, color='red', label='ANN',linewidth=4)
 
-plt.scatter(data4, data5, color='black', label='UB3LYP/6-31g* vs. ANN')
-plt.scatter(data4, data6, color='red', label='UB3LYP/6-31g* vs. ANN')
+#plt.scatter(data4, data5, color='black', label='Dropout Training Set Cost')
+#plt.scatter(data4, data6, color='red', label='Dropout Testing Set Cost')
 
 #plt.plot(data3, data4, color='blue', label='UB3LYP/6-31g* vs. ANN',linewidth=4)
 #plt.scatter(data2, data5, color='red', label='UB3LYP/6-31g*',linewidth=4)
@@ -118,11 +114,11 @@ plt.scatter(data4, data6, color='red', label='UB3LYP/6-31g* vs. ANN')
 #plt.scatter(data1, data4, color='red', label='M=3 UB3LYP/6-31g*')
 #plt.scatter(data1, data3, color='green', label='MLNN[(2:5:2:5:2)-32]')
 
-plt.title('UB3LYP/6-31g* vs. ANN Energy for $H_2 CO$')
+plt.title('Hydrogen Bond Scan of Water Dimer')
 #plt.title('SCAN: Formic Acid Energy vs. H-O-H Angle')
-plt.xlabel('ANN Energy (Hartrees)')
-plt.ylabel('UB3LYP/6-31g* Energy (Hartrees)')
-#plt.legend(bbox_to_anchor=(0.1, 0.95), loc=2, borderaxespad=0.)
+plt.xlabel('Angstroms')
+plt.ylabel('Energy (Hartrees)')
+plt.legend(bbox_to_anchor=(0.6, 0.95), loc=2, borderaxespad=0.)
 
 # -----
 # PLOT
