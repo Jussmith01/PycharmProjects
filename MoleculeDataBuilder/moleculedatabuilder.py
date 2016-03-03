@@ -1,6 +1,7 @@
 from __future__ import print_function
 from rdkit import Chem
 from rdkit.Chem import AllChem
+import numpy as np
 
 #-------- Parameters -----------
 
@@ -9,7 +10,7 @@ At = ['C', 'O', 'N', 'H']
 
 #------- End Parameters ---------
 
-molecules = Chem.SmilesMolSupplier('/home/jujuman/Research/GDB-11/gdb11_size02.smi', nameColumn=0)
+molecules = Chem.SmilesMolSupplier('/home/jujuman/Research/ANN-Test-Data/GDB-11/gdb11_size02.smi', nameColumn=0)
 for m in molecules:
     if m is None: continue
     m = Chem.AddHs(m)
