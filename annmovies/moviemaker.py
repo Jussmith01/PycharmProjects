@@ -29,7 +29,7 @@ def getfltsfromfile(file, cols):
     return data
 
 #------------ INPUT PARAMETERS ----------------
-N = 1023 #Number of elements per graph
+N = 500 #Number of elements per graph
 
 filename = 'demo.mp4'
 
@@ -52,7 +52,7 @@ fig.set_size_inches(w_in_inches, h_in_inches)
 # ------------
 user = os.environ['USER']
 #user = 'jujuman'
-dir = '/Research/ANN-Test-Data/organicnetworks/'
+dir = '/Research/ANN-Test-Data/GDB-11/'
 
 file = 'graph.dat'
 
@@ -76,13 +76,13 @@ scat = ax.scatter(axis_x, target_y,color='blue',linewidth=4,label='B3LYP/6-31g* 
 scat = ax.scatter(axis_x, actual_y,color='red',linewidth=4,label='AtomicNN vs B3LYP/6-31g*')
 
 diff = target_y.min() - target_y.max()
-ax.set_ylim([target_y.min() + diff  * 0.05,target_y.max() - diff  * 0.05])
+ax.set_ylim([target_y.min() + diff  * 0.05,target_y.max() - diff  * 2.00])
 ax.set_xlim([axis_x.min(),axis_x.max()])
 
-plt.title('\Large{Scatter Plot of $H_2 O_2$ During Training}')
+plt.title('Scatter Plot of $H_2 O$ During Training')
 plt.xlabel('Energy (Hartrees)')
 plt.ylabel('Energy (Hartrees)')
-plt.legend(bbox_to_anchor=(0.6, 0.95), loc=2, borderaxespad=0.)
+plt.legend(bbox_to_anchor=(0.1, 0.95), loc=2, borderaxespad=0.)
 
 def animateplot(i): # Animates a line plot
     print ('Processing Frame ', int(i+1), ' of ', int(M))
