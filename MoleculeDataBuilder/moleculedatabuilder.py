@@ -1,6 +1,7 @@
 from __future__ import print_function
 from rdkit import Chem
 from rdkit.Chem import AllChem
+import numpy as np
 
 #-------- Parameters -----------
 
@@ -16,6 +17,7 @@ rdm='uniform' #Random dist
 
 #------- End Parameters ---------
 
+#molecules = Chem.SmilesMolSupplier('/home/jujuman/Research/ANN-Test-Data/GDB-11/gdb11_size02.smi', nameColumn=0)
 molecules = Chem.SmilesMolSupplier('/home/jujuman/Research/ANN-Test-Data/GDB-11/smiledata/gdb11_size03.smi', nameColumn=0)
 Nmol = 0
 for m in molecules:
