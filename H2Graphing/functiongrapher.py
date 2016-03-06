@@ -73,23 +73,23 @@ def printdatatofile(f,title,X,N):
 #          Parameters
 #--------------------------------
 #File nam
-pf = 'rHCNO-16-a8-8.params' # Output filename
+pf = 'rHCNO-8-a4-8.params' # Output filename
 
-Nrr = 16
-Nat = 4
-Nar = 8
+Nrr = 8
+Na = 3
+Nar = 4
 Nzt = 8
 
 Rc = 6.0
-Atyp = '[H,C,N,O]'
-EtaR = 20.0
-EtaA = 4.0
-Zeta = 28.0
+Atyp = '[H,C,O]'
+EtaR = 8.0
+EtaA = 8.0
+Zeta = 16.0
 
 #--------------------------------
 #           Program
 #--------------------------------
-Nrt = Nrr * Nat
+Nrt = Nrr * Na
 ShfR = np.zeros(Nrr)
 
 #for i in range(0,Nrr):
@@ -108,7 +108,7 @@ for i in range(0,Nrr):
     computeradialdataset(0.5, Rc, 1000, EtaR, Rc,step, plt, 'blue', 'eta = '+str(EtaR))
     ShfR[i] = step
 
-plt.show()
+#plt.show()
 
 ShfZ = np.zeros(Nzt)
 
@@ -127,7 +127,7 @@ for i in range(0,Nzt):
     computeangulardataset(0.0,2.0*np.pi,1000,Zeta,1.0,step,plt, 'red', 'zeta = ' + str(Zeta))
     ShfZ[i] = step
 
-plt.show()
+#plt.show()
 
 #for i in range(0,Nar):
 #    stddev = float(Nar)/4.5
@@ -146,10 +146,10 @@ for i in range(0,Nar):
     computeradialdataset(0.5, Rc, 1000, EtaA, Rc,step, plt, 'blue', 'eta = '+str(EtaR))
     ShfA[i] = step
 
-plt.show()
+#plt.show()
 
-Nt = Nrt + Nat
-print('Total N Size: ',Nt)
+Nt = Nat * (Na*(Na+1)/2) + Nrt
+print('Total N Size: ',int(Nt))
 
 # Open File
 f = open(pf,'w')
