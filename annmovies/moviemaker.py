@@ -52,7 +52,7 @@ fig.set_size_inches(w_in_inches, h_in_inches)
 # ------------
 user = os.environ['USER']
 #user = 'jujuman'
-dir = '/Research/ANN-Test-Data/GDB-11/train2/'
+dir = '/Research/ANN-Test-Data/GDB-11/train3/'
 
 file = 'graph.dat'
 

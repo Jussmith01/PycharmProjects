@@ -75,19 +75,20 @@ def makedatalinear(datain):
 # AM1 vs Act
 # ------------
 user = os.environ['USER']
-user = 'jujuman'
-dir = '/Research/ANN-Test-Data/organicnetworks/train/'
+dir = '/Research/ANN-Test-Data/GDB-11/train3/'
 
-file = 'testgraph.dat'
+file = 'graph.dat'
 
 data1 = getfltsfromfile('/home/' + user + dir + file, [0])
-data1 = data1 * 0.02 + 180.0
+data1 = data1 * 2.0 - 180.0
 data2 = getfltsfromfile('/home/' + user + dir + file, [1])
 data3 = getfltsfromfile('/home/' + user + dir + file, [2])
 
-#data7 = getfltsfromfile('/home/'+user+'/Research/ANN-Test-Data/FormaldehydeFrag/bku2_FPNTest/afterh20.dat', [0])
-#data8 = getfltsfromfile('/home/'+user+'/Research/ANN-Test-Data/FormaldehydeFrag/bku2_FPNTest/afterh20.dat', [2])
+dir = '/Research/ANN-Test-Data/GDB-11/trainccn/'
+data4 = getfltsfromfile('/home/' + user + dir + file, [2])
 
+#dir = '/Research/ANN-Test-Data/GDB-11/trainform/'
+#data5 = getfltsfromfile('/home/' + user + dir + file, [2])
 
 font = {'family' : 'Bitstream Vera Sans',
         'weight' : 'normal',
@@ -99,26 +100,17 @@ plt.rc('font', **font)
 # Setup 2D Plot
 # --------------
 plt.scatter(data1, data2, color='blue', label='B3LYP/6-31g*')
-plt.plot(data1, data3, color='red', label='ANN',linewidth=4)
+plt.plot(data1, data3, color='red', label='ANN - up to GDB-3',linewidth=4)
 
-#plt.scatter(data4, data5, color='black', label='Dropout Training Set Cost')
-#plt.scatter(data4, data6, color='red', label='Dropout Testing Set Cost')
+plt.plot(data1, data4, color='green', label='ANN - only $H_3 C H_2 C H_2 N$',linewidth=4)
+#plt.plot(data1, data4, color='orange', label='ANN - up to GDB-3',linewidth=4)
+#plt.scatter(data1, data6, color='black', label='ANN GDB-3',linewidth=4)
 
-#plt.plot(data3, data4, color='blue', label='UB3LYP/6-31g* vs. ANN',linewidth=4)
-#plt.scatter(data2, data5, color='red', label='UB3LYP/6-31g*',linewidth=4)
-#plt.scatter(data3, data4, color='red', label='NNP',linewidth=3)
-
-#plt.scatter(data7, data8, color='orange', label='NNP After Retrain with H2O')
-#plt.scatter(data1, data4, color='green', label='NNP O-H2')
-
-#plt.scatter(data1, data4, color='red', label='M=3 UB3LYP/6-31g*')
-#plt.scatter(data1, data3, color='green', label='MLNN[(2:5:2:5:2)-32]')
-
-plt.title('Hydrogen Bond Scan of Water Dimer')
+plt.title('H-C-C-H Dihedral Scan of $H_3 C H_2 C H_2 N$')
 #plt.title('SCAN: Formic Acid Energy vs. H-O-H Angle')
-plt.xlabel('Angstroms')
+plt.xlabel('Degrees')
 plt.ylabel('Energy (Hartrees)')
-plt.legend(bbox_to_anchor=(0.6, 0.95), loc=2, borderaxespad=0.)
+plt.legend(bbox_to_anchor=(0.5, 0.95), loc=2, borderaxespad=0.)
 
 # -----
 # PLOT
