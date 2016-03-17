@@ -76,12 +76,12 @@ def makedatalinear(datain):
 # ------------
 user = os.environ['USER']
 user = 'jujuman'
-dir = '/Research/ANN-Test-Data/organicnetworks/train/'
+dir = '/Research/ANN-Test-Data/GDB-11/train2/'
 
-file = 'testgraph.dat'
+file = 'graph.dat'
 
-data1 = getfltsfromfile('/home/' + user + dir + file, [0])
-data1 = data1 * 0.02 + 180.0
+data1 = getfltsfromfile('/home/' + user + dir + file, [1])
+#data1 = data1 * 0.02 + 180.0
 data2 = getfltsfromfile('/home/' + user + dir + file, [1])
 data3 = getfltsfromfile('/home/' + user + dir + file, [2])
 
@@ -99,7 +99,7 @@ plt.rc('font', **font)
 # Setup 2D Plot
 # --------------
 plt.scatter(data1, data2, color='blue', label='B3LYP/6-31g*')
-plt.plot(data1, data3, color='red', label='ANN',linewidth=4)
+plt.scatter(data1, data3, color='red', label='ANN',linewidth=4)
 
 #plt.scatter(data4, data5, color='black', label='Dropout Training Set Cost')
 #plt.scatter(data4, data6, color='red', label='Dropout Testing Set Cost')

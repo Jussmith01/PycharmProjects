@@ -3,22 +3,6 @@ __author__ = 'jujuman'
 from matplotlib import pyplot as plt
 import numpy as np
 
-#El = float(5.0e-4)
-#Tl = 1.0e-13
-#Th = 1.0e-12
-
-#Eh = np.linspace(5.5e-4, 9.0e-2, 70, endpoint=True)
-#dE = (Eh/El - 1.0)
-#print(dE)
-#C = Tl/Th - 1.0
-#print(C)
-#Z = dE*C
-#print(Z)
-#P = np.exp(Z)
-#print(P)
-#plt.plot(dE, P)
-
-#plt.show()
 #--------------------------------
 #           Functions
 #--------------------------------
@@ -73,18 +57,18 @@ def printdatatofile(f,title,X,N):
 #          Parameters
 #--------------------------------
 #File nam
-pf = 'rHCNO-12-a4-8.params' # Output filename
+pf = 'rHCNO-12-a6-6.params' # Output filename
 
-Nrr = 8
+Nrr = 12
 Na = 4
-Nar = 4
-Nzt = 8
+Nar = 6
+Nzt = 6
 
 Rc = 6.0
 Atyp = '[H,C,N,O]'
-EtaR = 8.0
+EtaR = 16.0
 EtaA = 4.0
-Zeta = 32.0
+Zeta = 16.0
 
 #--------------------------------
 #           Program
