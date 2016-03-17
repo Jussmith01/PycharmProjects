@@ -29,7 +29,7 @@ def computeradialdataset(x1,x2,pts,eta,Rc,Rs,plt,scolor,slabel):
 
     X = np.linspace(x1, x2, pts, endpoint=True)
     F = radialfunction(X,eta,Rc,Rs)
-    plt.plot(X, F, label=slabel, color=scolor)
+    plt.plot(X, F, label=slabel, color=scolor, linewidth=2)
 
 # ------------------------------------------
 # Calculate The Steps for an angular Dataset
@@ -92,6 +92,11 @@ for i in range(0,Nrr):
     computeradialdataset(0.5, Rc, 1000, EtaR, Rc,step, plt, 'blue', 'eta = '+str(EtaR))
     ShfR[i] = step
 
+
+plt.title('Radial Environment Functions (REF)')
+#plt.title('SCAN: Formic Acid Energy vs. H-O-H Angle')
+plt.ylabel('REF Output')
+plt.xlabel('Angstroms')
 plt.show()
 
 ShfZ = np.zeros(Nzt)

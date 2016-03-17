@@ -6,19 +6,19 @@ import numpy as np
 #-------- Parameters -----------
 
 R = 0.3
-fpf = 'gdb11_s03' #Filename prefix
-wdir = '/home/jujuman/Research/ANN-Test-Data/GDB-11/dnntsgdb11_03/' #working directory
+fpf = 'gdb11_s04' #Filename prefix
+wdir = '/home/jujuman/Research/ANN-Test-Data/GDB-11/dnntsgdb11_04/' #working directory
 At = ['C', 'O', 'N'] # Hydrogens added after check
 
-TSS='8000' # Training Set Size
-VSS='2000'
+TSS='4000' # Training Set Size
+VSS='1000'
 LOT='UB3LYP/6-31g*' # High level of theory
 rdm='uniform' #Random dist
 
 #------- End Parameters ---------
 
 #molecules = Chem.SmilesMolSupplier('/home/jujuman/Research/ANN-Test-Data/GDB-11/gdb11_size02.smi', nameColumn=0)
-molecules = Chem.SmilesMolSupplier('/home/jujuman/Research/ANN-Test-Data/GDB-11/smiledata/gdb11_size03.smi', nameColumn=0)
+molecules = Chem.SmilesMolSupplier('/home/jujuman/Research/ANN-Test-Data/GDB-11/smiledata/gdb11_size04.smi', nameColumn=0)
 Nmol = 0
 for m in molecules:
     if m is None: continue
