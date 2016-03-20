@@ -6,7 +6,7 @@ import numpy as np
 #-------- Parameters -----------
 
 R = 0.3
-fpf = 'gdb11_s04' #Filename prefix
+fpf = 'gdb11_s05' #Filename prefix
 wdir = '/home/jujuman/Research/ANN-Test-Data/GDB-11/dnntsgdb11_05/' #working directory
 At = ['C', 'O', 'N'] # Hydrogens added after check
 
@@ -62,7 +62,7 @@ for m in molecules:
         #print('#Number of Bonds: ', m.GetNumBonds())
         #print('#Number of Conformers: ', m.GetNumConformers())
         
-	    #print('Molecule ', str(Nmol) ,': ', Chem.MolToSmiles(m))
+	print('Molecule ', str(Nmol) ,': ', Chem.MolToSmiles(m))
         
         if m.GetNumConformers() > 1:
             print('MORE THAN ONE CONFORMER!')

@@ -1,7 +1,11 @@
 __author__ = 'jujuman'
 
+from mpl_toolkits.mplot3d import Axes3D
+from matplotlib import cm
+from matplotlib.ticker import LinearLocator, FormatStrFormatter
 from matplotlib import pyplot as plt
 import numpy as np
+import scipy.interpolate
 
 #--------------------------------
 #           Functions
@@ -53,22 +57,51 @@ def printdatatofile(f,title,X,N):
         f.write(s)
     f.write(']\n')
 
+def show2dcontangulargraph (eta,zeta,Rs,Rc,M):
+    N = 1000000
+    x, y = 12.0 * np.random.random((2, N)) - 6.0
+
+    print(x)
+
+    R = np.sqrt(x**2 + y**2)
+    T = np.arctan2(x,y)
+
+    z = angularfunction(T,zeta,1.0,0.0)# * radialfunction(R,eta,Rc,Rs)
+
+    for i in range(1,M):
+        Ts = float(i) * (2.0*np.pi/float(M))
+        print(Ts)
+        zt = angularfunction(T,zeta,1.0,Ts)# * radialfunction(R,eta,Rc,Rs)
+        z = z + zt
+
+    # Set up a regular grid of interpolation points
+    xi, yi = np.linspace(x.min(), y.max(), 300), np.linspace(x.min(), y.max(), 300)
+    xi, yi = np.meshgrid(xi, yi)
+
+    zi = scipy.interpolate.griddata((x, y), z, (xi, yi), method='linear')
+
+    plt.imshow(zi, vmin=z.min(), vmax=z.max(), origin='lower',
+           extent=[x.min(), x.max(), y.min(), y.max()])
+
+    plt.colorbar()
+    plt.show()
+
 #--------------------------------
 #          Parameters
 #--------------------------------
 #File nam
-pf = 'rHCNO-12-a6-6.params' # Output filename
+pf = 'rHCNO-1-a1-4.params' # Output filename
 
-Nrr = 12
+Nrr = 24
 Na = 4
-Nar = 6
-Nzt = 6
+Nar = 1
+Nzt = 16
 
 Rc = 6.0
 Atyp = '[H,C,N,O]'
-EtaR = 16.0
-EtaA = 4.0
-Zeta = 16.0
+EtaR = 4.0
+EtaA = 0.0001
+Zeta = 64.0
 
 #--------------------------------
 #           Program
@@ -136,6 +169,8 @@ for i in range(0,Nar):
     ShfA[i] = step
 
 plt.show()
+
+show2dcontangulargraph(EtaA,Zeta,0.5,Rc,Nzt)
 
 Nt = Nat * (Na*(Na+1)/2) + Nrt
 print('Total N Size: ',int(Nt))
