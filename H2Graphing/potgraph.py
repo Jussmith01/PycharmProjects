@@ -76,22 +76,29 @@ def makedatalinear(datain):
 # ------------
 user = os.environ['USER']
 user = 'jujuman'
-dir = '/Research/ANN-Test-Data/GDB-11/train2/'
+dir = '/Research/ANN-Test-Data/GDB-11/train3/'
 
 file = 'graph.dat'
+file2 = 'grapham1.dat'
+file3 = 'graphpm6.dat'
 
 data1 = getfltsfromfile('/home/' + user + dir + file, [0])
-data1 = data1 * 2.0 + -180.0
+data1 = data1 * 0.05 + 0.7
 data2 = getfltsfromfile('/home/' + user + dir + file, [1])
 data3 = getfltsfromfile('/home/' + user + dir + file, [2])
+#data4 = getfltsfromfile('/home/' + user + dir + file2, [1])
+#data5 = getfltsfromfile('/home/' + user + dir + file3, [1])
 
-dir = '/Research/ANN-Test-Data/GDB-11/train3/'
-data4 = getfltsfromfile('/home/' + user + dir + file, [2])
+#dir = '/Research/ANN-Test-Data/GDB-11/train4/'
+#data6 = getfltsfromfile('/home/' + user + dir + 'graph.dat', [2])
 #AM1 = getfltsfromfile('/home/' + user + dir + file, [1])
 
-dir = '/Research/ANN-Test-Data/GDB-11/train4/'
-data5 = getfltsfromfile('/home/' + user + dir + file, [2])
+#dir = '/Research/ANN-Test-Data/GDB-11/train3/'
+#data5 = getfltsfromfile('/home/' + user + dir + file, [2])
 #PM6 = getfltsfromfile('/home/' + user + dir + file, [1])
+
+#dir = '/Research/ANN-Test-Data/GDB-11/train4/'
+#data6 = getfltsfromfile('/home/' + user + dir + file, [2])
 
 font = {'family' : 'Bitstream Vera Sans',
         'weight' : 'normal',
@@ -102,20 +109,22 @@ plt.rc('font', **font)
 #print(AM1.shape[0])
 #AM1 = AM1 - AM1[AM1.shape[0]-1]
 #PM6 = PM6 - PM6[AM1.shape[0]-1]
-#data2 = data2 - data2[AM1.shape[0]-1]
-#data3 = data3 - data3[AM1.shape[0]-1]
-#data4 = data4 - data4[AM1.shape[0]-1]
-#data5 = data5 - data5[AM1.shape[0]-1]
-
+#data2 = data2 - data2[data2.shape[0]-1]
+#data3 = data3 - data3[data2.shape[0]-1]
+#data4 = data4 - data4[data2.shape[0]-1]
+#data5 = data5 - data5[data2.shape[0]-1]
+#data6 = data6 - data6[data2.shape[0]-1]
 # --------------
 # Setup 2D Plot
 # --------------
 #plt.plot(data1, AM1, color='black', label='AM1',linewidth=4)
 #plt.plot(data1, PM6, color='grey', label='PM6',linewidth=4)
-plt.plot(data2, data2, color='blue', label='B3LYP/6-31g*',linewidth=2)
-plt.scatter(data2, data3, color='red', label='ANN - up to GDB-2',linewidth=4)
-plt.scatter(data2, data4, color='orange', label='ANN - up to GDB-3',linewidth=4)
-plt.scatter(data2, data5, color='green', label='ANN - up to GDB-4',linewidth=4)
+#plt.plot(data1, data4, color='grey', label='AM1',linewidth=3)
+#plt.plot(data1, data5, color='black', label='PM6',linewidth=4)
+plt.plot(data1, data2, color='blue', label='B3LYP/6-31g*',linewidth=3)
+plt.plot(data1, data3, color='red', label='ANN - GDB-3',linewidth=3)
+#plt.plot(data1, data6, color='orange', label='ANN - GDB-4',linewidth=3)
+#plt.scatter(data1, data6, color='green', label='ANN - up to GDB-4',linewidth=4)
 #plt.plot(data1, data3, color='red', label='ANN - up to GDB-3',linewidth=4)
 #plt.plot(data1, data4, color='green', label='ANN - up to GDB-4',linewidth=4)
 
@@ -123,11 +132,11 @@ plt.scatter(data2, data5, color='green', label='ANN - up to GDB-4',linewidth=4)
 #plt.plot(data1, data4, color='orange', label='ANN - up to GDB-3',linewidth=4)
 #plt.scatter(data1, data6, color='black', label='ANN GDB-3',linewidth=4)
 
-#plt.title('Random points on the glycine potential surface')
+plt.title('Formic Acid Reaction Scan H-O1 -> H-O2')
 #plt.title('SCAN: Formic Acid Energy vs. H-O-H Angle')
-#plt.xlabel('E Target (Hartrees)')
-#plt.ylabel('E Computed (Hartrees)')
-#plt.legend(bbox_to_anchor=(0.05, 0.95), loc=2, borderaxespad=0.)
+plt.xlabel('Reaction Coordinate (Angstroms)')
+plt.ylabel('Energy (Hartrees)')
+plt.legend(bbox_to_anchor=(0.1, 0.3), loc=2, borderaxespad=0.)
 
 
 # -----
