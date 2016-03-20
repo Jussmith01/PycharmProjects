@@ -112,10 +112,10 @@ plt.rc('font', **font)
 # --------------
 #plt.plot(data1, AM1, color='black', label='AM1',linewidth=4)
 #plt.plot(data1, PM6, color='grey', label='PM6',linewidth=4)
-plt.plot(data2, data2, color='blue', label='B3LYP/6-31g*',linewidth=2)
-plt.scatter(data2, data3, color='red', label='ANN - up to GDB-2',linewidth=4)
-plt.scatter(data2, data4, color='orange', label='ANN - up to GDB-3',linewidth=4)
-plt.scatter(data2, data5, color='green', label='ANN - up to GDB-4',linewidth=4)
+plt.plot(data1, data2, color='blue', label='B3LYP/6-31g*',linewidth=2)
+plt.plot(data1, data3, color='red', label='ANN - up to GDB-2',linewidth=4)
+plt.plot(data1, data4, color='orange', label='ANN - up to GDB-3',linewidth=4)
+plt.plot(data1, data5, color='green', label='ANN - up to GDB-4',linewidth=4)
 #plt.plot(data1, data3, color='red', label='ANN - up to GDB-3',linewidth=4)
 #plt.plot(data1, data4, color='green', label='ANN - up to GDB-4',linewidth=4)
 
@@ -123,11 +123,11 @@ plt.scatter(data2, data5, color='green', label='ANN - up to GDB-4',linewidth=4)
 #plt.plot(data1, data4, color='orange', label='ANN - up to GDB-3',linewidth=4)
 #plt.scatter(data1, data6, color='black', label='ANN GDB-3',linewidth=4)
 
-#plt.title('Random points on the glycine potential surface')
+plt.title('Random points on the glycine potential surface')
 #plt.title('SCAN: Formic Acid Energy vs. H-O-H Angle')
-#plt.xlabel('E Target (Hartrees)')
-#plt.ylabel('E Computed (Hartrees)')
-#plt.legend(bbox_to_anchor=(0.05, 0.95), loc=2, borderaxespad=0.)
+plt.xlabel('E Target (Hartrees)')
+plt.ylabel('E Computed (Hartrees)')
+plt.legend(bbox_to_anchor=(0.05, 0.95), loc=2, borderaxespad=0.)
 
 
 # -----
