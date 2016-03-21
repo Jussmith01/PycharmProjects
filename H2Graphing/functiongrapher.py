@@ -15,7 +15,24 @@ import scipy.interpolate
 #               Radial Function
 # ------------------------------------------
 def radialfunction(X,eta,Rc,Rs):
-    F = np.exp(-eta*(X-Rs)**2.0) * (0.5 * (np.cos((np.pi * X)/Rc) + 1.0))
+    F = np.sqrt(np.exp(-eta*(X-Rs)**2.0) * (0.5 * (np.cos((np.pi * X)/Rc) + 1.0)))
+    return F
+
+# ------------------------------------------
+#               Radial Function
+# ------------------------------------------
+def radialfunction2(X,eta,Rc,Rs):
+
+    #F = (1.0/(np.exp(-1.0))) * np.exp(-(1.0/(1.0-((X-Rs)/Rc)**2)))
+
+    F=np.zeros(X.shape[0])
+    c = (Rc-Rs)
+    for i in range(0,X.shape[0]):
+        if X[i] < Rc:
+            F[i] = (np.exp(1.0) * np.exp(-(1.0/(1.0-((X[i]-Rs)/(Rc-Rs))**(2.0)))))**(eta)
+        else :
+            F[i]=0.0
+
     return F
 
 # ------------------------------------------
@@ -33,6 +50,15 @@ def computeradialdataset(x1,x2,pts,eta,Rc,Rs,plt,scolor,slabel):
 
     X = np.linspace(x1, x2, pts, endpoint=True)
     F = radialfunction(X,eta,Rc,Rs)
+    plt.plot(X, F, label=slabel, color=scolor, linewidth=2)
+
+# ------------------------------------------
+# Calculate The Steps for a Radial Dataset
+# ------------------------------------------
+def computeradial2dataset(x1,x2,pts,eta,Rc,Rs,plt,scolor,slabel):
+
+    X = np.linspace(x1, x2, pts, endpoint=True)
+    F = radialfunction2(X,eta,Rc,Rs)
     plt.plot(X, F, label=slabel, color=scolor, linewidth=2)
 
 # ------------------------------------------
@@ -66,12 +92,16 @@ def show2dcontangulargraph (eta,zeta,Rs,Rc,M):
     R = np.sqrt(x**2 + y**2)
     T = np.arctan2(x,y)
 
-    z = angularfunction(T,zeta,1.0,0.0)# * radialfunction(R,eta,Rc,Rs)
+    z = angularfunction(T,zeta,1.0,0.0) * radialfunction(R,eta,Rc,Rs)**2
 
     for i in range(1,M):
         Ts = float(i) * (2.0*np.pi/float(M))
         print(Ts)
-        zt = angularfunction(T,zeta,1.0,Ts)# * radialfunction(R,eta,Rc,Rs)
+        if Ts < np.pi:
+            zt = angularfunction(T,zeta,1.0,Ts) * radialfunction(R,eta,Rc,Rs)**2
+        else:
+            zt = angularfunction(T,zeta,1.0,Ts) * radialfunction2(R,eta,Rc,Rs)**2
+
         z = z + zt
 
     # Set up a regular grid of interpolation points
@@ -90,17 +120,18 @@ def show2dcontangulargraph (eta,zeta,Rs,Rc,M):
 #          Parameters
 #--------------------------------
 #File nam
-pf = 'rHCNO-1-a1-4.params' # Output filename
+pf = 'rHCNO-24-a1-4.params' # Output filename
 
 Nrr = 24
 Na = 4
 Nar = 1
-Nzt = 16
+Nzt = 2
 
 Rc = 6.0
 Atyp = '[H,C,N,O]'
 EtaR = 4.0
-EtaA = 0.0001
+EtaA1 = 0.1
+EtaA2 = 0.5
 Zeta = 64.0
 
 #--------------------------------
@@ -121,8 +152,8 @@ ShfR = np.zeros(Nrr)
 for i in range(0,Nrr):
     stepsize = Rc / float(Nrr+1.0)
     #step = (i**1.5)*0.1+0.5
-    step = i * stepsize + 0.5
-    computeradialdataset(0.5, Rc, 1000, EtaR, Rc,step, plt, 'blue', 'eta = '+str(EtaR))
+    step = i * stepsize + 0.25
+    computeradialdataset(0.5, Rc, 1000, EtaR, Rc,step, plt, 'blue', 'eta = '+ str(EtaR))
     ShfR[i] = step
 
 
@@ -146,7 +177,7 @@ Nat = Nar * Nzt
 for i in range(0,Nzt):
     stepsize = (2.0 * np.pi) / (float(Nzt))
     step = i*stepsize
-    computeangulardataset(0.0,2.0*np.pi,1000,Zeta,1.0,step,plt, 'red', 'zeta = ' + str(Zeta))
+    computeangulardataset(0.5,2.0*np.pi,1000,Zeta,1.0,step,plt, 'red', 'zeta = ' + str(Zeta))
     ShfZ[i] = step
 
 plt.show()
@@ -165,12 +196,13 @@ for i in range(0,Nar):
     stepsize = Rc / float(Nar+1.0)
     #step = (i**1.5)*0.1+0.5
     step = i * stepsize + 0.5
-    computeradialdataset(0.5, Rc, 1000, EtaA, Rc,step, plt, 'blue', 'eta = '+str(EtaR))
+    computeradial2dataset(0.5, Rc, 1000, EtaA2, Rc,step, plt, 'blue', 'eta = '+ str(EtaA2))
+    computeradialdataset(0.5, Rc, 1000, EtaA1, Rc,step, plt, 'blue', 'eta = '+ str(EtaA1))
     ShfA[i] = step
 
 plt.show()
 
-show2dcontangulargraph(EtaA,Zeta,0.5,Rc,Nzt)
+show2dcontangulargraph(EtaA2,Zeta,0.5,Rc,Nzt)
 
 Nt = Nat * (Na*(Na+1)/2) + Nrt
 print('Total N Size: ',int(Nt))
@@ -179,12 +211,12 @@ print('Total N Size: ',int(Nt))
 f = open(pf,'w')
 
 #Write data to parameters file
-f.write('Rc = ' + "{:.7e}".format(Rc) + '\n')
-f.write('EtaR = ' + "{:.7e}".format(EtaR) + '\n')
+f.write('Rc = ' + "{:.4}".format(Rc) + '\n')
+f.write('EtaR = ' + "{:.4}".format(EtaR) + '\n')
 printdatatofile(f,'ShfR',ShfR,Nrr)
-f.write('Zeta = ' + "{:.7e}".format(Zeta) + '\n')
+f.write('Zeta = ' + "{:.4}".format(Zeta) + '\n')
 printdatatofile(f,'ShfZ',ShfZ,Nzt)
-f.write('EtaA = ' + "{:.7e}".format(EtaA) + '\n')
+f.write('EtaA = ' + "{:.4}".format(EtaA2) + '\n')
 printdatatofile(f,'ShfA',ShfA,Nar)
 f.write('Atyp = ' + Atyp + '\n')
 
