@@ -1,8 +1,5 @@
-__author__ = 'jujuman'
+__author__ = 'Justin Smith'
 
-from mpl_toolkits.mplot3d import Axes3D
-from matplotlib import cm
-from matplotlib.ticker import LinearLocator, FormatStrFormatter
 from matplotlib import pyplot as plt
 import numpy as np
 import scipy.interpolate
@@ -15,7 +12,7 @@ import scipy.interpolate
 #          Radial Function Cos w/ Sqrt
 # ------------------------------------------
 def radialfunctionsqrt(X,eta,Rc,Rs):
-    F = np.exp(-eta*(X-Rs)**2.0) * (0.5 * (np.cos((np.pi * X)/Rc) + 1.0))
+    F = np.sqrt(np.exp(-eta*(X-Rs)**2.0) * (0.5 * (np.cos((np.pi * X)/Rc) + 1.0)))
     return F
 
 # ------------------------------------------
@@ -29,8 +26,6 @@ def radialfunctioncos(X,eta,Rc,Rs):
 #               Radial Function
 # ------------------------------------------
 def radialfunction2(X,eta,Rc,Rs):
-
-    #F = (1.0/(np.exp(-1.0))) * np.exp(-(1.0/(1.0-((X-Rs)/Rc)**2)))
 
     F=np.zeros(X.shape[0])
     c = (Rc-Rs)
@@ -90,9 +85,15 @@ def printdatatofile(f,title,X,N):
         f.write(s)
     f.write(']\n')
 
+# ------------------------------------------
+#         Simple Addition Function
+# ------------------------------------------
 def add (x,y):
     return x+y
 
+# ----------------------------------------------------
+# Show a 2d Contour Plot of the Angular Env Functions
+# ----------------------------------------------------
 def show2dcontangulargraph (ShfA,ShfZ,eta,zeta,Rc,func):
     N = 1000000
     x, y = 12.0 * np.random.random((2, N)) - 6.0
@@ -105,12 +106,6 @@ def show2dcontangulargraph (ShfA,ShfZ,eta,zeta,Rc,func):
     z = np.zeros(N)
 
     for i in ShfZ:
-        #Ts = float(i) * (2.0*np.pi/float(M))
-        #print(Ts)
-        #if Ts < np.pi:
-        #    zt = angularfunction(T,zeta,1.0,Ts) * radialfunction(R,eta,Rc,Rs)**2
-        #else:
-
         for j in ShfA:
             print( 'ShfZ: ' + str(i) + ' ShfA: ' + str(j) )
             zt = angularfunction(T,zeta,1.0,i) * radialfunctionsqrt(R,eta,Rc,j) * radialfunctionsqrt(R,eta,Rc,j)
@@ -130,6 +125,9 @@ def show2dcontangulargraph (ShfA,ShfZ,eta,zeta,Rc,func):
     plt.colorbar()
     plt.show()
 
+# ----------------------------------------------------
+# Show a 2d Contour Plot of the Radial Env Functions
+# ----------------------------------------------------
 def show2dcontradialgraph (ShfR,eta,Rc,func):
     N = 1000000
     x, y = 14.0 * np.random.random((2, N)) - 7.0
@@ -160,64 +158,52 @@ def show2dcontradialgraph (ShfR,eta,Rc,func):
     plt.colorbar()
     plt.show()
 
+# ****************************************************
 #--------------------------------
-#          Parameters
+#         Set Parameters
 #--------------------------------
 #File nam
-pf = 'rHCNO-11-a6-10.params' # Output filename
+pf = 'rHCNO-12-a4-6.params' # Output filename
 
 Nrr = 12
 Na = 4
-Nar = 8
-Nzt = 8
+Nar = 4
+Nzt = 6
 
 Rc = 7.0
 Atyp = '[H,C,N,O]'
-EtaR = 8.0
-EtaA1 = 1.0
-Zeta = 16.0
+EtaR = 12.0
+EtaA1 = 2.0
+Zeta = 10.0
+
+# ****************************************************
 
 #--------------------------------
-#           Program
+#         Main Program
+#    (Build Env Params File)
 #--------------------------------
 Nrt = Nrr * Na
 ShfR = np.zeros(Nrr)
 
-#for i in range(0,Nrr):
-#    stddev = float(Nrr)/4.5
-#    step = 3.5 * np.exp(-(float(i-0.0)**2)/(2.0*(stddev)**2.0))
-#    computeradialdataset(0.5, Rc, 1000, step, Rc,0.25, plt, 'blue', 'eta = 0.1')
-#    EtaR[i] = step
-
-#plt.show()
-
 #Now instead of multiple etaR we use multiple shifts with a single large EtaR
 for i in range(0,Nrr):
     stepsize = Rc / float(Nrr+1.0)
-    #step = (i**1.5)*0.1+0.5
     step = i * stepsize + 0.50
     computeradialdataset(0.5, Rc, 1000, EtaR, Rc,step, plt, 'blue', 'eta = '+ str(EtaR))
     ShfR[i] = step
 
 plt.title('Radial Environment Functions (REF)')
-#plt.title('SCAN: Formic Acid Energy vs. H-O-H Angle')
 plt.ylabel('REF Output')
 plt.xlabel('Angstroms')
 plt.show()
 
+#Uncomment for pretty contour plots of the radial environments using a sum and then max function
 #show2dcontradialgraph(ShfR,EtaR,Rc,add)
 #show2dcontradialgraph(ShfR,EtaR,Rc,max)
 
 ShfZ = np.zeros(Nzt)
 
-Nat = (Nar*(Nar+1)/2) * Nzt
-
-#for i in range(0,Nzt):
-#    step = float(i+1.0)
-#    computeangulardataset(0.0,2.0*np.pi,1000,step,1.0,0.0,plt, 'red', 'eta = 0.1')
-#    Zeta[i] = step
-
-#plt.show()
+Nat = Nar * (Na*(Na+1)/2) * Nzt
 
 for i in range(0,Nzt):
     stepsize = (2.0 * np.pi) / (float(Nzt))
@@ -227,32 +213,23 @@ for i in range(0,Nzt):
 
 plt.show()
 
-#for i in range(0,Nar):
-#    stddev = float(Nar)/4.5
-#    step = 3.5 * np.exp(-(float(i-0.0)**2)/(2.0*(stddev)**2.0))
-#    computeradialdataset(0.25, Rc, 1000, step, 6.0,0.25, plt, 'blue', 'eta = 0.1')
-#    EtaA[i] = step
-
-#plt.show()
 
 ShfA = np.zeros(Nar)
 
 for i in range(0,Nar):
     stepsize = Rc / float(Nar+1.0)
-    #step = (i**1.5)*0.1+0.5
     step = i * stepsize + 0.5
-    #computeradial2dataset(0.5, Rc, 1000, EtaA2, Rc,step, plt, 'blue', 'eta = '+ str(EtaA2))
     computeradialdataset(0.5, Rc, 1000, EtaA1, Rc,step, plt, 'blue', 'eta = '+ str(EtaA1))
     ShfA[i] = step
 
 plt.show()
 
-show2dcontangulargraph(ShfA,ShfZ,EtaA1,Zeta,Rc,add)
-show2dcontangulargraph(ShfA,ShfZ,EtaA1,Zeta,Rc,max)
+#Uncomment for pretty contour plots of the angular environments using a sum and then max function
+#show2dcontangulargraph(ShfA,ShfZ,EtaA1,Zeta,Rc,add)
+#show2dcontangulargraph(ShfA,ShfZ,EtaA1,Zeta,Rc,max)
 
-#Nt = Nat * (Na*(Na+1)/2) + Nrt
 Nt = Nat + Nrt
-print('Total N Size: ',int(Nt))
+print('Total Environmental Vector Size: ',int(Nt))
 
 # Open File
 f = open(pf,'w')
