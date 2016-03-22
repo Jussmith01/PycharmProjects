@@ -132,7 +132,7 @@ def show2dcontangulargraph (ShfA,ShfZ,eta,zeta,Rc,func):
 
 def show2dcontradialgraph (ShfR,eta,Rc,func):
     N = 1000000
-    x, y = 12.0 * np.random.random((2, N)) - 6.0
+    x, y = 14.0 * np.random.random((2, N)) - 7.0
 
     print(x)
 
@@ -166,15 +166,15 @@ def show2dcontradialgraph (ShfR,eta,Rc,func):
 #File nam
 pf = 'rHCNO-11-a6-10.params' # Output filename
 
-Nrr = 11
+Nrr = 12
 Na = 4
-Nar = 6
-Nzt = 10
+Nar = 8
+Nzt = 8
 
-Rc = 6.0
+Rc = 7.0
 Atyp = '[H,C,N,O]'
 EtaR = 8.0
-EtaA1 = 4.0
+EtaA1 = 1.0
 Zeta = 16.0
 
 #--------------------------------
