@@ -51,7 +51,7 @@ def angularfunction(T,zeta,lam,Ts):
 def computeradialdataset(x1,x2,pts,eta,Rc,Rs,plt,scolor,slabel):
 
     X = np.linspace(x1, x2, pts, endpoint=True)
-    F = radialfunctionsqrt(X,eta,Rc,Rs)
+    F = radialfunctioncos(X,eta,Rc,Rs)
     plt.plot(X, F, label=slabel, color=scolor, linewidth=2)
 
 # ------------------------------------------
@@ -163,18 +163,18 @@ def show2dcontradialgraph (ShfR,eta,Rc,func):
 #         Set Parameters
 #--------------------------------
 #File nam
-pf = 'rHCNO-12-a4-6.params' # Output filename
+pf = 'rHCNO-4-a1-4.params' # Output filename
 
-Nrr = 12
+Nrr = 4
 Na = 4
-Nar = 4
-Nzt = 6
+Nar = 1
+Nzt = 4
 
-Rc = 7.0
+Rc = 4.0
 Atyp = '[H,C,N,O]'
-EtaR = 12.0
-EtaA1 = 2.0
-Zeta = 10.0
+EtaR = 4.0
+EtaA1 = 0.0001
+Zeta = 6.0
 
 # ****************************************************
 
