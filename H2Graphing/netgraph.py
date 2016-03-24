@@ -78,14 +78,14 @@ def makeedges(G, nodes, N):
         ls += nodes[i]
 
 
-def getedgeinfo(edge_list, edge_colors, nodes, a, N):
+def getedgeinfo(edge_list, edge_colors, nodes, a, N, thres):
     ls = 0
     Ne = 0
     for i in range(0, N - 1):
         for j in range(0, nodes[i]):
             for k in range(0, nodes[i + 1]):
 
-                if (a[i][j] < 0.01 or a[i + 1][k] < 0.01):
+                if (a[i][j] < thres or a[i + 1][k] < thres):
                     cshift = 0.0
                 else:
                     cshift = (a[i][j] + a[i + 1][k]) / 2.0
@@ -97,59 +97,63 @@ def getedgeinfo(edge_list, edge_colors, nodes, a, N):
 
 fig = plt.gcf()
 
+Writer = animation.writers['ffmpeg']
+writer = Writer(fps=60, metadata=dict(artist='Me'), bitrate=3600)
+
 font = {'family': 'Bitstream Vera Sans',
         'weight': 'normal',
         'size': 14}
 
 plt.rc('font', **font)
 
-a = dict()
-b = dict()
-
 # *********PARAMETERS************
 
 N = 5
-Frames = 100
+Frames = 198
 
 nodes = [56, 8, 4, 4, 1]
 
 user = 'jujuman'
-dir = '/Research/ANN-Test-Data/GDB-11/train2/'
+#dir = '/Research/ANN-Test-Data/GDB-11/train2/'
+dir = '/PycharmProjects/H2Graphing/'
 
-file = 'netfileANN-O.nnf.dat'
+file = 'netfileANN-H.nnf.dat'
 
 datafile = '/home/' + user + dir + file
 
+movieout = 'Hnet.mp4'
+DPI = 100
+h_in_inches = 14
+w_in_inches = 14
+
 # *******************************
 
-#or i in range(0, N):
-#    a[i] = getfltsfromfile(datafile, i, 0, nodes[i])
-
-#for i in range(0, N):
-#    a[i] = normalize(a[i])
+fig.set_size_inches(w_in_inches, h_in_inches)
 
 G = nx.Graph()
 
 makeedges(G,nodes,N)
 pos = makenodes(G,nodes,N)
 
-#nds = nx.draw_networkx_nodes(G,pos,node_color=node_colors)
-#eds = nx.draw_networkx_edges(G,pos,edge_color=edge_colors,edgelist=edge_list)
-
 def update(n):
     print('Frame: ' + str(n))
+
+    a = dict()
+    for i in range(0, N):
+        a[i] = getfltsfromfile(datafile, i, n+2, nodes[i])
+
     b = dict()
     for i in range(0, N):
         b[i] = getfltsfromfile(datafile, i, n, nodes[i])
 
     for i in range(0, N):
-        b[i] = normalize(b[i])
+        b[i] = normalize(b[i]-a[i])
 
     edge_colors = []
     edge_list = []
     node_colors = []
 
-    getedgeinfo(edge_list, edge_colors, nodes, b, N)
+    getedgeinfo(edge_list, edge_colors, nodes, b, N,0.05)
     getnodesinfo(node_colors, nodes, b, N)
 
     nx.draw(G, pos, node_color=node_colors, edge_color=edge_colors, edgelist=edge_list)
@@ -158,7 +162,7 @@ def update(n):
 
 #nx.draw(G)
 
-anim = animation.FuncAnimation(fig, update, frames=100, interval=2, blit=False)
-anim.save('test.mp4',dpi = 100)
+anim = animation.FuncAnimation(fig, update, frames=Frames, interval=60, blit=False, repeat=True)
+anim.save(movieout,dpi = DPI)
 # plt.xlim([-5,9])
 plt.show()

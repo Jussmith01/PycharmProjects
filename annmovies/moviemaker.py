@@ -40,8 +40,8 @@ w_in_inches = 14
 #---------- END INPUT PARAMETERS --------------
 
 # Set up formatting for the movie files
-#Writer = animation.writers['ffmpeg']
-#writer = Writer(fps=60, metadata=dict(artist='Me'), bitrate=1800)
+Writer = animation.writers['ffmpeg']
+writer = Writer(fps=60, metadata=dict(artist='Me'), bitrate=1800)
 
 fig, ax = plt.subplots()
 
