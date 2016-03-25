@@ -94,7 +94,7 @@ def add (x,y):
 # ----------------------------------------------------
 # Show a 2d Contour Plot of the Angular Env Functions
 # ----------------------------------------------------
-def show2dcontangulargraph (ShfA,ShfZ,eta,zeta,Rc,func):
+def show2dcontangulargraph (ShfA,ShfZ,eta,zeta,Rc,func,title):
     N = 1000000
     x, y = 12.0 * np.random.random((2, N)) - 6.0
 
@@ -122,13 +122,17 @@ def show2dcontangulargraph (ShfA,ShfZ,eta,zeta,Rc,func):
     plt.imshow(zi, vmin=z.min(), vmax=z.max(), origin='lower',
            extent=[x.min(), x.max(), y.min(), y.max()])
 
+    plt.title(title)
+    plt.ylabel('Angstroms')
+    plt.xlabel('Angstroms')
+
     plt.colorbar()
     plt.show()
 
 # ----------------------------------------------------
 # Show a 2d Contour Plot of the Radial Env Functions
 # ----------------------------------------------------
-def show2dcontradialgraph (ShfR,eta,Rc,func):
+def show2dcontradialgraph (ShfR,eta,Rc,func,title):
     N = 1000000
     x, y = 14.0 * np.random.random((2, N)) - 7.0
 
@@ -155,6 +159,10 @@ def show2dcontradialgraph (ShfR,eta,Rc,func):
     plt.imshow(zi, vmin=z.min(), vmax=z.max(), origin='lower',
            extent=[x.min(), x.max(), y.min(), y.max()])
 
+    plt.title(title)
+    plt.ylabel('Angstroms')
+    plt.xlabel('Angstroms')
+
     plt.colorbar()
     plt.show()
 
@@ -163,18 +171,18 @@ def show2dcontradialgraph (ShfR,eta,Rc,func):
 #         Set Parameters
 #--------------------------------
 #File nam
-pf = 'rHCNO-4-a1-4.params' # Output filename
+pf = 'rHCNO-12-a6-8.params' # Output filename
 
-Nrr = 4
+Nrr = 12
 Na = 4
-Nar = 1
-Nzt = 4
+Nar = 6
+Nzt = 8
 
-Rc = 4.0
+Rc = 6.0
 Atyp = '[H,C,N,O]'
-EtaR = 4.0
-EtaA1 = 0.0001
-Zeta = 6.0
+EtaR = 13.0
+EtaA1 = 2.0
+Zeta = 18.0
 
 # ****************************************************
 
@@ -198,8 +206,8 @@ plt.xlabel('Angstroms')
 plt.show()
 
 #Uncomment for pretty contour plots of the radial environments using a sum and then max function
-#show2dcontradialgraph(ShfR,EtaR,Rc,add)
-#show2dcontradialgraph(ShfR,EtaR,Rc,max)
+#show2dcontradialgraph(ShfR,EtaR,Rc,add,'Sum Radial Output')
+#show2dcontradialgraph(ShfR,EtaR,Rc,max,'Max Radial Output')
 
 ShfZ = np.zeros(Nzt)
 
@@ -208,9 +216,12 @@ Nat = Nar * (Na*(Na+1)/2) * Nzt
 for i in range(0,Nzt):
     stepsize = (2.0 * np.pi) / (float(Nzt))
     step = i*stepsize
-    computeangulardataset(0.5,2.0*np.pi,1000,Zeta,1.0,step,plt, 'red', 'zeta = ' + str(Zeta))
+    computeangulardataset(0.0,2.0*np.pi,1000,Zeta,1.0,step,plt, 'red', 'zeta = ' + str(Zeta))
     ShfZ[i] = step
 
+plt.title('Angular (Only Angular) Environment Functions (AAEF)')
+plt.ylabel('AAEF Output')
+plt.xlabel('Radians')
 plt.show()
 
 
@@ -222,11 +233,14 @@ for i in range(0,Nar):
     computeradialdataset(0.5, Rc, 1000, EtaA1, Rc,step, plt, 'blue', 'eta = '+ str(EtaA1))
     ShfA[i] = step
 
+plt.title('Angular (Only Radial) Environment Functions (AREF)')
+plt.ylabel('AREF Output')
+plt.xlabel('Angstroms')
 plt.show()
 
 #Uncomment for pretty contour plots of the angular environments using a sum and then max function
-#show2dcontangulargraph(ShfA,ShfZ,EtaA1,Zeta,Rc,add)
-#show2dcontangulargraph(ShfA,ShfZ,EtaA1,Zeta,Rc,max)
+#show2dcontangulargraph(ShfA,ShfZ,EtaA1,Zeta,Rc,add,'Sum Angular Output')
+#show2dcontangulargraph(ShfA,ShfZ,EtaA1,Zeta,Rc,max,'Max Angular Output')
 
 Nt = Nat + Nrt
 print('Total Environmental Vector Size: ',int(Nt))

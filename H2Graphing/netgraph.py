@@ -109,13 +109,13 @@ plt.rc('font', **font)
 # *********PARAMETERS************
 
 N = 5
-Frames = 198
+Frames = 249
 
 nodes = [56, 8, 4, 4, 1]
 
 user = 'jujuman'
-#dir = '/Research/ANN-Test-Data/GDB-11/train2/'
-dir = '/PycharmProjects/H2Graphing/'
+dir = '/Research/ANN-Test-Data/GDB-11/train2/'
+#dir = '/PycharmProjects/H2Graphing/'
 
 file = 'netfileANN-H.nnf.dat'
 
@@ -140,11 +140,11 @@ def update(n):
 
     a = dict()
     for i in range(0, N):
-        a[i] = getfltsfromfile(datafile, i, n+2, nodes[i])
+        a[i] = getfltsfromfile(datafile, i, 2*n+2, nodes[i])
 
     b = dict()
     for i in range(0, N):
-        b[i] = getfltsfromfile(datafile, i, n, nodes[i])
+        b[i] = getfltsfromfile(datafile, i, 2*n, nodes[i])
 
     for i in range(0, N):
         b[i] = normalize(b[i]-a[i])
