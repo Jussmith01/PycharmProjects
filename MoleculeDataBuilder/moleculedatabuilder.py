@@ -3,22 +3,31 @@ from rdkit import Chem
 from rdkit.Chem import AllChem
 import numpy as np
 
+def formatsmilesfile(file):
+    ifile = open(file, 'r')
+    contents = ifile.read()
+    print(contents)
+
 #-------- Parameters -----------
 
 R = 0.3
-fpf = 'gdb11_s05' #Filename prefix
-wdir = '/home/jujuman/Research/ANN-Test-Data/GDB-11/dnntsgdb11_05/' #working directory
+fpf = 'gdb11_s06' #Filename prefix
+wdir = '/home/jujuman/Research/ANN-Test-Data/GDB-11/dnntsgdb11_06/' #working directory
+smfile = '/home/jujuman/Research/ANN-Test-Data/GDB-11/smiledata/gdb11_size06.smi' # Smiles file
 At = ['C', 'O', 'N'] # Hydrogens added after check
 
-TSS='1000' # Training Set Size
-VSS='250'
+TSS='500' # Training Set Size
+VSS='125'
 LOT='UB3LYP/6-31g*' # High level of theory
 rdm='uniform' #Random dist
 
 #------- End Parameters ---------
 
+#fix the file
+fixsmilesfile(smfile)
+
 #molecules = Chem.SmilesMolSupplier('/home/jujuman/Research/ANN-Test-Data/GDB-11/gdb11_size02.smi', nameColumn=0)
-molecules = Chem.SmilesMolSupplier('/home/jujuman/Research/ANN-Test-Data/GDB-11/smiledata/gdb11_size05.smi', nameColumn=0)
+molecules = Chem.SmilesMolSupplier(smfile, nameColumn=0)
 Nmol = 0
 for m in molecules:
     if m is None: continue
@@ -58,11 +67,11 @@ for m in molecules:
         AllChem.EmbedMolecule(m) # Embed in 3D Space
         AllChem.UFFOptimizeMolecule(m) # Classical Optimization
 
+        print('Molecule ', str(Nmol) ,': ', Chem.MolToSmiles(m))
+
         #print('#Number of Atoms: ', m.GetNumAtoms())
         #print('#Number of Bonds: ', m.GetNumBonds())
         #print('#Number of Conformers: ', m.GetNumConformers())
-        
-	print('Molecule ', str(Nmol) ,': ', Chem.MolToSmiles(m))
         
         if m.GetNumConformers() > 1:
             print('MORE THAN ONE CONFORMER!')
