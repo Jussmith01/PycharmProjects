@@ -2,33 +2,45 @@ from __future__ import print_function
 from rdkit import Chem
 from rdkit.Chem import AllChem
 import numpy as np
+import re
 
 def formatsmilesfile(file):
     ifile = open(file, 'r')
     contents = ifile.read()
-    print(contents)
+    ifile.close()    
+
+    p = re.compile('([^\s]*).*\n')
+    smiles = p.findall(contents)
+    
+    ofile = open(file, 'w')
+    for mol in smiles:    
+        ofile.write(mol + '\n')
+    ofile.close()
 
 #-------- Parameters -----------
 
 R = 0.3
-fpf = 'gdb11_s06' #Filename prefix
-wdir = '/home/jujuman/Research/ANN-Test-Data/GDB-11/dnntsgdb11_06/' #working directory
-smfile = '/home/jujuman/Research/ANN-Test-Data/GDB-11/smiledata/gdb11_size06.smi' # Smiles file
+fpf = 'gdb11_s02' #Filename prefix
+wdir = '/home/jujuman/Research/ANN-Test-Data/GDB-11/dnntsgdb11_02/' #working directory
+smfile = '/home/jujuman/Research/ANN-Test-Data/GDB-11/smiledata/gdb11_size02.smi' # Smiles file
 At = ['C', 'O', 'N'] # Hydrogens added after check
 
-TSS='500' # Training Set Size
-VSS='125'
+TSS='4000' # Training Set Size
+VSS='1000'
 LOT='UB3LYP/6-31g*' # High level of theory
 rdm='uniform' #Random dist
 
 #------- End Parameters ---------
 
 #fix the file
-fixsmilesfile(smfile)
+formatsmilesfile(smfile)
 
 #molecules = Chem.SmilesMolSupplier('/home/jujuman/Research/ANN-Test-Data/GDB-11/gdb11_size02.smi', nameColumn=0)
 molecules = Chem.SmilesMolSupplier(smfile, nameColumn=0)
 Nmol = 0
+
+#mdcrd = open(wdir + 'molecules.xyz' , 'w')
+
 for m in molecules:
     if m is None: continue
 
@@ -81,10 +93,17 @@ for m in molecules:
         f.write('#Smiles: ' + Chem.MolToSmiles(m))
         f.write ('\n\n')
         f.write ('$coordinates\n')
+
+        mdcrd = open(wdir + 'molecule-' + str(Nmol) + '.xyz' , 'w')
+        mdcrd.write('\n' + str(m.GetNumAtoms()) + '\n')
+
         for i in range (0,m.GetNumAtoms()):
             pos = m.GetConformer().GetAtomPosition(i)
             sym = m.GetAtomWithIdx(i).GetSymbol()
             f.write (' ' + str(sym) + ' ' + str(sym) + ' ' + "{:.5f}".format(pos.x) + ' ' + "{:.5f}".format(pos.y) + ' ' + "{:.5f}".format(pos.z) + ' ' + "{:.3f}".format(R) + '\n')
+            mdcrd.write (str(sym) + ' ' + "{:.5f}".format(pos.x) + ' ' + "{:.5f}".format(pos.y) + ' ' + "{:.5f}".format(pos.z) + '\n')
+
+        mdcrd.close()
         f.write ('&\n\n')
 
         f.write ('$connectivity\n')
