@@ -9,13 +9,6 @@ import scipy.interpolate
 #--------------------------------
 
 # ------------------------------------------
-#          Radial Function Cos w/ Sqrt
-# ------------------------------------------
-def radialfunctionsqrt(X,eta,Rc,Rs):
-    F = np.sqrt(np.exp(-eta*(X-Rs)**2.0) * (0.5 * (np.cos((np.pi * X)/Rc) + 1.0)))
-    return F
-
-# ------------------------------------------
 #          Radial Function Cos
 # ------------------------------------------
 def radialfunctioncos(X,eta,Rc,Rs):
@@ -23,18 +16,10 @@ def radialfunctioncos(X,eta,Rc,Rs):
     return F
 
 # ------------------------------------------
-#               Radial Function
+#          Radial Function Cos
 # ------------------------------------------
-def radialfunction2(X,eta,Rc,Rs):
-
-    F=np.zeros(X.shape[0])
-    c = (Rc-Rs)
-    for i in range(0,X.shape[0]):
-        if X[i] < Rc:
-            F[i] = (np.exp(1.0) * np.exp(-(1.0/(1.0-((X[i]-Rs)/(Rc-Rs))**(2.0)))))**(eta)
-        else :
-            F[i]=0.0
-
+def angularradialfunctioncos(X,Y,eta,Rc,Rs):
+    F = np.sqrt(np.exp(-eta*((X + Y - 2.0*Rs)**2.0)) * (0.5 * (np.cos((np.pi * X)/Rc) + 1.0)) * (0.5 * (np.cos((np.pi * Y)/Rc) + 1.0)))
     return F
 
 # ------------------------------------------
@@ -57,10 +42,10 @@ def computeradialdataset(x1,x2,pts,eta,Rc,Rs,plt,scolor,slabel):
 # ------------------------------------------
 # Calculate The Steps for a Radial Dataset
 # ------------------------------------------
-def computeradial2dataset(x1,x2,pts,eta,Rc,Rs,plt,scolor,slabel):
+def computeangularradialdataset(x1,x2,pts,eta,Rc,Rs,plt,scolor,slabel):
 
     X = np.linspace(x1, x2, pts, endpoint=True)
-    F = radialfunction2(X,eta,Rc,Rs)
+    F = angularradialfunctioncos(X,X,eta,Rc,Rs)
     plt.plot(X, F, label=slabel, color=scolor, linewidth=2)
 
 # ------------------------------------------
@@ -96,31 +81,35 @@ def add (x,y):
 # ----------------------------------------------------
 def show2dcontangulargraph (ShfA,ShfZ,eta,zeta,Rc,func,title):
     N = 1000000
-    x, y = 12.0 * np.random.random((2, N)) - 6.0
+    x1, y1 = 4.25 * np.random.random((2, N))
+    x2, y2 = 4.25 * np.random.random((2, N))
 
-    print(x)
+    #print(x)
 
-    R = np.sqrt(x**2 + y**2)
-    T = np.arctan2(x,y)
+    R1 = np.sqrt(x1**2 + y1**2)
+    R2 = np.sqrt(x2**2 + y2**2)
+    #T = np.arctan2(x,y)
 
     z = np.zeros(N)
 
     for i in ShfZ:
         for j in ShfA:
             print( 'ShfZ: ' + str(i) + ' ShfA: ' + str(j) )
-            zt = angularfunction(T,zeta,1.0,i) * radialfunctionsqrt(R,eta,Rc,j) * radialfunctionsqrt(R,eta,Rc,j)
+            #zt = angularfunction(T,zeta,1.0,i) * angularradialfunctioncos(R,R,eta,Rc,j)
+            zt = angularradialfunctioncos(R1,R2,eta,Rc,j)
 
             for k in range(1,z.shape[0]):
                 z[k] = func(z[k],zt[k])
+                #print(z[k])
 
     # Set up a regular grid of interpolation points
-    xi, yi = np.linspace(x.min(), y.max(), 300), np.linspace(x.min(), y.max(), 300)
+    xi, yi = np.linspace(R1.min(), R2.max(), 600), np.linspace(R1.min(), R2.max(), 600)
     xi, yi = np.meshgrid(xi, yi)
 
-    zi = scipy.interpolate.griddata((x, y), z, (xi, yi), method='linear')
+    zi = scipy.interpolate.griddata((R1, R2), z, (xi, yi), method='linear')
 
     plt.imshow(zi, vmin=z.min(), vmax=z.max(), origin='lower',
-           extent=[x.min(), x.max(), y.min(), y.max()])
+           extent=[R1.min(), R1.max(), R2.min(), R2.max()])
 
     plt.title(title)
     plt.ylabel('Angstroms')
@@ -182,7 +171,7 @@ Rc = 6.0
 Atyp = '[H,C,N,O]'
 EtaR = 13.0
 EtaA1 = 2.0
-Zeta = 18.0
+Zeta = 16.0
 
 # ****************************************************
 
@@ -229,8 +218,8 @@ ShfA = np.zeros(Nar)
 
 for i in range(0,Nar):
     stepsize = Rc / float(Nar+1.0)
-    step = i * stepsize + 0.5
-    computeradialdataset(0.5, Rc, 1000, EtaA1, Rc,step, plt, 'blue', 'eta = '+ str(EtaA1))
+    step = (i * stepsize + 0.5)
+    computeangularradialdataset(0.5, Rc, 1000, EtaA1, Rc,step, plt, 'blue', 'eta = '+ str(EtaA1))
     ShfA[i] = step
 
 plt.title('Angular (Only Radial) Environment Functions (AREF)')
@@ -239,8 +228,8 @@ plt.xlabel('Angstroms')
 plt.show()
 
 #Uncomment for pretty contour plots of the angular environments using a sum and then max function
-#show2dcontangulargraph(ShfA,ShfZ,EtaA1,Zeta,Rc,add,'Sum Angular Output')
-#show2dcontangulargraph(ShfA,ShfZ,EtaA1,Zeta,Rc,max,'Max Angular Output')
+show2dcontangulargraph(ShfA,ShfZ,EtaA1,Zeta,Rc,add,'Sum Angular Output')
+show2dcontangulargraph(ShfA,ShfZ,EtaA1,Zeta,Rc,max,'Max Angular Output')
 
 Nt = Nat + Nrt
 print('Total Environmental Vector Size: ',int(Nt))
