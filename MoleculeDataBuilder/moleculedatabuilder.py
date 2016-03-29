@@ -20,14 +20,14 @@ def formatsmilesfile(file):
 #-------- Parameters -----------
 
 R = 0.3
-fpf = 'gdb11_s02' #Filename prefix
-wdir = '/home/jujuman/Research/ANN-Test-Data/GDB-11/dnntsgdb11_02/' #working directory
-smfile = '/home/jujuman/Research/ANN-Test-Data/GDB-11/smiledata/gdb11_size02.smi' # Smiles file
+fpf = 'gdb11_s03' #Filename prefix
+wdir = '/home/jujuman/Research/ANN-Test-Data/GDB-11-M062X-6-311Gdd/dnntsgdb11_03/' #working directory
+smfile = '/home/jujuman/Research/ANN-Test-Data/GDB-11-M062X-6-311Gdd/smiledata/gdb11_size03.smi' # Smiles file
 At = ['C', 'O', 'N'] # Hydrogens added after check
 
-TSS='4000' # Training Set Size
-VSS='1000'
-LOT='UB3LYP/6-31g*' # High level of theory
+TSS='12000' # Training Set Size
+VSS='3000'
+LOT='UM062X/6-311g**' # High level of theory
 rdm='uniform' #Random dist
 
 #------- End Parameters ---------
