@@ -12,7 +12,7 @@ import scipy.interpolate
 #          Radial Function Cos
 # ------------------------------------------
 def radialfunctioncos(X,eta,Rc,Rs):
-    F = np.exp(-eta*(X-Rs)**2.0) * (0.5 * (np.cos((np.pi * X)/Rc) + 1.0))
+    F = np.sqrt(np.exp(-eta*(X-Rs)**2.0) * (0.5 * (np.cos((np.pi * X)/Rc) + 1.0)))
     return F
 
 # ------------------------------------------
@@ -81,35 +81,33 @@ def add (x,y):
 # ----------------------------------------------------
 def show2dcontangulargraph (ShfA,ShfZ,eta,zeta,Rc,func,title):
     N = 1000000
-    x1, y1 = 4.25 * np.random.random((2, N))
-    x2, y2 = 4.25 * np.random.random((2, N))
+    x, y = 12.0 * np.random.random((2, N)) - 6.0
 
     #print(x)
 
-    R1 = np.sqrt(x1**2 + y1**2)
-    R2 = np.sqrt(x2**2 + y2**2)
-    #T = np.arctan2(x,y)
+    R = np.sqrt(x**2 + y**2)
+    T = np.arctan2(x,y)
 
     z = np.zeros(N)
 
     for i in ShfZ:
         for j in ShfA:
             print( 'ShfZ: ' + str(i) + ' ShfA: ' + str(j) )
-            #zt = angularfunction(T,zeta,1.0,i) * angularradialfunctioncos(R,R,eta,Rc,j)
-            zt = angularradialfunctioncos(R1,R2,eta,Rc,j)
+            zt = angularfunction(T,zeta,1.0,i) * radialfunctioncos(R,eta,Rc,j) * radialfunctioncos(R,eta,Rc,j)
+            #zt = angularradialfunctioncos(R1,R2,eta,Rc,j)
 
             for k in range(1,z.shape[0]):
                 z[k] = func(z[k],zt[k])
                 #print(z[k])
 
     # Set up a regular grid of interpolation points
-    xi, yi = np.linspace(R1.min(), R2.max(), 600), np.linspace(R1.min(), R2.max(), 600)
+    xi, yi = np.linspace(x.min(), y.max(), 600), np.linspace(x.min(), y.max(), 600)
     xi, yi = np.meshgrid(xi, yi)
 
-    zi = scipy.interpolate.griddata((R1, R2), z, (xi, yi), method='linear')
+    zi = scipy.interpolate.griddata((x, y), z, (xi, yi), method='linear')
 
     plt.imshow(zi, vmin=z.min(), vmax=z.max(), origin='lower',
-           extent=[R1.min(), R1.max(), R2.min(), R2.max()])
+           extent=[x.min(), y.max(), x.min(), y.max()])
 
     plt.title(title)
     plt.ylabel('Angstroms')
@@ -160,18 +158,18 @@ def show2dcontradialgraph (ShfR,eta,Rc,func,title):
 #         Set Parameters
 #--------------------------------
 #File nam
-pf = 'rHCNO-12-a6-8.params' # Output filename
+pf = 'rHCNO-12-a6-12.params' # Output filename
 
 Nrr = 12
 Na = 4
 Nar = 6
-Nzt = 8
+Nzt = 12
 
 Rc = 6.0
 Atyp = '[H,C,N,O]'
 EtaR = 13.0
-EtaA1 = 2.0
-Zeta = 16.0
+EtaA1 = 4.0
+Zeta = 40.0
 
 # ****************************************************
 
@@ -219,7 +217,7 @@ ShfA = np.zeros(Nar)
 for i in range(0,Nar):
     stepsize = Rc / float(Nar+1.0)
     step = (i * stepsize + 0.5)
-    computeangularradialdataset(0.5, Rc, 1000, EtaA1, Rc,step, plt, 'blue', 'eta = '+ str(EtaA1))
+    computeradialdataset(0.5, Rc, 1000, EtaA1, Rc,step, plt, 'blue', 'eta = '+ str(EtaA1))
     ShfA[i] = step
 
 plt.title('Angular (Only Radial) Environment Functions (AREF)')
