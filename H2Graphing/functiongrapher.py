@@ -18,8 +18,8 @@ def radialfunctioncos(X,eta,Rc,Rs):
 # ------------------------------------------
 #          Radial Function Cos
 # ------------------------------------------
-def angularradialfunctioncos(X,Y,eta,Rc,Rs):
-    F = np.sqrt(np.exp(-eta*((X + Y - 2.0*Rs)**2.0)) * (0.5 * (np.cos((np.pi * X)/Rc) + 1.0)) * (0.5 * (np.cos((np.pi * Y)/Rc) + 1.0)))
+def angularradialfunctioncos(X,eta,Rc,Rs):
+    F = np.sqrt(np.exp(-eta*(X-Rs)**2.0) * (0.5 * (np.cos((np.pi * X)/Rc) + 1.0)))
     return F
 
 # ------------------------------------------
@@ -81,35 +81,33 @@ def add (x,y):
 # ----------------------------------------------------
 def show2dcontangulargraph (ShfA,ShfZ,eta,zeta,Rc,func,title):
     N = 1000000
-    x1, y1 = 4.25 * np.random.random((2, N))
-    x2, y2 = 4.25 * np.random.random((2, N))
+    x, y = 12.0 * np.random.random((2, N)) - 6.0
 
     #print(x)
 
-    R1 = np.sqrt(x1**2 + y1**2)
-    R2 = np.sqrt(x2**2 + y2**2)
-    #T = np.arctan2(x,y)
+    R = np.sqrt(x**2 + y**2)
+    T = np.arctan2(x,y)
 
     z = np.zeros(N)
 
     for i in ShfZ:
         for j in ShfA:
             print( 'ShfZ: ' + str(i) + ' ShfA: ' + str(j) )
-            #zt = angularfunction(T,zeta,1.0,i) * angularradialfunctioncos(R,R,eta,Rc,j)
-            zt = angularradialfunctioncos(R1,R2,eta,Rc,j)
+            zt = angularfunction(T,zeta,1.0,i) * angularradialfunctioncos(R,eta,Rc,j) * angularradialfunctioncos(R,eta,Rc,j)
+            #zt = angularradialfunctioncos(R1,R2,eta,Rc,j)
 
             for k in range(1,z.shape[0]):
                 z[k] = func(z[k],zt[k])
                 #print(z[k])
 
     # Set up a regular grid of interpolation points
-    xi, yi = np.linspace(R1.min(), R2.max(), 600), np.linspace(R1.min(), R2.max(), 600)
+    xi, yi = np.linspace(x.min(), y.max(), 600), np.linspace(x.min(), y.max(), 600)
     xi, yi = np.meshgrid(xi, yi)
 
-    zi = scipy.interpolate.griddata((R1, R2), z, (xi, yi), method='linear')
+    zi = scipy.interpolate.griddata((x, y), z, (xi, yi), method='linear')
 
     plt.imshow(zi, vmin=z.min(), vmax=z.max(), origin='lower',
-           extent=[R1.min(), R1.max(), R2.min(), R2.max()])
+           extent=[x.min(), y.max(), x.min(), y.max()])
 
     plt.title(title)
     plt.ylabel('Angstroms')
@@ -162,16 +160,18 @@ def show2dcontradialgraph (ShfR,eta,Rc,func,title):
 #File nam
 pf = 'rHCNO-32-a1-32.params' # Output filename
 
+
 Nrr = 32
 Na = 4
 Nar = 1
 Nzt = 32
 
-Rc = 4.0
+Rc = 6.0
 Atyp = '[H,C,O,N]'
 EtaR = 64.0
 EtaA1 = 0.0001
 Zeta = 64.0
+
 
 # ****************************************************
 
@@ -219,7 +219,7 @@ ShfA = np.zeros(Nar)
 for i in range(0,Nar):
     stepsize = Rc / float(Nar+1.0)
     step = (i * stepsize + 0.5)
-    computeangularradialdataset(0.5, Rc, 1000, EtaA1, Rc,step, plt, 'blue', 'eta = '+ str(EtaA1))
+    computeradialdataset(0.5, Rc, 1000, EtaA1, Rc,step, plt, 'blue', 'eta = '+ str(EtaA1))
     ShfA[i] = step
 
 plt.title('Angular (Only Radial) Environment Functions (AREF)')
@@ -228,8 +228,8 @@ plt.xlabel('Angstroms')
 plt.show()
 
 #Uncomment for pretty contour plots of the angular environments using a sum and then max function
-show2dcontangulargraph(ShfA,ShfZ,EtaA1,Zeta,Rc,add,'Sum Angular Output')
-show2dcontangulargraph(ShfA,ShfZ,EtaA1,Zeta,Rc,max,'Max Angular Output')
+#show2dcontangulargraph(ShfA,ShfZ,EtaA1,Zeta,Rc,add,'Sum Angular Output')
+#show2dcontangulargraph(ShfA,ShfZ,EtaA1,Zeta,Rc,max,'Max Angular Output')
 
 Nt = Nat + Nrt
 print('Total Environmental Vector Size: ',int(Nt))

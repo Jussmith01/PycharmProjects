@@ -3,7 +3,8 @@ import statsmodels.api as sm
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 import os
-
+import matplotlib as mpl
+import random
 
 # -----------------------
 # readfile into np array
@@ -15,11 +16,12 @@ def getfltsfromfile(file, cols):
     infile_s = []
 
     for line in infile:
-        row = line.strip().split(" ")
+        row = line.strip().split(",")
         infile_s.append(row)
 
     # Truncate and convert to numpy array
     nparray = np.array(infile_s)
+    #print (nparray)
     data = nparray[:-1, cols]
     data = np.array(data, dtype=float)
     return data
@@ -75,17 +77,22 @@ def makedatalinear(datain):
 # AM1 vs Act
 # ------------
 user = os.environ['USER']
-user = 'jujuman'
-dir = '/Research/ANN-Test-Data/GDB-11/train2/'
+#user = 'jujuman'
+dir = '/Research/ANN-Test-Data/GDB-11-M062X-6-311Gdd/dnntsfix_data/'
 
-file = 'graph.dat'
-file2 = 'grapham1.dat'
-file3 = 'graphpm6.dat'
+cmap = mpl.cm.jet
+for i in range(0,8):
+    file = 'fixmolecule-0_train.dat_thread' + str(i)
 
-data1 = getfltsfromfile('/home/' + user + dir + file, [0])
-data1 = data1 * 0.05 + 0.7
-data2 = getfltsfromfile('/home/' + user + dir + file, [1])
-data3 = getfltsfromfile('/home/' + user + dir + file, [2])
+    data1 = getfltsfromfile('/home/' + user + dir + file, [2])
+    data2 = getfltsfromfile('/home/' + user + dir + file, [5])
+    data3 = getfltsfromfile('/home/' + user + dir + file, [6])
+
+    data1 = data1 - data2
+
+    color = i/float(8)
+    plt.scatter(data1, data3, color=cmap(color), label='Thread '+ str(i),linewidth=3)
+
 #data4 = getfltsfromfile('/home/' + user + dir + file2, [1])
 #data5 = getfltsfromfile('/home/' + user + dir + file3, [1])
 
@@ -94,7 +101,7 @@ data3 = getfltsfromfile('/home/' + user + dir + file, [2])
 #AM1 = getfltsfromfile('/home/' + user + dir + file, [1])
 
 #dir = '/Research/ANN-Test-Data/GDB-11/train3/'
-#data5 = getfltsfromfile('/home/' + user + dir + file, [2])
+#data5 = getfltsfromfile('/hom-7.558904531543e/' + user + dir + file, [2])
 #PM6 = getfltsfromfile('/home/' + user + dir + file, [1])
 
 #dir = '/Research/ANN-Test-Data/GDB-11/train4/'
@@ -121,8 +128,8 @@ plt.rc('font', **font)
 #plt.plot(data1, PM6, color='grey', label='PM6',linewidth=4)
 #plt.plot(data1, data4, color='grey', label='AM1',linewidth=3)
 #plt.plot(data1, data5, color='black', label='PM6',linewidth=4)
-plt.plot(data1, data2, color='blue', label='B3LYP/6-31g*',linewidth=3)
-plt.plot(data1, data3, color='red', label='ANN - GDB-3',linewidth=3)
+#plt.scatter(data1, data3, color='blue', label='B3LYP/6-31g*',linewidth=3)
+#plt.plot(data1, data3, color='red', label='ANN - GDB-3',linewidth=3)
 #plt.plot(data1, data6, color='orange', label='ANN - GDB-4',linewidth=3)
 #plt.scatter(data1, data6, color='green', label='ANN - up to GDB-4',linewidth=4)
 #plt.plot(data1, data3, color='red', label='ANN - up to GDB-3',linewidth=4)
@@ -136,7 +143,7 @@ plt.title('Formic Acid Reaction Scan H-O1 -> H-O2')
 #plt.title('SCAN: Formic Acid Energy vs. H-O-H Angle')
 plt.xlabel('Reaction Coordinate (Angstroms)')
 plt.ylabel('Energy (Hartrees)')
-plt.legend(bbox_to_anchor=(0.1, 0.3), loc=2, borderaxespad=0.)
+plt.legend(bbox_to_anchor=(0.7, 0.3), loc=2, borderaxespad=0.)
 
 
 # -----
