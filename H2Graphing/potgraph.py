@@ -85,14 +85,29 @@ for i in range(0,8):
     file = 'fixmolecule-0_train.dat_thread' + str(i)
     #file = 'fixmolecule-0_train.dat'
 
-    data1 = getfltsfromfile('/home/' + user + dir + file, [2])
-    data2 = getfltsfromfile('/home/' + user + dir + file, [5])
+    data1 = getfltsfromfile('/home/' + user + dir + file, [5])
+    data2 = getfltsfromfile('/home/' + user + dir + file, [2])
     data3 = getfltsfromfile('/home/' + user + dir + file, [6])
 
     data1 = data1 - data2
 
     color = i/float(8)
     plt.scatter(data1, data3, color=cmap(color), label='Thread '+ str(i),linewidth=3)
+    plt.show()
+
+#dir = '/Research/ANN-Test-Data/GDB-11-M062X-6-311Gdd/rddata_test/'
+#for i in range(0,8):
+#    file = 'fixmolecule-0_train.dat_thread' + str(i)
+    #file = 'fixmolecule-0_train.dat'
+
+#    data1 = getfltsfromfile('/home/' + user + dir + file, [2])
+#    data2 = getfltsfromfile('/home/' + user + dir + file, [5])
+#    data3 = getfltsfromfile('/home/' + user + dir + file, [6])
+
+#    data1 = data1 - data2
+
+#    color = i/float(8)
+#    plt.scatter(data1, data3, color=cmap(0.9), label='Thread '+ str(i),linewidth=3)
 
 #data4 = getfltsfromfile('/home/' + user + dir + file2, [1])
 #data5 = getfltsfromfile('/home/' + user + dir + file3, [1])
