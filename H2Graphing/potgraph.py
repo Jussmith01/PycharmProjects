@@ -78,18 +78,18 @@ def makedatalinear(datain):
 # ------------
 user = os.environ['USER']
 #user = 'jujuman'
-dir = '/Research/ANN-Test-Data/GDB-11-M062X-6-311Gdd/mddata_test/'
+dir = '/Research/ANN-Test-Data/GDB-11-M062X-6-311Gdd/dnntsgdb11_01/'
 
 cmap = mpl.cm.jet
 for i in range(0,8):
-    file = 'fixmolecule-0_train.dat_thread' + str(i)
+    file = 'gdb11_s01-0_train.dat_thread' + str(i)
     #file = 'fixmolecule-0_train.dat'
 
-    data1 = getfltsfromfile('/home/' + user + dir + file, [5])
+    data1 = getfltsfromfile('/home/' + user + dir + file, [16])
     data2 = getfltsfromfile('/home/' + user + dir + file, [2])
-    data3 = getfltsfromfile('/home/' + user + dir + file, [6])
+    data3 = getfltsfromfile('/home/' + user + dir + file, [15])
 
-    data1 = data1 - data2
+    #data1 = data1 - data2
 
     color = i/float(8)
     plt.scatter(data1, data3, color=cmap(color), label='Thread '+ str(i),linewidth=3)
