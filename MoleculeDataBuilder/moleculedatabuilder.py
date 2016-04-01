@@ -19,16 +19,21 @@ def formatsmilesfile(file):
 
 #-------- Parameters -----------
 
-R = 0.3
-fpf = 'gdb11_s03' #Filename prefix
-wdir = '/home/jujuman/Research/ANN-Test-Data/GDB-11-M062X-6-311Gdd/dnntsgdb11_03/' #working directory
-smfile = '/home/jujuman/Research/ANN-Test-Data/GDB-11-M062X-6-311Gdd/smiledata/gdb11_size03.smi' # Smiles file
+R = 0.1
+fpf = 'gdb11_s02' #Filename prefix
+wdir = '/home/jujuman/Research/ANN-Test-Data/GDB-11-M062X-6-311Gdd/dnntsgdb11_02/' #working directory
+smfile = '/home/jujuman/Research/ANN-Test-Data/GDB-11-M062X-6-311Gdd/smiledata/gdb11_size02.smi' # Smiles file
 At = ['C', 'O', 'N'] # Hydrogens added after check
 
-TSS='12000' # Training Set Size
-VSS='3000'
+TSS='8000' # Training Set Size
+VSS='2000' # Validation set size
 LOT='UM062X/6-311g**' # High level of theory
 rdm='uniform' #Random dist
+type='moldyn'
+stsize='2000'
+Ntraj='50'
+MaxKE='200000'
+SCF='Tight'
 
 #------- End Parameters ---------
 
@@ -67,8 +72,12 @@ for m in molecules:
         f.write ('TSS=' + TSS + ' \n')
         f.write ('VSS=' + VSS + ' \n')
         f.write ('LOT=' + LOT + ' \n')
-        f.write ('rdm=uniform \n')
-        f.write ('type=random \n')
+        f.write ('rdm=' + rdm + '\n')
+        f.write ('type=' + type + '\n')
+        f.write ('stsize=' + stsize + '\n')
+        f.write ('Ntraj=' + Ntraj + '\n')
+        f.write ('MaxKE=' + MaxKE + '\n')
+        f.write ('SCF=' + SCF + '\n')
         f.write ('dfname=' + dfname + ' \n')
         f.write ('vdfname=' + vdfname + ' \n')
         f.write ('optimize=1 \n')
