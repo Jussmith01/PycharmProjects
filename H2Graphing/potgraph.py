@@ -78,11 +78,14 @@ def makedatalinear(datain):
 # ------------
 user = os.environ['USER']
 #user = 'jujuman'
-dir = '/Research/ANN-Test-Data/GDB-11-M062X-6-311Gdd/dnntsgdb11_01/trajdata/'
+dir = '/Research/ANN-Test-Data/GDB-11-B3LYP-6-31gd/dnntsgdb11_03/trajdata/'
+
+set = 3
+mol = 0
 
 cmap = mpl.cm.jet
 for i in range(0,8):
-    file = 'gdb11_s01-0_train.dat_trajdata' + str(i)
+    file = 'gdb11_s0' + str(set) + '-' + str(mol) + '_train.dat_trajdata' + str(i)
     #file = 'fixmolecule-0_train.dat'
 
     data1 = getfltsfromfile('/home/' + user + dir + file, [0])
@@ -90,10 +93,35 @@ for i in range(0,8):
     data3 = getfltsfromfile('/home/' + user + dir + file, [3])
 
     #data1 = data1 - data2
+    data1 = data1
 
     color = i/float(8)
+    plt.plot(data1, data3, color=cmap(color), label='Thread '+ str(i),linewidth=1)
     plt.scatter(data1, data3, color=cmap(color), label='Thread '+ str(i),linewidth=3)
-    plt.show()
+    #plt.legend(bbox_to_anchor=(0.05, 0.95), loc=2, borderaxespad=0.)
+    #plt.show()
+
+plt.show()
+
+
+for i in range(0,8):
+    file = 'gdb11_s0' + str(set) + '-' + str(mol) + '_valid.dat_trajdata' + str(i)
+    #file = 'fixmolecule-0_train.dat'
+
+    data1 = getfltsfromfile('/home/' + user + dir + file, [0])
+    data2 = getfltsfromfile('/home/' + user + dir + file, [2])
+    data3 = getfltsfromfile('/home/' + user + dir + file, [3])
+
+    #data1 = data1 - data2
+    data1 = data1
+
+    color = i/float(8)
+    plt.plot(data1, data3, color=cmap(color), label='Thread '+ str(i),linewidth=1)
+    plt.scatter(data1, data3, color=cmap(color), label='Thread '+ str(i),linewidth=3)
+    #plt.legend(bbox_to_anchor=(0.05, 0.95), loc=2, borderaxespad=0.)
+    #plt.show()
+
+plt.show()
 
 #dir = '/Research/ANN-Test-Data/GDB-11-M062X-6-311Gdd/rddata_test/'
 #for i in range(0,8):
@@ -165,4 +193,4 @@ plt.legend(bbox_to_anchor=(0.7, 0.3), loc=2, borderaxespad=0.)
 # -----
 # PLOT
 # -----
-plt.show()
+#plt.show()
