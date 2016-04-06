@@ -79,7 +79,7 @@ def makedatalinear(datain):
 user = os.environ['USER']
 dir = '/Research/ANN-Test-Data/GDB-11-B3LYP-6-31gd/train4/'
 
-file = 'gdb11_s04-62_valid.dat_graph.dat'
+file = 'fixmolecule-2_valid.dat_graph.dat'
 
 data1 = getfltsfromfile('/home/' + user + dir + file, [0])
 data2 = getfltsfromfile('/home/' + user + dir + file, [1])
