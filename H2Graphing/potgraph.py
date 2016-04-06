@@ -79,7 +79,7 @@ def makedatalinear(datain):
 user = os.environ['USER']
 dir = '/Research/ANN-Test-Data/GDB-11-B3LYP-6-31gd/train4/'
 
-file = 'gdb11_s04-62_valid.dat_graph.dat'
+file = 'h2odimerscan_train.dat_graph.dat'
 
 data1 = getfltsfromfile('/home/' + user + dir + file, [0])
 data2 = getfltsfromfile('/home/' + user + dir + file, [1])
@@ -96,10 +96,10 @@ plt.rc('font', **font)
 # --------------
 # Setup 2D Plot
 # --------------
-plt.plot(data1, data2, color='blue', label='AM1',linewidth=1)
-plt.scatter(data1, data2, color='blue', label='AM1',linewidth=4)
-plt.plot(data1, data3, color='orange', label='AM1',linewidth=1)
-plt.scatter(data1, data3, color='orange', label='AM1',linewidth=4)
+#plt.plot(data1, data2, color='blue',linewidth=1)
+plt.scatter(data1, data2, color='blue', label='B3LYP',linewidth=4)
+#plt.plot(data1, data3, color='orange',linewidth=1)
+plt.scatter(data1, data3, color='orange', label='NNP',linewidth=4)
 
 plt.title('Formic Acid Reaction Scan H-O1 -> H-O2')
 #plt.title('SCAN: Formic Acid Energy vs. H-O-H Angle')
