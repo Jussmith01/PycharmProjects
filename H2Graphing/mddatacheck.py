@@ -16,7 +16,7 @@ def getfltsfromfile(file, cols):
     infile_s = []
 
     for line in infile:
-        row = line.strip().split(" ")
+        row = line.strip().split(",")
         infile_s.append(row)
 
     # Truncate and convert to numpy array
@@ -77,38 +77,48 @@ def makedatalinear(datain):
 # AM1 vs Act
 # ------------
 user = os.environ['USER']
-dir = '/Research/ANN-Test-Data/GDB-11-B3LYP-6-31gd/train4/'
+#user = 'jujuman'
+dir = '/Research/ANN-Test-Data/GDB-11-B3LYP-6-31gd/dnntsgdb11_04/trajdata/'
 
-file = 'gdb11_s04-62_valid.dat_graph.dat'
+set = 4
+mol = 1
 
-data1 = getfltsfromfile('/home/' + user + dir + file, [0])
-data2 = getfltsfromfile('/home/' + user + dir + file, [1])
-data3 = getfltsfromfile('/home/' + user + dir + file, [2])
+cmap = mpl.cm.jet
+for i in range(0,8):
+    file = 'gdb11_s0' + str(set) + '-' + str(mol) + '_train.dat_trajdata' + str(i)
+    #file = 'fixmolecule-0_train.dat'
 
+    data1 = getfltsfromfile('/home/' + user + dir + file, [0])
+    data2 = getfltsfromfile('/home/' + user + dir + file, [2])
+    data3 = getfltsfromfile('/home/' + user + dir + file, [4])
 
-font = {'family' : 'Bitstream Vera Sans',
-        'weight' : 'normal',
-        'size'   : 14}
+    #data1 = data1 - data2
+    data1 = data1
 
-plt.rc('font', **font)
+    color = i/float(8)
+    plt.plot(data1, data3, color=cmap(color), label='Thread '+ str(i),linewidth=1)
+    plt.scatter(data1, data3, color=cmap(color), label='Thread '+ str(i),linewidth=3)
+    #plt.legend(bbox_to_anchor=(0.05, 0.95), loc=2, borderaxespad=0.)
+    #plt.show()
 
-
-# --------------
-# Setup 2D Plot
-# --------------
-plt.plot(data1, data2, color='blue', label='AM1',linewidth=1)
-plt.scatter(data1, data2, color='blue', label='AM1',linewidth=4)
-plt.plot(data1, data3, color='orange', label='AM1',linewidth=1)
-plt.scatter(data1, data3, color='orange', label='AM1',linewidth=4)
-
-plt.title('Formic Acid Reaction Scan H-O1 -> H-O2')
-#plt.title('SCAN: Formic Acid Energy vs. H-O-H Angle')
-plt.xlabel('Reaction Coordinate (Angstroms)')
-plt.ylabel('Energy (Hartrees)')
-plt.legend(bbox_to_anchor=(0.7, 0.3), loc=2, borderaxespad=0.)
+plt.show()
 
 
-# -----
-# PLOT
-# -----
+for i in range(0,8):
+    file = 'gdb11_s0' + str(set) + '-' + str(mol) + '_valid.dat_trajdata' + str(i)
+    #file = 'fixmolecule-0_train.dat'
+
+    data1 = getfltsfromfile('/home/' + user + dir + file, [0])
+    data2 = getfltsfromfile('/home/' + user + dir + file, [2])
+    data3 = getfltsfromfile('/home/' + user + dir + file, [3])
+
+    #data1 = data1 - data2
+    data1 = data1
+
+    color = i/float(8)
+    plt.plot(data1, data3, color=cmap(color), label='Thread '+ str(i),linewidth=1)
+    plt.scatter(data1, data3, color=cmap(color), label='Thread '+ str(i),linewidth=3)
+    #plt.legend(bbox_to_anchor=(0.05, 0.95), loc=2, borderaxespad=0.)
+    #plt.show()
+
 plt.show()
