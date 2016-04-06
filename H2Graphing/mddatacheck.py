@@ -78,10 +78,10 @@ def makedatalinear(datain):
 # ------------
 user = os.environ['USER']
 #user = 'jujuman'
-dir = '/Research/ANN-Test-Data/GDB-11-B3LYP-6-31gd/dnntsgdb11_04/trajdata/'
+dir = '/Research/ANN-Test-Data/GDB-11-B3LYP-6-31gd/dnntsgdb11_02/trajdata/'
 
-set = 4
-mol = 1
+set = 2
+mol = 6
 
 cmap = mpl.cm.jet
 for i in range(0,8):
@@ -90,7 +90,7 @@ for i in range(0,8):
 
     data1 = getfltsfromfile('/home/' + user + dir + file, [0])
     data2 = getfltsfromfile('/home/' + user + dir + file, [2])
-    data3 = getfltsfromfile('/home/' + user + dir + file, [4])
+    data3 = getfltsfromfile('/home/' + user + dir + file, [3])
 
     #data1 = data1 - data2
     data1 = data1
