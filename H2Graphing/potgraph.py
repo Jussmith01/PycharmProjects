@@ -76,10 +76,9 @@ def makedatalinear(datain):
 # AM1 vs Act
 # ------------
 user = os.environ['USER']
-#dir = '/Gits/ForcePredictionNetwork/bin/SymFuncLib/Release/'
-dir = '/Research/ANN-Test-Data/GDB-11/train4/'
-
-file = 'formicacidanglescan_test.dat_graph.dat'
+#dir = '/Research/ANN-Test-Data/GDB-11/train4_2/'
+dir = '/Research/ANN-Test-Data/GDB-11/train4_2/'
+file = 'h2oangle_test.dat_graph.dat'
 
 data1 = getfltsfromfile('/home/' + user + dir + file, [0])
 data2 = getfltsfromfile('/home/' + user + dir + file, [1])
@@ -87,6 +86,11 @@ data2 = getfltsfromfile('/home/' + user + dir + file, [1])
 #file = 'graph_C.dat'
 data3 = getfltsfromfile('/home/' + user + dir + file, [2])
 
+#dir = '/Research/ANN-Test-Data/GDB-11/train4/'
+
+#data4 = getfltsfromfile('/home/' + user + dir + file, [2])
+
+#data5 = 0.5 * (data3 + data4)
 
 print('Datasize: ' + str(data2.shape[0]))
 
@@ -109,7 +113,6 @@ plt.title('Comparison of Atomic Environment Vectors (4 Types, 8 Radials, 8 Angul
 plt.ylabel('Element Magnitude')
 plt.xlabel('Atomic Environment Vector Element')
 plt.legend(bbox_to_anchor=(0.75, 0.95), loc=2, borderaxespad=0.)
-
 
 # -----
 # PLOT
