@@ -26,7 +26,7 @@ def angularradialfunctioncos(X,eta,Rc,Rs):
 #               Angular Function
 # ------------------------------------------
 def angularfunction(T,zeta,lam,Ts):
-    F = (2.0**(1.0-zeta)) * ((1.0 + lam * np.cos(T-Ts))**zeta)
+    F = 0.5 * (2.0**(1.0-zeta)) * ((1.0 + lam * np.cos(T-Ts))**zeta)
     return F
 
 
@@ -158,19 +158,19 @@ def show2dcontradialgraph (ShfR,eta,Rc,func,title):
 #         Set Parameters
 #--------------------------------
 #File nam
-pf = 'rHCNO-16-a8-12.params' # Output filename
+pf = 'rHCNO-64-a4-16.params' # Output filename
 
 
-Nrr = 16
+Nrr = 64
 Na = 4
-Nar = 8
-Nzt = 12
+Nar = 4
+Nzt = 16
 
 Rc = 6.0
 Atyp = '[H,C,O,N]'
-EtaR = 16.0
+EtaR = 32.0
 EtaA1 = 2.0
-Zeta = 16.0
+Zeta = 32.0
 
 
 # ****************************************************
@@ -205,7 +205,8 @@ Nat = Nar * (Na*(Na+1)/2) * Nzt
 for i in range(0,Nzt):
     stepsize = (2.0 * np.pi) / (float(Nzt))
     step = i*stepsize
-    computeangulardataset(0.0,2.0*np.pi,1000,Zeta,1.0,step,plt, 'red', 'zeta = ' + str(Zeta))
+    #computeangulardataset(0.0,2.0*np.pi,1000,Zeta,1.0,step,plt, 'red', 'zeta = ' + str(Zeta))
+    computeangulardataset(-np.pi,np.pi,1000,Zeta,1.0,step,plt, 'red', 'zeta = ' + str(Zeta))
     ShfZ[i] = step
 
 plt.title('Angular (Only Angular) Environment Functions (AAEF)')

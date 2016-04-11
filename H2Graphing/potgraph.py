@@ -21,8 +21,7 @@ def getfltsfromfile(file, cols):
 
     # Truncate and convert to numpy array
     nparray = np.array(infile_s)
-    #print (nparray)
-    data = nparray[:-1, cols]
+    data = nparray[:, cols]
     data = np.array(data, dtype=float)
     return data
 
@@ -77,14 +76,19 @@ def makedatalinear(datain):
 # AM1 vs Act
 # ------------
 user = os.environ['USER']
-dir = '/Research/ANN-Test-Data/GDB-11-B3LYP-6-31gd/train4/'
+#dir = '/Gits/ForcePredictionNetwork/bin/SymFuncLib/Release/'
+dir = '/Research/ANN-Test-Data/GDB-11/train4/'
 
-file = 'h2odimerscan_train.dat_graph.dat'
+file = 'formicacidanglescan_test.dat_graph.dat'
 
 data1 = getfltsfromfile('/home/' + user + dir + file, [0])
 data2 = getfltsfromfile('/home/' + user + dir + file, [1])
+
+#file = 'graph_C.dat'
 data3 = getfltsfromfile('/home/' + user + dir + file, [2])
 
+
+print('Datasize: ' + str(data2.shape[0]))
 
 font = {'family' : 'Bitstream Vera Sans',
         'weight' : 'normal',
@@ -96,16 +100,15 @@ plt.rc('font', **font)
 # --------------
 # Setup 2D Plot
 # --------------
-#plt.plot(data1, data2, color='blue',linewidth=1)
-plt.scatter(data1, data2, color='blue', label='B3LYP',linewidth=4)
-#plt.plot(data1, data3, color='orange',linewidth=1)
-plt.scatter(data1, data3, color='orange', label='NNP',linewidth=4)
+plt.plot(data1, data2, color='blue',linewidth=1)
+plt.scatter(data1, data2, color='blue', label='60 Degrees',linewidth=4)
+plt.plot(data1, data3, color='orange',linewidth=1)
+plt.scatter(data1, data3, color='orange', label='300 Degree',linewidth=4)
 
-plt.title('Formic Acid Reaction Scan H-O1 -> H-O2')
-#plt.title('SCAN: Formic Acid Energy vs. H-O-H Angle')
-plt.xlabel('Reaction Coordinate (Angstroms)')
-plt.ylabel('Energy (Hartrees)')
-plt.legend(bbox_to_anchor=(0.7, 0.3), loc=2, borderaxespad=0.)
+plt.title('Comparison of Atomic Environment Vectors (4 Types, 8 Radials, 8 Angular)')
+plt.ylabel('Element Magnitude')
+plt.xlabel('Atomic Environment Vector Element')
+plt.legend(bbox_to_anchor=(0.75, 0.95), loc=2, borderaxespad=0.)
 
 
 # -----
