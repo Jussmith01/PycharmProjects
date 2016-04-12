@@ -77,8 +77,8 @@ def makedatalinear(datain):
 # ------------
 user = os.environ['USER']
 #dir = '/Research/ANN-Test-Data/GDB-11/train4_2/'
-dir = '/Research/ANN-Test-Data/GDB-11/train4_2/'
-file = 'h2oangle_test.dat_graph.dat'
+dir = '/Research/ANN-Test-Data/GDB-11/train1/'
+file = 'h2o_test.dat_graph.dat'
 
 data1 = getfltsfromfile('/home/' + user + dir + file, [0])
 data2 = getfltsfromfile('/home/' + user + dir + file, [1])
@@ -104,10 +104,10 @@ plt.rc('font', **font)
 # --------------
 # Setup 2D Plot
 # --------------
-plt.plot(data1, data2, color='blue',linewidth=1)
-plt.scatter(data1, data2, color='blue', label='60 Degrees',linewidth=4)
-plt.plot(data1, data3, color='orange',linewidth=1)
-plt.scatter(data1, data3, color='orange', label='300 Degree',linewidth=4)
+#plt.plot(data1, data2, color='blue',linewidth=1)
+plt.scatter(data2, data2, color='blue', label='60 Degrees',linewidth=4)
+#plt.plot(data1, data3, color='orange',linewidth=1)
+plt.scatter(data2, data3, color='orange', label='300 Degree',linewidth=4)
 
 plt.title('Comparison of Atomic Environment Vectors (4 Types, 8 Radials, 8 Angular)')
 plt.ylabel('Element Magnitude')
