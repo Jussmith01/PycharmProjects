@@ -78,8 +78,8 @@ def makedatalinear(datain):
 # ------------
 user = os.environ['USER']
 #dir = '/Research/ANN-Test-Data/GDB-11/train4_2/'
-dir = '/Research/ANN-Test-Data/GDB-11/train4_2/'
-file = 'h2oangle_test.dat_graph.dat'
+dir = '/Research/ANN-Test-Data/GDB-11/train4/'
+file = 'gdb11_s04-52_train.dat_graph.dat'
 
 
 data1 = getfltsfromfile('/home/' + user + dir + file, [0])
@@ -103,9 +103,9 @@ plt.rc('font', **font)
 # Setup 2D Plot
 # --------------
 #plt.plot(data1, data2, color='blue',linewidth=1)
-plt.scatter(data1, data2, color='blue', label='B3LYP',linewidth=4)
+plt.scatter(data2, data2, color='blue', label='B3LYP',linewidth=4)
 #plt.plot(data1, data3, color='orange',linewidth=1)
-plt.scatter(data1, data3, color='orange', label='NNP',linewidth=4)
+plt.scatter(data2, data3, color='orange', label='NNP',linewidth=4)
 #plt.scatter(data1, data4, color='red', label='NNP',linewidth=4)
 #plt.scatter(data1, data5, color='green', label='NNP',linewidth=4)
 
