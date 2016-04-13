@@ -11,27 +11,46 @@ import scipy.interpolate
 # ------------------------------------------
 #          Radial Function Cos
 # ------------------------------------------
+def cutoffcos(X,Rc):
+    Xt = X
+    for i in range(0,Xt.shape[0]):
+        if Xt[i] > Rc:
+            Xt[i] = Rc
+
+    return 0.5 * (np.cos((np.pi * Xt)/Rc) + 1.0)
+
+# ------------------------------------------
+#          Radial Function Cos
+# ------------------------------------------
 def radialfunctioncos(X,eta,Rc,Rs):
-    F = np.exp(-eta*(X-Rs)**2.0) * (0.5 * (np.cos((np.pi * X)/Rc) + 1.0))
+    F = np.exp(-eta*(X-Rs)**2.0) * cutoffcos(X,Rc)
     return F
 
 # ------------------------------------------
 #          Radial Function Cos
 # ------------------------------------------
 def angularradialfunctioncos(X,eta,Rc,Rs):
-    F = np.sqrt(np.exp(-eta*(X-Rs)**2.0) * (0.5 * (np.cos((np.pi * X)/Rc) + 1.0)))
+    F = np.sqrt(np.exp(-eta*(X-Rs)**2.0) * cutoffcos(X,Rc))
     return F
+
+# ------------------------------------------
+#          Radial Function Cos
+# ------------------------------------------
+def angularradialfunctioncos2(X,Y,eta,Rc,Rs):
+    F = np.exp(-eta*((X + Y)/2.0 - Rs)**2) * np.sqrt( cutoffcos(X,Rc) * cutoffcos(Y,Rc) )
+    return F
+
 
 # ------------------------------------------
 #               Angular Function
 # ------------------------------------------
 def angularfunction(T,zeta,lam,Ts):
-    F = (2.0**(1.0-zeta)) * ((1.0 + lam * np.cos(T-Ts))**zeta)
+    F = 0.5 * (2.0**(1.0-zeta)) * ((1.0 + lam * np.cos(T-Ts))**zeta)
     return F
 
 
 # ------------------------------------------
-# Calculate The Steps for a Radial Dataset
+# Calculate The Steps for a Radial Dataset-
 # ------------------------------------------
 def computeradialdataset(x1,x2,pts,eta,Rc,Rs,plt,scolor,slabel):
 
@@ -45,7 +64,7 @@ def computeradialdataset(x1,x2,pts,eta,Rc,Rs,plt,scolor,slabel):
 def computeangularradialdataset(x1,x2,pts,eta,Rc,Rs,plt,scolor,slabel):
 
     X = np.linspace(x1, x2, pts, endpoint=True)
-    F = angularradialfunctioncos(X,X,eta,Rc,Rs)
+    F = angularradialfunctioncos2(X,X,eta,Rc,Rs)
     plt.plot(X, F, label=slabel, color=scolor, linewidth=2)
 
 # ------------------------------------------
@@ -93,7 +112,8 @@ def show2dcontangulargraph (ShfA,ShfZ,eta,zeta,Rc,func,title):
     for i in ShfZ:
         for j in ShfA:
             print( 'ShfZ: ' + str(i) + ' ShfA: ' + str(j) )
-            zt = angularfunction(T,zeta,1.0,i) * angularradialfunctioncos(R,eta,Rc,j) * angularradialfunctioncos(R,eta,Rc,j)
+            #zt = angularfunction(T,zeta,1.0,i) * angularradialfunctioncos(R,eta,Rc,j) * angularradialfunctioncos(R,eta,Rc,j)
+            zt = angularfunction(T,zeta,1.0,i) * angularradialfunctioncos2(R,R,eta,Rc,j)
             #zt = angularradialfunctioncos(R1,R2,eta,Rc,j)
 
             for k in range(1,z.shape[0]):
@@ -158,19 +178,19 @@ def show2dcontradialgraph (ShfR,eta,Rc,func,title):
 #         Set Parameters
 #--------------------------------
 #File nam
-pf = 'rHCNO-12-a6-12.params' # Output filename
+pf = 'rHCNO-32-a10-10.params' # Output filename
 
 
-Nrr = 12
+Nrr = 32
 Na = 4
-Nar = 6
-Nzt = 12
+Nar = 10
+Nzt = 10
 
 Rc = 6.0
 Atyp = '[H,C,O,N]'
-EtaR = 6.0
-EtaA1 = 2.0
-Zeta = 8.0
+EtaR = 32.0
+EtaA1 = 8.0
+Zeta = 32.0
 
 
 # ****************************************************
@@ -205,7 +225,8 @@ Nat = Nar * (Na*(Na+1)/2) * Nzt
 for i in range(0,Nzt):
     stepsize = (2.0 * np.pi) / (float(Nzt))
     step = i*stepsize
-    computeangulardataset(0.0,2.0*np.pi,1000,Zeta,1.0,step,plt, 'red', 'zeta = ' + str(Zeta))
+    #computeangulardataset(0.0,2.0*np.pi,1000,Zeta,1.0,step,plt, 'red', 'zeta = ' + str(Zeta))
+    computeangulardataset(-np.pi,np.pi,1000,Zeta,1.0,step,plt, 'red', 'zeta = ' + str(Zeta))
     ShfZ[i] = step
 
 plt.title('Angular (Only Angular) Environment Functions (AAEF)')
@@ -219,7 +240,8 @@ ShfA = np.zeros(Nar)
 for i in range(0,Nar):
     stepsize = Rc / float(Nar+1.0)
     step = (i * stepsize + 0.5)
-    computeradialdataset(0.5, Rc, 1000, EtaA1, Rc,step, plt, 'blue', 'eta = '+ str(EtaA1))
+    #computeradialdataset(0.5, Rc, 1000, EtaA1, Rc,step, plt, 'blue', 'eta = '+ str(EtaA1))
+    computeangularradialdataset(0.5, Rc, 1000, EtaA1, Rc,step, plt, 'blue', 'eta = '+ str(EtaA1))
     ShfA[i] = step
 
 plt.title('Angular (Only Radial) Environment Functions (AREF)')

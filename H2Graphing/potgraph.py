@@ -21,8 +21,7 @@ def getfltsfromfile(file, cols):
 
     # Truncate and convert to numpy array
     nparray = np.array(infile_s)
-    #print (nparray)
-    data = nparray[:-1, cols]
+    data = nparray[:, cols]
     data = np.array(data, dtype=float)
     return data
 
@@ -78,19 +77,23 @@ def makedatalinear(datain):
 # ------------
 user = os.environ['USER']
 #dir = '/Research/ANN-Test-Data/GDB-11/train4_2/'
-dir = '/Research/ANN-Test-Data/GDB-11/train4/'
-file = 'gdb11_s04-52_train.dat_graph.dat'
-
+#dir = '/Research/ANN-Test-Data/GDB-11/train1/'
+dir = '/Gits/ForcePredictionNetwork/bin/SymFuncLib/Release/'
+file = 'graph_N.dat'
 
 data1 = getfltsfromfile('/home/' + user + dir + file, [0])
 data2 = getfltsfromfile('/home/' + user + dir + file, [1])
-data3 = getfltsfromfile('/home/' + user + dir + file, [2])
+
+#file = 'graph1_N.dat'
+#data3 = getfltsfromfile('/home/' + user + dir + file, [1])
 
 #dir = '/Research/ANN-Test-Data/GDB-11/train4/'
 
 #data4 = getfltsfromfile('/home/' + user + dir + file, [2])
 
 #data5 = 0.5 * (data3 + data4)
+
+print('Datasize: ' + str(data2.shape[0]))
 
 font = {'family' : 'Bitstream Vera Sans',
         'weight' : 'normal',
@@ -103,9 +106,10 @@ plt.rc('font', **font)
 # Setup 2D Plot
 # --------------
 #plt.plot(data1, data2, color='blue',linewidth=1)
-plt.scatter(data2, data2, color='blue', label='B3LYP',linewidth=4)
+#plt.scatter(data1, data3, color='orange', label='NNP',linewidth=4)
+plt.scatter(data1, data2, color='blue', label='B3LYP',linewidth=4)
 #plt.plot(data1, data3, color='orange',linewidth=1)
-plt.scatter(data2, data3, color='orange', label='NNP',linewidth=4)
+
 #plt.scatter(data1, data4, color='red', label='NNP',linewidth=4)
 #plt.scatter(data1, data5, color='green', label='NNP',linewidth=4)
 
