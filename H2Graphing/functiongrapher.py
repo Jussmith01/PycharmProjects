@@ -3,6 +3,7 @@ __author__ = 'Justin Smith'
 from matplotlib import pyplot as plt
 import numpy as np
 import scipy.interpolate
+import matplotlib as mpl
 
 #--------------------------------
 #           Functions
@@ -48,6 +49,14 @@ def angularfunction(T,zeta,lam,Ts):
     F = 0.5 * (2.0**(1.0-zeta)) * ((1.0 + lam * np.cos(T-Ts))**zeta)
     return F
 
+# ------------------------------------------
+# Calculate The Steps for a Radial Dataset-
+# ------------------------------------------
+def computecutoffdataset(x1,x2,pts,Rc,plt,scolor,slabel):
+
+    X = np.linspace(x1, x2, pts, endpoint=True)
+    F = cutoffcos(X,Rc)
+    plt.plot(X, F, label=slabel, color=scolor, linewidth=2)
 
 # ------------------------------------------
 # Calculate The Steps for a Radial Dataset-
@@ -74,7 +83,7 @@ def computeangulardataset(t1,t2,pts,zeta,lam,Ts,plt,scolor,slabel):
 
     T = np.linspace(t1, t2, pts, endpoint=True)
     F = angularfunction(T,zeta,lam,Ts)
-    plt.plot(T, F, label=slabel, color=scolor)
+    plt.plot(T, F, label=slabel, color=scolor, linewidth=2)
 
 # ------------------------------------------
 # Calculate The Steps for an angular Dataset
@@ -181,19 +190,23 @@ def show2dcontradialgraph (ShfR,eta,Rc,func,title):
 pf = 'rHCNO-12-a6-12.params' # Output filename
 
 
-Nrr = 12
+Nrr = 8
 Na = 4
-Nar = 6
-Nzt = 12
+Nar = 1
+Nzt = 2
 
 Rc = 6.0
 Atyp = '[H,C,O,N]'
-EtaR = 8.0
-EtaA1 = 4.0
-Zeta = 16.0
+EtaR = 4.0
+EtaA1 = 0.001
+Zeta = 2.0
 
 
 # ****************************************************
+cmap = mpl.cm.gnuplot
+
+#computecutoffdataset(0.0,Rc,1000,Rc,plt,'blue','cutoff function')
+#plt.show()
 
 #--------------------------------
 #         Main Program
@@ -206,12 +219,14 @@ ShfR = np.zeros(Nrr)
 for i in range(0,Nrr):
     stepsize = Rc / float(Nrr+1.0)
     step = i * stepsize + 0.50
-    computeradialdataset(0.5, Rc, 1000, EtaR, Rc,step, plt, 'blue', 'eta = '+ str(EtaR))
+    color = i/float(Nrr)
+    computeradialdataset(0.5, Rc, 1000, EtaR, Rc,step, plt, cmap(color), '$R_s$ = '+ "{:.2f}".format(step))
     ShfR[i] = step
 
-plt.title('Radial Environment Functions (REF)')
+plt.title('Radial Environment Functions (REF) \n' + r"${\eta}$ = " + "{:.2f}".format(EtaR))
 plt.ylabel('REF Output')
 plt.xlabel('Angstroms')
+plt.legend(bbox_to_anchor=(0.7, 0.95), loc=2, borderaxespad=0.)
 plt.show()
 
 #Uncomment for pretty contour plots of the radial environments using a sum and then max function
@@ -225,13 +240,14 @@ Nat = Nar * (Na*(Na+1)/2) * Nzt
 for i in range(0,Nzt):
     stepsize = (2.0 * np.pi) / (float(Nzt))
     step = i*stepsize
-    #computeangulardataset(0.0,2.0*np.pi,1000,Zeta,1.0,step,plt, 'red', 'zeta = ' + str(Zeta))
-    computeangulardataset(-np.pi,np.pi,1000,Zeta,1.0,step,plt, 'red', 'zeta = ' + str(Zeta))
+    color = i/float(Nrr)
+    computeangulardataset(-np.pi,np.pi,1000,Zeta,1.0,step,plt, cmap(color), r"${\theta}_s$ = " + "{:.2f}".format(step))
     ShfZ[i] = step
 
-plt.title('Angular (Only Angular) Environment Functions (AAEF)')
-plt.ylabel('AAEF Output')
+plt.title('Angular Environment Functions (AEF) \n' + r"${\zeta}$ = " + "{:.2f}".format(Zeta))
+plt.ylabel('AEF Output')
 plt.xlabel('Radians')
+plt.legend(bbox_to_anchor=(0.7, 0.95), loc=2, borderaxespad=0.)
 plt.show()
 
 
@@ -240,18 +256,19 @@ ShfA = np.zeros(Nar)
 for i in range(0,Nar):
     stepsize = Rc / float(Nar+1.0)
     step = (i * stepsize + 0.5)
-    #computeradialdataset(0.5, Rc, 1000, EtaA1, Rc,step, plt, 'blue', 'eta = '+ str(EtaA1))
-    computeangularradialdataset(0.5, Rc, 1000, EtaA1, Rc,step, plt, 'blue', 'eta = '+ str(EtaA1))
+    color = i/float(Nrr)
+    computeangularradialdataset(0.5, Rc, 1000, EtaA1, Rc,step, plt, cmap(color), r"${R_s}$ = " + "{:.2f}".format(step))
     ShfA[i] = step
 
 plt.title('Angular (Only Radial) Environment Functions (AREF)')
 plt.ylabel('AREF Output')
 plt.xlabel('Angstroms')
+plt.legend(bbox_to_anchor=(0.7, 0.95), loc=2, borderaxespad=0.)
 plt.show()
 
 #Uncomment for pretty contour plots of the angular environments using a sum and then max function
-#show2dcontangulargraph(ShfA,ShfZ,EtaA1,Zeta,Rc,add,'Sum Angular Output')
-#show2dcontangulargraph(ShfA,ShfZ,EtaA1,Zeta,Rc,max,'Max Angular Output')
+show2dcontangulargraph(ShfA,ShfZ,EtaA1,Zeta,Rc,add,'Sum Angular Output')
+show2dcontangulargraph(ShfA,ShfZ,EtaA1,Zeta,Rc,max,'Max Angular Output')
 
 Nt = Nat + Nrt
 print('Total Environmental Vector Size: ',int(Nt))
@@ -260,12 +277,12 @@ print('Total Environmental Vector Size: ',int(Nt))
 f = open(pf,'w')
 
 #Write data to parameters file
-f.write('Rc = ' + "{:.4}".format(Rc) + '\n')
-f.write('EtaR = ' + "{:.4}".format(EtaR) + '\n')
+f.write('Rc = ' + "{:.4e}".format(Rc) + '\n')
+f.write('EtaR = ' + "{:.4e}".format(EtaR) + '\n')
 printdatatofile(f,'ShfR',ShfR,Nrr)
-f.write('Zeta = ' + "{:.4}".format(Zeta) + '\n')
+f.write('Zeta = ' + "{:.4e}".format(Zeta) + '\n')
 printdatatofile(f,'ShfZ',ShfZ,Nzt)
-f.write('EtaA = ' + "{:.4}".format(EtaA1) + '\n')
+f.write('EtaA = ' + "{:.4e}".format(EtaA1) + '\n')
 printdatatofile(f,'ShfA',ShfA,Nar)
 f.write('Atyp = ' + Atyp + '\n')
 
