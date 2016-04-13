@@ -187,8 +187,7 @@ def show2dcontradialgraph (ShfR,eta,Rc,func,title):
 #         Set Parameters
 #--------------------------------
 #File nam
-pf = 'rHCNO-12-a6-12.params' # Output filename
-
+pf = 'rHCNO-32-a10-10.params' # Output filename
 
 Nrr = 8
 Na = 4
@@ -200,7 +199,6 @@ Atyp = '[H,C,O,N]'
 EtaR = 4.0
 EtaA1 = 0.001
 Zeta = 2.0
-
 
 # ****************************************************
 cmap = mpl.cm.gnuplot
