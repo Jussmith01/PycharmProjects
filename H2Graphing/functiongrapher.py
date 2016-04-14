@@ -38,7 +38,7 @@ def angularradialfunctioncos(X,eta,Rc,Rs):
 #          Radial Function Cos
 # ------------------------------------------
 def angularradialfunctioncos2(X,Y,eta,Rc,Rs):
-    F = np.exp(-eta*((X + Y)/2.0 - Rs)**2) * np.sqrt( cutoffcos(X,Rc) * cutoffcos(Y,Rc) )
+    F = np.exp(-eta*((X + Y)/2.0 - Rs)**2) * cutoffcos(X,Rc) * cutoffcos(Y,Rc)
     return F
 
 
@@ -191,17 +191,17 @@ pf = 'rHCNO-32-a10-10.params' # Output filename
 
 Nrr = 8
 Na = 4
-Nar = 1
+Nar = 8
 Nzt = 2
 
 Rc = 6.0
 Atyp = '[H,C,O,N]'
 EtaR = 4.0
-EtaA1 = 0.001
+EtaA1 = 2.0
 Zeta = 2.0
 
 # ****************************************************
-cmap = mpl.cm.gnuplot
+cmap = mpl.cm.brg
 
 #computecutoffdataset(0.0,Rc,1000,Rc,plt,'blue','cutoff function')
 #plt.show()
@@ -235,17 +235,30 @@ ShfZ = np.zeros(Nzt)
 
 Nat = Nar * (Na*(Na+1)/2) * Nzt
 
+#for i in range(0,Nzt):
+#    stepsize = (2.0 * np.pi) / (float(Nzt))
+#    step = i*stepsize
+#    color = i/float(Nrr)
+#    computeangulardataset(-np.pi,np.pi,1000,Zeta,1.0,step,plt, cmap(color), r"${\theta}_s$ = " + "{:.2f}".format(step))
+#    ShfZ[i] = step
+
 for i in range(0,Nzt):
     stepsize = (2.0 * np.pi) / (float(Nzt))
     step = i*stepsize
+    stepp = 0
+    if i is 0:
+        stepp = -1
+    else:
+        stepp = 1
     color = i/float(Nrr)
-    computeangulardataset(-np.pi,np.pi,1000,Zeta,1.0,step,plt, cmap(color), r"${\theta}_s$ = " + "{:.2f}".format(step))
+    computeangulardataset(-np.pi,np.pi,1000,2.0,1.0,step,plt, cmap(color), r"${\lambda}$ = " + "{:.2f}".format(stepp))
     ShfZ[i] = step
 
-plt.title('Angular Environment Functions (AEF) \n' + r"${\zeta}$ = " + "{:.2f}".format(Zeta))
-plt.ylabel('AEF Output')
+#plt.title('Modified Angular Environment Functions (AEF) \n' + r"${\zeta}$ = " + "{:.2f}".format(Zeta))
+plt.title('Original Angular Environment Functions (OAEF) \n' + r"${\zeta}$ = " + "{:.2f}".format(2.0))
+plt.ylabel('OAEF Output')
 plt.xlabel('Radians')
-plt.legend(bbox_to_anchor=(0.7, 0.95), loc=2, borderaxespad=0.)
+plt.legend(bbox_to_anchor=(0.55, 0.95), loc=2, borderaxespad=0.)
 plt.show()
 
 
@@ -265,8 +278,8 @@ plt.legend(bbox_to_anchor=(0.7, 0.95), loc=2, borderaxespad=0.)
 plt.show()
 
 #Uncomment for pretty contour plots of the angular environments using a sum and then max function
-show2dcontangulargraph(ShfA,ShfZ,EtaA1,Zeta,Rc,add,'Sum Angular Output')
-show2dcontangulargraph(ShfA,ShfZ,EtaA1,Zeta,Rc,max,'Max Angular Output')
+#show2dcontangulargraph(ShfA,ShfZ,EtaA1,Zeta,Rc,add,'Sum Angular Output')
+#show2dcontangulargraph(ShfA,ShfZ,EtaA1,Zeta,Rc,max,'Max Angular Output')
 
 Nt = Nat + Nrt
 print('Total Environmental Vector Size: ',int(Nt))
