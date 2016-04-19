@@ -1,6 +1,7 @@
 from __future__ import print_function
 from rdkit import Chem
 from rdkit.Chem import AllChem
+import random
 import numpy as np
 import re
 
@@ -19,14 +20,14 @@ def formatsmilesfile(file):
 
 #-------- Parameters -----------
 
-R = 0.2
-fpf = 'gdb11_s06' #Filename prefix
-wdir = '/home/jujuman/Research/ANN-Test-Data/GDB-11/dnntsgdb11_06/' #working directory
-smfile = '/home/jujuman/Research/ANN-Test-Data/GDB-11/smiledata/gdb11_size06.smi' # Smiles file
+R = 0.3
+fpf = 'gdb11_s10' #Filename prefix
+wdir = '/home/jujuman/Research/ANN-Test-Data/GDB-11/molgentest/' #working directory
+smfile = '/home/jujuman/Research/ANN-Test-Data/GDB-11/smiledata/gdb11_size10.smi' # Smiles file
 At = ['C', 'O', 'N'] # Hydrogens added after check
 
-TSS='1000' # Training Set Size
-VSS='250' # Validation set size
+TSS='50' # Training Set Size
+VSS='0' # Validation set size
 LOT='UB3LYP/6-31g*' # High level of theory
 rdm='uniform' #Random dist
 type='random'
@@ -61,7 +62,7 @@ for m in molecules:
         if count is 0:
             typecheck = True
 
-    if typecheck is False:
+    if typecheck is False and random.random() < 0.00001:
 
         f = open(wdir + fpf + '-' + str(Nmol) + '.ipt' , 'w')
 
@@ -106,6 +107,10 @@ for m in molecules:
         mdcrd = open(wdir + 'molecule-' + str(Nmol) + '.xyz' , 'w')
         mdcrd.write('\n' + str(m.GetNumAtoms()) + '\n')
 
+        if m.GetNumAtoms() > 32:
+            print('ERROR: Too many atoms for SymFuncLib.')
+            exit(1)
+
         for i in range (0,m.GetNumAtoms()):
             pos = m.GetConformer().GetAtomPosition(i)
             sym = m.GetAtomWithIdx(i).GetSymbol()
@@ -125,5 +130,5 @@ for m in molecules:
         f.write ('&\n\n')
 
         Nmol += 1 #increment counter
-    else:
-        print('Not Using Structure with Smiles: ', Chem.MolToSmiles(m))
+    #else:
+        #print('Not Using Structure with Smiles: ', Chem.MolToSmiles(m))
