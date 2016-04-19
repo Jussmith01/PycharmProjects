@@ -77,15 +77,15 @@ def makedatalinear(datain):
 # ------------
 user = os.environ['USER']
 #dir = '/Research/ANN-Test-Data/GDB-11/train4_2/'
-#dir = '/Research/ANN-Test-Data/GDB-11/train1/'
-dir = '/Gits/ForcePredictionNetwork/bin/SymFuncLib/Release/'
-file = 'graph_N.dat'
+dir = '/Research/ANN-Test-Data/GDB-11/train4/'
+#dir = '/Gits/ForcePredictionNetwork/bin/SymFuncLib/Release/'
+file = 'formrxn_test.dat_graph.dat'
 
 data1 = getfltsfromfile('/home/' + user + dir + file, [0])
 data2 = getfltsfromfile('/home/' + user + dir + file, [1])
 
 #file = 'graph1_N.dat'
-#data3 = getfltsfromfile('/home/' + user + dir + file, [1])
+data3 = getfltsfromfile('/home/' + user + dir + file, [2])
 
 #dir = '/Research/ANN-Test-Data/GDB-11/train4/'
 
@@ -106,7 +106,7 @@ plt.rc('font', **font)
 # Setup 2D Plot
 # --------------
 #plt.plot(data1, data2, color='blue',linewidth=1)
-#plt.scatter(data1, data3, color='orange', label='NNP',linewidth=4)
+plt.scatter(data1, data3, color='orange', label='NNP',linewidth=4)
 plt.scatter(data1, data2, color='blue', label='B3LYP',linewidth=4)
 #plt.plot(data1, data3, color='orange',linewidth=1)
 
