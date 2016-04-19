@@ -38,7 +38,7 @@ def angularradialfunctioncos(X,eta,Rc,Rs):
 #          Radial Function Cos
 # ------------------------------------------
 def angularradialfunctioncos2(X,Y,eta,Rc,Rs):
-    F = np.exp(-eta*((X + Y)/2.0 - Rs)**2) * cutoffcos(X,Rc) * cutoffcos(Y,Rc)
+    F = np.exp(-eta*((X + Y)/2.0 - Rs)**2) * np.sqrt(cutoffcos(X,Rc) * cutoffcos(Y,Rc))
     return F
 
 
@@ -187,18 +187,19 @@ def show2dcontradialgraph (ShfR,eta,Rc,func,title):
 #         Set Parameters
 #--------------------------------
 #File nam
-pf = 'rHCNO-32-a10-10.params' # Output filename
+pf = 'rHCNO-16-a8-8.params' # Output filename
 
-Nrr = 8
+Nrr = 16
 Na = 4
 Nar = 8
-Nzt = 2
+Nzt = 8
 
+TM = 1
 Rc = 6.0
 Atyp = '[H,C,O,N]'
-EtaR = 4.0
-EtaA1 = 2.0
-Zeta = 2.0
+EtaR = np.array([16.0])
+EtaA = np.array([6.0])
+Zeta = np.array([20.0])
 
 # ****************************************************
 cmap = mpl.cm.brg
@@ -218,10 +219,10 @@ for i in range(0,Nrr):
     stepsize = Rc / float(Nrr+1.0)
     step = i * stepsize + 0.50
     color = i/float(Nrr)
-    computeradialdataset(0.5, Rc, 1000, EtaR, Rc,step, plt, cmap(color), '$R_s$ = '+ "{:.2f}".format(step))
+    computeradialdataset(0.5, Rc, 1000, EtaR[0], Rc,step, plt, cmap(color), '$R_s$ = '+ "{:.2f}".format(step))
     ShfR[i] = step
 
-plt.title('Radial Environment Functions (REF) \n' + r"${\eta}$ = " + "{:.2f}".format(EtaR))
+plt.title('Radial Environment Functions (REF) \n' + r"${\eta}$ = " + "{:.2f}".format(EtaR[0]))
 plt.ylabel('REF Output')
 plt.xlabel('Angstroms')
 plt.legend(bbox_to_anchor=(0.7, 0.95), loc=2, borderaxespad=0.)
@@ -235,27 +236,27 @@ ShfZ = np.zeros(Nzt)
 
 Nat = Nar * (Na*(Na+1)/2) * Nzt
 
-#for i in range(0,Nzt):
-#    stepsize = (2.0 * np.pi) / (float(Nzt))
-#    step = i*stepsize
-#    color = i/float(Nrr)
-#    computeangulardataset(-np.pi,np.pi,1000,Zeta,1.0,step,plt, cmap(color), r"${\theta}_s$ = " + "{:.2f}".format(step))
-#    ShfZ[i] = step
-
 for i in range(0,Nzt):
     stepsize = (2.0 * np.pi) / (float(Nzt))
     step = i*stepsize
-    stepp = 0
-    if i is 0:
-        stepp = -1
-    else:
-        stepp = 1
     color = i/float(Nrr)
-    computeangulardataset(-np.pi,np.pi,1000,2.0,1.0,step,plt, cmap(color), r"${\lambda}$ = " + "{:.2f}".format(stepp))
+    computeangulardataset(-np.pi,np.pi,1000,Zeta[0],1.0,step,plt, cmap(color), r"${\theta}_s$ = " + "{:.2f}".format(step))
     ShfZ[i] = step
 
-#plt.title('Modified Angular Environment Functions (AEF) \n' + r"${\zeta}$ = " + "{:.2f}".format(Zeta))
-plt.title('Original Angular Environment Functions (OAEF) \n' + r"${\zeta}$ = " + "{:.2f}".format(2.0))
+#for i in range(0,Nzt):
+#    stepsize = (2.0 * np.pi) / (float(Nzt))
+#    step = i*stepsize
+#    stepp = 0
+#    if i is 0:
+#        stepp = 0.1
+#    else:
+#        stepp = 1
+#    color = i/float(Nrr)
+#    computeangulardataset(-np.pi,np.pi,1000,2.0,1.0,step,plt, cmap(color), r"${\lambda}$ = " + "{:.2f}".format(stepp))
+#    ShfZ[i] = step
+
+plt.title('Modified Angular Environment Functions (AEF) \n' + r"${\zeta}$ = " + "{:.2f}".format(Zeta[0]))
+# plt.title('Original Angular Environment Functions (OAEF) \n' + r"${\zeta}$ = " + "{:.2f}".format(2.0))
 plt.ylabel('OAEF Output')
 plt.xlabel('Radians')
 plt.legend(bbox_to_anchor=(0.55, 0.95), loc=2, borderaxespad=0.)
@@ -268,7 +269,7 @@ for i in range(0,Nar):
     stepsize = Rc / float(Nar+1.0)
     step = (i * stepsize + 0.5)
     color = i/float(Nrr)
-    computeangularradialdataset(0.5, Rc, 1000, EtaA1, Rc,step, plt, cmap(color), r"${R_s}$ = " + "{:.2f}".format(step))
+    computeangularradialdataset(0.5, Rc, 1000, EtaA[0], Rc,step, plt, cmap(color), r"${R_s}$ = " + "{:.2f}".format(step))
     ShfA[i] = step
 
 plt.title('Angular (Only Radial) Environment Functions (AREF)')
@@ -288,12 +289,16 @@ print('Total Environmental Vector Size: ',int(Nt))
 f = open(pf,'w')
 
 #Write data to parameters file
+f.write('TM = ' + str(TM) + '\n')
 f.write('Rc = ' + "{:.4e}".format(Rc) + '\n')
-f.write('EtaR = ' + "{:.4e}".format(EtaR) + '\n')
+#f.write('EtaR = ' + "{:.4e}".format(EtaR) + '\n')
+printdatatofile(f,'EtaR',EtaR,EtaR.shape[0])
 printdatatofile(f,'ShfR',ShfR,Nrr)
-f.write('Zeta = ' + "{:.4e}".format(Zeta) + '\n')
+#f.write('Zeta = ' + "{:.4e}".format(Zeta) + '\n')
+printdatatofile(f,'Zeta',Zeta,Zeta.shape[0])
 printdatatofile(f,'ShfZ',ShfZ,Nzt)
-f.write('EtaA = ' + "{:.4e}".format(EtaA1) + '\n')
+#f.write('EtaA = ' + "{:.4e}".format(EtaA1) + '\n')
+printdatatofile(f,'EtaA',EtaA,EtaA.shape[0])
 printdatatofile(f,'ShfA',ShfA,Nar)
 f.write('Atyp = ' + Atyp + '\n')
 
