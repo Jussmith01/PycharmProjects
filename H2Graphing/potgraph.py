@@ -78,15 +78,17 @@ user = os.environ['USER']
 #dir = '/Research/ANN-Test-Data/GDB-11/train2/'
 #dir2 = '/Research/ANN-Test-Data/GDB-11/train3/'
 #dir = '/Research/ANN-Test-Data/GDB-11/train1/'
-dir = '/Research/ANN-Test-Data/GDB-11/train3/'
-file = 'ANN-O.nnf_iptmaskgraph.dat'
+dir = '/Research/ANN-Test-Data/GDB-11/train3_org/'
+file = 'gdb11_s10-4_train.dat_graph.dat'
 
 data1 = getfltsfromfile('/home/' + user + dir + file, [0])
 data2 = getfltsfromfile('/home/' + user + dir + file, [1])
+data3 = getfltsfromfile('/home/' + user + dir + file, [2])
 
-file = 'CHECKWIEGHTS.dat'
-data3 = getfltsfromfile('/home/' + user + dir + file, [0])
+dir = '/Research/ANN-Test-Data/GDB-11/train3/'
+file = 'gdb11_s10-4_train.dat_graph.dat'
 
+data4 = getfltsfromfile('/home/' + user + dir + file, [2])
 
 #file = 'graph_C.dat'
 
@@ -118,10 +120,11 @@ s = 272
 # --------------
 #plt.plot(data1, data2, color='blue',linewidth=1)
 #plt.plot(data2, data2, color='blue', label='B3LYP',linewidth=4)
-plt.plot(data1, data2, color='blue', label='2',linewidth=1)
-plt.scatter(data1, data2, color='blue', label='2',linewidth=1)
-for i in range(0,15):
-    plt.plot(data1, data3[i*s:s + i * s], color='green', label='Weights ' + str(i),linewidth=1)
+#plt.plot(data2, data2, color='blue', label='2',linewidth=1)
+plt.plot(data2, data2, color='blue', label='2',linewidth=1)
+plt.scatter(data2, data3, color='red', label='2',linewidth=1)
+plt.scatter(data2, data4[100:150], color='green', label='2',linewidth=1)
+#plt.plot(data2, data3, color='green', label='Weights',linewidth=1)
 #plt.plot(data1, data4, color='red', label='4',linewidth=1)
 #plt.scatter(data1[0:712], data2[0:712], color='blue', label='NNP',linewidth=4)
 #plt.scatter(data2, data4, color='red', label='NNP',linewidth=4)
