@@ -78,7 +78,7 @@ user = os.environ['USER']
 #dir = '/Research/ANN-Test-Data/GDB-11/train2/'
 #dir2 = '/Research/ANN-Test-Data/GDB-11/train3/'
 #dir = '/Research/ANN-Test-Data/GDB-11/train1/'
-dir = '/Research/ANN-Test-Data/GDB-11/train3/'
+dir = '/Research/ANN-Test-Data/GDB-11/train4/'
 file = 'ANN-O.nnf_iptmaskgraph.dat'
 
 data1 = getfltsfromfile('/home/' + user + dir + file, [0])
@@ -112,7 +112,9 @@ font = {'family' : 'Bitstream Vera Sans',
 
 plt.rc('font', **font)
 
-s = 272
+cmap = mpl.cm.brg
+
+s = 288
 # --------------
 # Setup 2D Plot
 # --------------
@@ -120,8 +122,9 @@ s = 272
 #plt.plot(data2, data2, color='blue', label='B3LYP',linewidth=4)
 plt.plot(data1, data2, color='blue', label='2',linewidth=1)
 plt.scatter(data1, data2, color='blue', label='2',linewidth=1)
-for i in range(0,15):
-    plt.plot(data1, data3[i*s:s + i * s], color='green', label='Weights ' + str(i),linewidth=1)
+for i in range(0,16):
+    color=(i+1)/float(16)
+    plt.plot(data1, data3[i*s:s + i * s], color=cmap(color), label='Weights ' + str(i),linewidth=1)
 #plt.plot(data1, data4, color='red', label='4',linewidth=1)
 #plt.scatter(data1[0:712], data2[0:712], color='blue', label='NNP',linewidth=4)
 #plt.scatter(data2, data4, color='red', label='NNP',linewidth=4)
@@ -133,7 +136,7 @@ plt.title("Modified and type differentiated \n atomic environment vector (AEV)")
 #plt.title('SCAN: Formic Acid Energy vs. H-O-H Angle')
 plt.xlabel('AEV element')
 plt.ylabel('Element magnitude')
-plt.legend(bbox_to_anchor=(0.7, 0.9), loc=2, borderaxespad=0.)
+#plt.legend(bbox_to_anchor=(0.7, 0.9), loc=2, borderaxespad=0.)
 
 
 # -----
