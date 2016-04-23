@@ -229,8 +229,8 @@ plt.legend(bbox_to_anchor=(0.7, 0.95), loc=2, borderaxespad=0.)
 plt.show()
 
 #Uncomment for pretty contour plots of the radial environments using a sum and then max function
-#show2dcontradialgraph(ShfR,EtaR,Rc,add,'Sum Radial Output')
-#show2dcontradialgraph(ShfR,EtaR,Rc,max,'Max Radial Output')
+show2dcontradialgraph(ShfR,EtaR,Rc,add,'Sum Radial Output')
+show2dcontradialgraph(ShfR,EtaR,Rc,max,'Max Radial Output')
 
 ShfZ = np.zeros(Nzt)
 
