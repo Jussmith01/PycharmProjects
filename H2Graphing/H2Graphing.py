@@ -2,6 +2,34 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 
+font = {'family' : 'normal',
+        'weight' : 'normal',
+        'size'   : 16}
+
+plt.rc('font', **font)
+
+# Color map
+cmap = mpl.cm.nipy_spectral
+
+data1 = np.array([[1,2,3,4,5],[0.05288,0.09641,0.07789,0.09724,0.09904]],dtype=float)
+data2 = np.array([[1,2,3,4,5],[0.24938,0.76550,0.88874,0.82410,1.04419]],dtype=float)
+
+plt.plot(data1[0,:], data1[1,:], color='green',linewidth=3)
+plt.scatter(data1[0,:], data1[1,:], color='green', label='Modified SF',linewidth=6)
+
+plt.plot(data2[0,:], data2[1,:], color='red',linewidth=3)
+plt.scatter(data2[0,:], data2[1,:], color='red', label='Original SF',linewidth=6)
+
+#plt.title(r'$log_{10}(Cost)$ with increaing GDB set size')
+plt.xlabel('GDB-N training set size')
+plt.ylabel('RMSE (eV)')
+plt.legend(bbox_to_anchor=(0.05, 0.95), loc=2, borderaxespad=0.)
+
+# -----
+# PLOT
+# -----
+plt.show()
+
 # ------------
 # AM1 vs Act
 # ------------
@@ -24,15 +52,6 @@ data5[1,:] = np.log10(data5[1,:])
 data6[1,:] = np.log10(data6[1,:])
 data7[1,:] = np.log10(data7[1,:])
 data8[1,:] = np.log10(data8[1,:])
-
-font = {'family' : 'normal',
-        'weight' : 'normal',
-        'size'   : 16}
-
-plt.rc('font', **font)
-
-# Color map
-cmap = mpl.cm.nipy_spectral
 
 # --------------
 # Setup 2D Plot

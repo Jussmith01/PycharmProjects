@@ -187,19 +187,19 @@ def show2dcontradialgraph (ShfR,eta,Rc,func,title):
 #         Set Parameters
 #--------------------------------
 #File nam
-pf = 'rHCNO-8-a4-6.params' # Output filename
+pf = 'rHCNO-12-a5-6.params' # Output filename
 
-Nrr = 8
+Nrr = 12
 Na = 4
-Nar = 4
+Nar = 5
 Nzt = 6
 
 TM = 1
-Rc = 4.0
+Rc = 6.0
 Atyp = '[H,C,O,N]'
-EtaR = np.array([4.0])
-EtaA = np.array([2.0])
-Zeta = np.array([8.0])
+EtaR = np.array([8.0])
+EtaA = np.array([3.0])
+Zeta = np.array([10.0])
 
 # ****************************************************
 cmap = mpl.cm.brg
@@ -229,8 +229,8 @@ plt.legend(bbox_to_anchor=(0.7, 0.95), loc=2, borderaxespad=0.)
 plt.show()
 
 #Uncomment for pretty contour plots of the radial environments using a sum and then max function
-show2dcontradialgraph(ShfR,EtaR,Rc,add,'Sum Radial Output')
-show2dcontradialgraph(ShfR,EtaR,Rc,max,'Max Radial Output')
+#show2dcontradialgraph(ShfR,EtaR,Rc,add,'Sum Radial Output')
+#show2dcontradialgraph(ShfR,EtaR,Rc,max,'Max Radial Output')
 
 ShfZ = np.zeros(Nzt)
 
