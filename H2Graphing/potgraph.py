@@ -78,8 +78,8 @@ user = os.environ['USER']
 #dir = '/Research/ANN-Test-Data/GDB-11/train2/'
 #dir2 = '/Research/ANN-Test-Data/GDB-11/train3/'
 #dir = '/Research/ANN-Test-Data/GDB-11/train1/'
-dir = '/Research/ANN-Test-Data/GDB-11/train5/'
-file = 'formicacidanglescan_test.dat_graph.dat'
+dir = '/Research/ANN-Test-Data/GDB-11/train4_2/'
+file = 'formrxn_test.dat_graph.dat'
 
 data1 = getfltsfromfile('/home/' + user + dir + file, [0])
 data2 = getfltsfromfile('/home/' + user + dir + file, [1])
