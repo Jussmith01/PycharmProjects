@@ -88,6 +88,29 @@ def computeangulardataset(t1,t2,pts,zeta,lam,Ts,plt,scolor,slabel):
 # ------------------------------------------
 # Calculate The Steps for an angular Dataset
 # ------------------------------------------
+def expcost(X,tau):
+    F = 2/tau * X * np.exp((X*X)/tau)
+    return F
+
+def msecost(X):
+    F = X
+    return F
+
+def graphexpcost(t1,t2,pts,tau,plt,scolor,slabel):
+
+    T = np.linspace(t1, t2, pts, endpoint=True)
+    F = expcost(T,tau)
+    plt.plot(T, F, label=slabel, color='red', linewidth=2)
+
+    F = expcost(T,4.0)
+    plt.plot(T, F, label=slabel, color='green', linewidth=2)
+
+    G = msecost(T)
+    plt.plot(T, G, label=slabel, color='blue', linewidth=2)
+
+# ------------------------------------------
+# Calculate The Steps for an angular Dataset
+# ------------------------------------------
 def printdatatofile(f,title,X,N):
     f.write(title + ' = [')
     for i in range(0,N):
@@ -203,6 +226,9 @@ Zeta = np.array([10.0])
 
 # ****************************************************
 cmap = mpl.cm.brg
+
+graphexpcost(-2.0,2.0,400,2.0,plt,'red','test')
+plt.show()
 
 #computecutoffdataset(0.0,Rc,1000,Rc,plt,'blue','cutoff function')
 #plt.show()
