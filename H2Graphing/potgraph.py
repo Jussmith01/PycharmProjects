@@ -70,70 +70,62 @@ def makedatalinear(datain):
     return data
 
 # -----------------------
-
+cmap = mpl.cm.brg
 # ------------
 # AM1 vs Act
 # ------------
 user = os.environ['USER']
-#dir = '/Research/ANN-Test-Data/GDB-11/train2/'
-#dir2 = '/Research/ANN-Test-Data/GDB-11/train3/'
-#dir = '/Research/ANN-Test-Data/GDB-11/train1/'
 dir = '/Research/ANN-Test-Data/GDB-11/train4_2/'
-file = 'formrxn_test.dat_graph.dat'
+
+'''
+N = 17
+for i in range(0,N):
+    file = 'gdb11_s03-' + str(i) + '_train.dat_graph.dat'
+
+    data1 = getfltsfromfile('/home/' + user + dir + file, [0])
+    data2 = getfltsfromfile('/home/' + user + dir + file, [1])
+    data3 = getfltsfromfile('/home/' + user + dir + file, [2])
+
+    data2 = data3 - data2
+
+
+    print('Datasize: ' + str(data2.shape[0]))
+
+    font = {'family' : 'Bitstream Vera Sans',
+            'weight' : 'normal',
+            'size'   : 14}
+
+    plt.rc('font', **font)
+
+    s = 288
+
+    plt.scatter(data1, data2, color=cmap((i+1)/float(N)), label=str(i),linewidth=1)
+'''
+
+file = 'h2o2_test.dat_graph.dat'
 
 data1 = getfltsfromfile('/home/' + user + dir + file, [0])
 data2 = getfltsfromfile('/home/' + user + dir + file, [1])
 data3 = getfltsfromfile('/home/' + user + dir + file, [2])
 
-#file = 'graph_C.dat'
-
-#data3 = getfltsfromfile('/home/' + user + dir + file, [0])
-#data4 = getfltsfromfile('/home/' + user + dir + file, [1])
-
-#file = 'graph1_C.dat'
-#data3 = getfltsfromfile('/home/' + user + dir + file, [2])
-
-#data4 = getfltsfromfile('/home/' + user + dir2 + file, [2])
-
-#dir = '/Research/ANN-Test-Data/GDB-11/train4/'
-
-#data4 = getfltsfromfile('/home/' + user + dir + file, [2])
-
-#data5 = 0.5 * (data3 + data4)
+#data2 = data3-data2
 
 print('Datasize: ' + str(data2.shape[0]))
 
 font = {'family' : 'Bitstream Vera Sans',
-        'weight' : 'normal',
-        'size'   : 14}
+            'weight' : 'normal',
+            'size'   : 14}
 
 plt.rc('font', **font)
 
-cmap = mpl.cm.brg
+plt.scatter(data1, data2, color='red', label=str(1),linewidth=1)
+plt.scatter(data1, data3, color='blue', label=str(2),linewidth=1)
 
-s = 288
-# --------------
-# Setup 2D Plot
-# --------------
-#plt.plot(data1, data2, color='blue',linewidth=1)
-#plt.plot(data2, data2, color='blue', label='B3LYP',linewidth=4)
-#plt.plot(data2, data2, color='blue', label='2',linewidth=1)
-#plt.plot(data2, data2, color='blue', label='2',linewidth=1)
-plt.scatter(data1, data2, color='red', label='2',linewidth=1)
-plt.scatter(data1, data3, color='green', label='2',linewidth=1)
-#plt.plot(data2, data3, color='green', label='Weights',linewidth=1)
-#plt.plot(data1, data4, color='red', label='4',linewidth=1)
-#plt.scatter(data1[0:712], data2[0:712], color='blue', label='NNP',linewidth=4)
-#plt.scatter(data2, data4, color='red', label='NNP',linewidth=4)
-
-#plt.scatter(data1, data4, color='red', label='NNP',linewidth=4)
-#plt.scatter(data1, data5, color='green', label='NNP',linewidth=4)
 
 plt.title("Modified and type differentiated \n atomic environment vector (AEV)")
-#plt.title('SCAN: Formic Acid Energy vs. H-O-H Angle')
 plt.xlabel('AEV element')
 plt.ylabel('Element magnitude')
-#plt.legend(bbox_to_anchor=(0.7, 0.9), loc=2, borderaxespad=0.)
+plt.legend(bbox_to_anchor=(0.7, 0.9), loc=2, borderaxespad=0.)
 
 
 # -----

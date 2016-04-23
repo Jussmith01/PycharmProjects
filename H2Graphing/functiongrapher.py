@@ -102,7 +102,7 @@ def graphexpcost(t1,t2,pts,tau,plt,scolor,slabel):
     F = expcost(T,tau)
     plt.plot(T, F, label=slabel, color='red', linewidth=2)
 
-    F = expcost(T,4.0)
+    F = expcost(T,0.5)
     plt.plot(T, F, label=slabel, color='green', linewidth=2)
 
     G = msecost(T)
@@ -210,17 +210,17 @@ def show2dcontradialgraph (ShfR,eta,Rc,func,title):
 #         Set Parameters
 #--------------------------------
 #File nam
-pf = 'rHCNO-12-a5-6.params' # Output filename
+pf = 'rHCNO-64-a0-0.params' # Output filename
 
-Nrr = 12
+Nrr = 64
 Na = 4
-Nar = 5
-Nzt = 6
+Nar = 0
+Nzt = 0
 
 TM = 1
 Rc = 6.0
 Atyp = '[H,C,O,N]'
-EtaR = np.array([8.0])
+EtaR = np.array([32.0])
 EtaA = np.array([3.0])
 Zeta = np.array([10.0])
 
