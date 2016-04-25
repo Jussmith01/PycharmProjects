@@ -16,7 +16,7 @@ def getfltsfromfile(file, cols):
     infile_s = []
 
     for line in infile:
-        row = line.strip().split(" ")
+        row = line.strip().split(",")
         infile_s.append(row)
 
     # Truncate and convert to numpy array
@@ -75,12 +75,13 @@ cmap = mpl.cm.brg
 # AM1 vs Act
 # ------------
 user = os.environ['USER']
-dir = '/Research/ANN-Test-Data/GDB-11/train4_2/'
+#dir = '/Research/ANN-Test-Data/GDB-11/train5/'
+dir = '/Research/ANN-Test-Data/GDB-11/dnntsfix_data/'
 
 '''
-N = 17
+N = 8
 for i in range(0,N):
-    file = 'gdb11_s03-' + str(i) + '_train.dat_graph.dat'
+    file = 'gdb11_s10-' + str(i) + '_train.dat_graph.dat'
 
     data1 = getfltsfromfile('/home/' + user + dir + file, [0])
     data2 = getfltsfromfile('/home/' + user + dir + file, [1])
@@ -100,15 +101,18 @@ for i in range(0,N):
     s = 288
 
     plt.scatter(data1, data2, color=cmap((i+1)/float(N)), label=str(i),linewidth=1)
+    #plt.scatter(data2, data3, color=cmap((i+1)/float(N)), label=str(i),linewidth=1)
 '''
 
-file = 'h2o2_test.dat_graph.dat'
 
-data1 = getfltsfromfile('/home/' + user + dir + file, [0])
-data2 = getfltsfromfile('/home/' + user + dir + file, [1])
-data3 = getfltsfromfile('/home/' + user + dir + file, [2])
+file = 'fixmolecule-3_train.dat'
 
-#data2 = data3-data2
+data1 = getfltsfromfile('/home/' + user + dir + file, [2])
+data2 = getfltsfromfile('/home/' + user + dir + file, [5])
+data3 = getfltsfromfile('/home/' + user + dir + file, [6])
+
+data1 = data1 - data2
+#data3 = np.log10(data3)
 
 print('Datasize: ' + str(data2.shape[0]))
 
@@ -118,8 +122,8 @@ font = {'family' : 'Bitstream Vera Sans',
 
 plt.rc('font', **font)
 
-plt.scatter(data1, data2, color='red', label=str(1),linewidth=1)
-plt.scatter(data1, data3, color='blue', label=str(2),linewidth=1)
+plt.scatter(data1, data3, color='red', label=str(1),linewidth=1)
+#plt.scatter(data1, data3, color='blue', label=str(2),linewidth=1)
 
 
 plt.title("Modified and type differentiated \n atomic environment vector (AEV)")

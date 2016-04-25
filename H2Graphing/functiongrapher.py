@@ -210,9 +210,9 @@ def show2dcontradialgraph (ShfR,eta,Rc,func,title):
 #         Set Parameters
 #--------------------------------
 #File nam
-pf = 'rHCNO-64-a0-0.params' # Output filename
+pf = 'rHCNO-16-a0-0.params' # Output filename
 
-Nrr = 64
+Nrr = 16
 Na = 4
 Nar = 0
 Nzt = 0
@@ -220,9 +220,9 @@ Nzt = 0
 TM = 1
 Rc = 6.0
 Atyp = '[H,C,O,N]'
-EtaR = np.array([32.0])
-EtaA = np.array([3.0])
-Zeta = np.array([10.0])
+EtaR = np.array([8.0])
+EtaA = np.array([2.0])
+Zeta = np.array([8.0])
 
 # ****************************************************
 cmap = mpl.cm.brg
