@@ -16,7 +16,7 @@ def getfltsfromfile(file, cols):
     infile_s = []
 
     for line in infile:
-        row = line.strip().split(",")
+        row = line.strip().split(" ")
         infile_s.append(row)
 
     # Truncate and convert to numpy array
@@ -49,6 +49,15 @@ def calculatenumderiv(data1, dx):
 
     return data
 
+def calculateabsdiff(data1):
+    C = int(np.shape(data1)[0]/2)
+    data = np.zeros((C, 2))
+    for i in range(1, C-1):
+        data[i,0] = i
+        data[i,1] = data1[i*2+1] - data1[i*2]
+
+    return data
+
 # -----------------------
 
 # ----------------------------
@@ -76,19 +85,17 @@ cmap = mpl.cm.brg
 # ------------
 user = os.environ['USER']
 #dir = '/Research/ANN-Test-Data/GDB-11/train5/'
-dir = '/Research/ANN-Test-Data/GDB-11/dnntsfix_data/'
-
+#dir = '/Research/ANN-Test-Data/GDB-11/train3/'
 '''
 N = 8
 for i in range(0,N):
-    file = 'gdb11_s10-' + str(i) + '_train.dat_graph.dat'
+    file = 'gdb11_s02-' + str(i) + '_train.dat_graph.dat'
 
     data1 = getfltsfromfile('/home/' + user + dir + file, [0])
     data2 = getfltsfromfile('/home/' + user + dir + file, [1])
     data3 = getfltsfromfile('/home/' + user + dir + file, [2])
 
-    data2 = data3 - data2
-
+    data2 = (data3 - data2)*(data3 - data2)
 
     print('Datasize: ' + str(data2.shape[0]))
 
@@ -100,21 +107,31 @@ for i in range(0,N):
 
     s = 288
 
-    plt.scatter(data1, data2, color=cmap((i+1)/float(N)), label=str(i),linewidth=1)
+    plt.plot(data1, data2, color=cmap((i+1)/float(N)), label=str(i),linewidth=1)
+    plt.scatter(data1, data2, color=cmap((i+1)/float(N)), label=str(i),linewidth=2)
     #plt.scatter(data2, data3, color=cmap((i+1)/float(N)), label=str(i),linewidth=1)
 '''
 
+dir = '/Research/ANN-Test-Data/GDB-11/train3/'
+file = 'L-glutamic-acid.dat_graph.dat'
 
-file = 'fixmolecule-3_train.dat'
+data1 = getfltsfromfile('/home/' + user + dir + file, [0])
+data2 = getfltsfromfile('/home/' + user + dir + file, [1])
+data3 = getfltsfromfile('/home/' + user + dir + file, [2])
 
-data1 = getfltsfromfile('/home/' + user + dir + file, [2])
-data2 = getfltsfromfile('/home/' + user + dir + file, [5])
-data3 = getfltsfromfile('/home/' + user + dir + file, [6])
+dir = '/Research/ANN-Test-Data/GDB-11/train4/'
+data4 = getfltsfromfile('/home/' + user + dir + file, [2])
 
-data1 = data1 - data2
+dir = '/Research/ANN-Test-Data/GDB-11/train6/'
+data5 = getfltsfromfile('/home/' + user + dir + file, [2])
+
+#data2 = np.log10(data2)
 #data3 = np.log10(data3)
 
-print('Datasize: ' + str(data2.shape[0]))
+#data2 = (data3 - data2)*(data3 - data2)
+#data3 = np.log10(data3)
+
+print('Datasize: ' + str(data1.shape[0]))
 
 font = {'family' : 'Bitstream Vera Sans',
             'weight' : 'normal',
@@ -122,9 +139,10 @@ font = {'family' : 'Bitstream Vera Sans',
 
 plt.rc('font', **font)
 
-plt.scatter(data1, data3, color='red', label=str(1),linewidth=1)
-#plt.scatter(data1, data3, color='blue', label=str(2),linewidth=1)
-
+plt.plot(data2, data2, color='blue', label=str(1),linewidth=2)
+plt.scatter(data2, data3, color='red', label=str(2),linewidth=6)
+plt.scatter(data2, data4, color='orange', label=str(2),linewidth=6)
+plt.scatter(data2, data5, color='green', label=str(2),linewidth=6)
 
 plt.title("Modified and type differentiated \n atomic environment vector (AEV)")
 plt.xlabel('AEV element')
