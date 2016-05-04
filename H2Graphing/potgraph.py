@@ -75,8 +75,8 @@ cmap = mpl.cm.brg
 # AM1 vs Act
 # ------------
 user = os.environ['USER']
-#dir = '/Research/ANN-Test-Data/GDB-11/train5/'
-dir = '/Research/ANN-Test-Data/GDB-11/dnntsfix_data/'
+dir = '/Research/ANN-Test-Data/GDB-11/dnnts_testdata/test_scans/'
+#dir = '/Research/ANN-Test-Data/GDB-11/dnntsfix_data/'
 
 '''
 N = 8
@@ -84,7 +84,7 @@ for i in range(0,N):
     file = 'gdb11_s10-' + str(i) + '_train.dat_graph.dat'
 
     data1 = getfltsfromfile('/home/' + user + dir + file, [0])
-    data2 = getfltsfromfile('/home/' + user + dir + file, [1])
+    data2 = getfltsfromfile('/home/' + user + dir + file, [1])rm
     data3 = getfltsfromfile('/home/' + user + dir + file, [2])
 
     data2 = data3 - data2
@@ -105,13 +105,13 @@ for i in range(0,N):
 '''
 
 
-file = 'fixmolecule-3_train.dat'
+file = 'h2o2_test.dat'
 
-data1 = getfltsfromfile('/home/' + user + dir + file, [2])
-data2 = getfltsfromfile('/home/' + user + dir + file, [5])
-data3 = getfltsfromfile('/home/' + user + dir + file, [6])
+data1 = getfltsfromfile('/home/' + user + dir + file, [4])
+data2 = getfltsfromfile('/home/' + user + dir + file, [12])
+#data3 = getfltsfromfile('/home/' + user + dir + file, [2])
 
-data1 = data1 - data2
+#data1 = data1 - data2
 #data3 = np.log10(data3)
 
 print('Datasize: ' + str(data2.shape[0]))
@@ -122,8 +122,8 @@ font = {'family' : 'Bitstream Vera Sans',
 
 plt.rc('font', **font)
 
-plt.scatter(data1, data3, color='red', label=str(1),linewidth=1)
-#plt.scatter(data1, data3, color='blue', label=str(2),linewidth=1)
+plt.scatter(data1, data2, color='red', label='1',linewidth=1)
+#plt.scatter(data1, data3, color='blue', label='2',linewidth=1)
 
 
 plt.title("Modified and type differentiated \n atomic environment vector (AEV)")
