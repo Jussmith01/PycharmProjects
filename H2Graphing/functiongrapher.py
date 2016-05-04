@@ -210,11 +210,11 @@ def show2dcontradialgraph (ShfR,eta,Rc,func,title):
 #         Set Parameters
 #--------------------------------
 #File nam
-pf = 'rHCNO-32-a4-6.params' # Output filename
+pf = 'rHCNO-32-a4-8.params' # Output filename
 
-Nrr = 64
+Nrr = 32
 Na = 4
-Nar = 8
+Nar = 4
 Nzt = 8
 
 TM = 1
@@ -222,13 +222,13 @@ Rc = 6.0
 Atyp = '[H,C,O,N]'
 EtaR = np.array([16.0])
 EtaA = np.array([2.0])
-Zeta = np.array([8.0])
+Zeta = np.array([16.0])
 
 # ****************************************************
 cmap = mpl.cm.brg
 
-graphexpcost(-2.0,2.0,400,2.0,plt,'red','test')
-plt.show()
+#graphexpcost(-2.0,2.0,400,2.0,plt,'red','test')
+#plt.show()
 
 #computecutoffdataset(0.0,Rc,1000,Rc,plt,'blue','cutoff function')
 #plt.show()

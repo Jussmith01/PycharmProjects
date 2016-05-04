@@ -16,13 +16,13 @@ def getfltsfromfile(file, cols):
     infile_s = []
 
     for line in infile:
-        row = line.strip().split(",")
+        row = line.strip().split(" ")
         infile_s.append(row)
 
     # Truncate and convert to numpy array
     nparray = np.array(infile_s)
     data = nparray[:, cols]
-    data = np.array(data, dtype=float)
+    data = np.array(data, dtype='f8')
     return data
 
 # -----------------------
@@ -31,10 +31,13 @@ def getfltsfromfile(file, cols):
 # Calculate Mean Squared Diff
 # ----------------------------
 
-def calculatemeansqrdiff(data1, data2):
+def calculatemeansqrerror(data1, data2):
     data = np.power(data1 - data2, 2)
-    print(np.mean(data))
-    return
+    return np.mean(data)
+
+def calculaterootmeansqrerror(data1, data2):
+    data = np.power(data1 - data2, 2)
+    return np.sqrt(np.mean(data))
 
 # ----------------------------
 # Calculate Mean Squared Diff
@@ -46,6 +49,24 @@ def calculatenumderiv(data1, dx):
     for i in range(1, C-1):
         data[i,0] = i
         data[i,1] = (data1[i-1] - data1[i+1]) / (2.0*dx)
+
+    return data
+
+def calculatemean(data1):
+    C = np.shape(data1)[0]
+    print (C)
+    sum = 0.0
+    for i in data1:
+        sum += i
+
+    return sum/float(C)
+
+def calculateabsdiff(data1):
+    C = int(np.shape(data1)[0]/2)
+    data = np.zeros((C, 2))
+    for i in range(1, C-1):
+        data[i,0] = i
+        data[i,1] = data1[i*2+1] - data1[i*2]
 
     return data
 
@@ -75,20 +96,18 @@ cmap = mpl.cm.brg
 # AM1 vs Act
 # ------------
 user = os.environ['USER']
-dir = '/Research/ANN-Test-Data/GDB-11/dnnts_testdata/test_scans/'
-#dir = '/Research/ANN-Test-Data/GDB-11/dnntsfix_data/'
-
+#dir = '/Research/ANN-Test-Data/GDB-11/train5/'
+#dir = '/Research/ANN-Test-Data/GDB-11/train3/'
 '''
 N = 8
 for i in range(0,N):
-    file = 'gdb11_s10-' + str(i) + '_train.dat_graph.dat'
+    file = 'gdb11_s02-' + str(i) + '_train.dat_graph.dat'
 
     data1 = getfltsfromfile('/home/' + user + dir + file, [0])
     data2 = getfltsfromfile('/home/' + user + dir + file, [1])rm
     data3 = getfltsfromfile('/home/' + user + dir + file, [2])
 
-    data2 = data3 - data2
-
+    data2 = (data3 - data2)*(data3 - data2)
 
     print('Datasize: ' + str(data2.shape[0]))
 
@@ -100,21 +119,52 @@ for i in range(0,N):
 
     s = 288
 
-    plt.scatter(data1, data2, color=cmap((i+1)/float(N)), label=str(i),linewidth=1)
+    plt.plot(data1, data2, color=cmap((i+1)/float(N)), label=str(i),linewidth=1)
+    plt.scatter(data1, data2, color=cmap((i+1)/float(N)), label=str(i),linewidth=2)
     #plt.scatter(data2, data3, color=cmap((i+1)/float(N)), label=str(i),linewidth=1)
 '''
 
+dir = '/Research/ANN-Test-Data/GDB-11/train3/'
+file = 'L-glutamic-acid.dat_graph.dat'
+#file = 'peptide-1.dat_graph.dat'
 
-file = 'h2o2_test.dat'
+data1 = getfltsfromfile('/home/' + user + dir + file, [0])
+data2 = getfltsfromfile('/home/' + user + dir + file, [1])
+data3 = getfltsfromfile('/home/' + user + dir + file, [2])
 
-data1 = getfltsfromfile('/home/' + user + dir + file, [4])
-data2 = getfltsfromfile('/home/' + user + dir + file, [12])
-#data3 = getfltsfromfile('/home/' + user + dir + file, [2])
+dir = '/Research/ANN-Test-Data/GDB-11/train4/'
+data4 = getfltsfromfile('/home/' + user + dir + file, [2])
 
-#data1 = data1 - data2
+dir = '/Research/ANN-Test-Data/GDB-11/train5/'
+data5 = getfltsfromfile('/home/' + user + dir + file, [2])
+
+dir = '/Research/ANN-Test-Data/GDB-11/train6/'
+data6 = getfltsfromfile('/home/' + user + dir + file, [2])
+
+mean2 = np.mean(data2)
+mean3 = np.mean(data3)
+mean4 = np.mean(data4)
+mean5 = np.mean(data5)
+mean6 = np.mean(data6)
+
+#data3 = data3 - (mean6 - mean2)
+#data4 = data4 - (mean6 - mean2)
+#data5 = data5 - (mean6 - mean2)
+#data6 = data6 - (mean6 - mean2)
+
+print ((mean6 - mean2))
+print('RMSE: ',calculaterootmeansqrerror(data3,data2),' MSE: ', calculatemeansqrerror(data3,data2))
+print('RMSE: ',calculaterootmeansqrerror(data4,data2),' MSE: ', calculatemeansqrerror(data4,data2))
+print('RMSE: ',calculaterootmeansqrerror(data5,data2),' MSE: ', calculatemeansqrerror(data5,data2))
+print('RMSE: ',calculaterootmeansqrerror(data6,data2),' MSE: ', calculatemeansqrerror(data6,data2))
+
+#data2 = np.log10(data2)
 #data3 = np.log10(data3)
 
-print('Datasize: ' + str(data2.shape[0]))
+#data2 = (data3 - data2)*(data3 - data2)
+#data3 = np.log10(data3)
+
+print('Datasize: ' + str(data1.shape[0]))
 
 font = {'family' : 'Bitstream Vera Sans',
             'weight' : 'normal',
@@ -122,14 +172,17 @@ font = {'family' : 'Bitstream Vera Sans',
 
 plt.rc('font', **font)
 
-plt.scatter(data1, data2, color='red', label='1',linewidth=1)
-#plt.scatter(data1, data3, color='blue', label='2',linewidth=1)
+plt.plot(data2, data2, color='blue', label='UB3LYP/6-31G*',linewidth=2)
+plt.scatter(data2, data3, color='red', label='ANN - GDB3',linewidth=4)
+plt.scatter(data2, data4, color='orange', label='ANN - GDB4',linewidth=4)
+plt.scatter(data2, data5, color='purple', label='ANN - GDB5',linewidth=4)
+plt.scatter(data2, data6, color='green', label='ANN - GDB6',linewidth=4)
 
-
-plt.title("Modified and type differentiated \n atomic environment vector (AEV)")
-plt.xlabel('AEV element')
-plt.ylabel('Element magnitude')
-plt.legend(bbox_to_anchor=(0.7, 0.9), loc=2, borderaxespad=0.)
+#plt.title("H-Gly-Pro-Hyp-Gly-Ala-Gly-OH")
+plt.title("L-Glutamic-Acid")
+plt.xlabel('Target E UB3LYP/6-31Gd (Hartree)')
+plt.ylabel('Actual E (Hartree)')
+plt.legend(bbox_to_anchor=(0.05, 0.7), loc=2, borderaxespad=0.)
 
 
 # -----

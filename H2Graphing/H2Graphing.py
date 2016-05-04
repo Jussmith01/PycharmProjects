@@ -30,28 +30,47 @@ plt.legend(bbox_to_anchor=(0.05, 0.95), loc=2, borderaxespad=0.)
 # -----
 plt.show()
 
+data1 = np.array([[3,4,5,6],[0.512041429349,0.042173576619,0.0123576506472,0.00863371619182]],dtype=float)
+
+data1[1,:] = np.log10(data1[1,:])
+
+plt.scatter(data1[0,0], data1[1,0], color='red', label='Modified SF',linewidth=10)
+plt.scatter(data1[0,1], data1[1,1], color='orange', label='Modified SF',linewidth=10)
+plt.scatter(data1[0,2], data1[1,2], color='purple', label='Modified SF',linewidth=10)
+plt.scatter(data1[0,3], data1[1,3], color='green', label='Modified SF',linewidth=10)
+
+#plt.title(r'$log_{10}(Cost)$ with increaing GDB set size')
+plt.xlabel('GDB-N training set size')
+plt.ylabel('RMSE (eV)')
+plt.legend(bbox_to_anchor=(0.7, 0.95), loc=2, borderaxespad=0.)
+
+# -----
+# PLOT
+# -----
+plt.show()
+
 # ------------
 # AM1 vs Act
 # ------------
 
 
-data1 = np.array([[5,4,3,2,1],[0.000468814,0.0083554,0.31195,2641.23,21575.49]],dtype=float)
-data2 = np.array([[5,4,3,2,1],[0.000222569,0.0041405,1.0874,1840.69,18718.00]],dtype=float)
-data3 = np.array([[5,4,3,2,1],[0.000446427,0.0008363,2.1571,1618.07,19275.83]],dtype=float)
-data4 = np.array([[5,4,3,2,1],[0.000113011,0.0045689,1.0759,666.94,20479.38]],dtype=float)
-data5 = np.array([[5,4,3,2,1],[0.000169404,0.0066724,4.4002,3392.95,26263.40]],dtype=float)
-data6 = np.array([[5,4,3,2,1],[0.000140665,0.0032928,2.3660,4448.22,26127.42]],dtype=float)
-data7 = np.array([[5,4,3,2,1],[0.000449303,0.0112065,4.4691,2208.78,24690.80]],dtype=float)
-data8 = np.array([[5,4,3,2,1],[0.000333319,0.0265647,3.7400,2142.00,21745.52]],dtype=float)
+data1 = np.array([[6,5,4,3,2,1],[9.47171e-05,0.000468814,0.0083554,0.31195,2641.23,21575.49]],dtype=float)
+data2 = np.array([[6,5,4,3,2,1],[0.000149652,0.000222569,0.0041405,1.0874,1840.69,18718.00]],dtype=float)
+data3 = np.array([[6,5,4,3,2,1],[7.32621e-05,0.000446427,0.0008363,2.1571,1618.07,19275.83]],dtype=float)
+data4 = np.array([[6,5,4,3,2,1],[6.57613e-05,0.000113011,0.0045689,1.0759,666.94,20479.38]],dtype=float)
+data5 = np.array([[6,5,4,3,2,1],[9.26089e-05,0.000169404,0.0066724,4.4002,3392.95,26263.40]],dtype=float)
+data6 = np.array([[6,5,4,3,2,1],[5.14938e-05,0.000140665,0.0032928,2.3660,4448.22,26127.42]],dtype=float)
+data7 = np.array([[6,5,4,3,2,1],[0.000155662,0.000449303,0.0112065,4.4691,2208.78,24690.80]],dtype=float)
+data8 = np.array([[6,5,4,3,2,1],[9.79408e-05,0.000333319,0.0265647,3.7400,2142.00,21745.52]],dtype=float)
 
-data1[1,:] = np.log10(data1[1,:])
-data2[1,:] = np.log10(data2[1,:])
-data3[1,:] = np.log10(data3[1,:])
-data4[1,:] = np.log10(data4[1,:])
-data5[1,:] = np.log10(data5[1,:])
-data6[1,:] = np.log10(data6[1,:])
-data7[1,:] = np.log10(data7[1,:])
-data8[1,:] = np.log10(data8[1,:])
+data1[1,:] = np.log10(2.0*data1[1,:])
+data2[1,:] = np.log10(2.0*data2[1,:])
+data3[1,:] = np.log10(2.0*data3[1,:])
+data4[1,:] = np.log10(2.0*data4[1,:])
+data5[1,:] = np.log10(2.0*data5[1,:])
+data6[1,:] = np.log10(2.0*data6[1,:])
+data7[1,:] = np.log10(2.0*data7[1,:])
+data8[1,:] = np.log10(2.0*data8[1,:])
 
 # --------------
 # Setup 2D Plot
