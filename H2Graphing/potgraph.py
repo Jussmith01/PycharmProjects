@@ -125,8 +125,8 @@ for i in range(0,N):
 '''
 
 dir = '/Research/ANN-Test-Data/GDB-11/train3/'
-file = 'L-glutamic-acid.dat_graph.dat'
-#file = 'peptide-1.dat_graph.dat'
+#file = 'L-glutamic-acid.dat_graph.dat'
+file = 'peptide-1.dat_graph.dat'
 
 data1 = getfltsfromfile('/home/' + user + dir + file, [0])
 data2 = getfltsfromfile('/home/' + user + dir + file, [1])
@@ -147,10 +147,10 @@ mean4 = np.mean(data4)
 mean5 = np.mean(data5)
 mean6 = np.mean(data6)
 
-#data3 = data3 - (mean6 - mean2)
-#data4 = data4 - (mean6 - mean2)
-#data5 = data5 - (mean6 - mean2)
-#data6 = data6 - (mean6 - mean2)
+data3 = data3 - (mean6 - mean2)
+data4 = data4 - (mean6 - mean2)
+data5 = data5 - (mean6 - mean2)
+data6 = data6 - (mean6 - mean2)
 
 print ((mean6 - mean2))
 print('RMSE: ',calculaterootmeansqrerror(data3,data2),' MSE: ', calculatemeansqrerror(data3,data2))
@@ -172,17 +172,17 @@ font = {'family' : 'Bitstream Vera Sans',
 
 plt.rc('font', **font)
 
-plt.plot(data2, data2, color='blue', label='UB3LYP/6-31G*',linewidth=2)
+plt.plot(data2, data2, color='blue', label='B3LYP/6-31G*',linewidth=2)
 plt.scatter(data2, data3, color='red', label='ANN - GDB3',linewidth=4)
 plt.scatter(data2, data4, color='orange', label='ANN - GDB4',linewidth=4)
 plt.scatter(data2, data5, color='purple', label='ANN - GDB5',linewidth=4)
 plt.scatter(data2, data6, color='green', label='ANN - GDB6',linewidth=4)
 
 #plt.title("H-Gly-Pro-Hyp-Gly-Ala-Gly-OH")
-plt.title("L-Glutamic-Acid")
-plt.xlabel('Target E UB3LYP/6-31Gd (Hartree)')
+plt.title("H-Gly-Pro-Hyp-Gly-Ala-Gly-OH")
+plt.xlabel('Target E B3LYP/6-31Gd (Hartree)')
 plt.ylabel('Actual E (Hartree)')
-plt.legend(bbox_to_anchor=(0.05, 0.7), loc=2, borderaxespad=0.)
+plt.legend(bbox_to_anchor=(0.025, 0.975), loc=2, borderaxespad=0.)
 
 
 # -----
