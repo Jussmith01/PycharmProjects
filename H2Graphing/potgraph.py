@@ -124,42 +124,18 @@ for i in range(0,N):
     #plt.scatter(data2, data3, color=cmap((i+1)/float(N)), label=str(i),linewidth=1)
 '''
 
-dir = '/Research/ANN-Test-Data/GDB-11/train3/'
+dir = '/Research/ANN-Test-Data/GDB-11/train6_2/'
 #file = 'L-glutamic-acid.dat_graph.dat'
-file = 'peptide-1.dat_graph.dat'
+file = 'costgraph.dat'
 
 data1 = getfltsfromfile('/home/' + user + dir + file, [0])
 data2 = getfltsfromfile('/home/' + user + dir + file, [1])
 data3 = getfltsfromfile('/home/' + user + dir + file, [2])
 
-dir = '/Research/ANN-Test-Data/GDB-11/train4/'
-data4 = getfltsfromfile('/home/' + user + dir + file, [2])
+#print('RMSE: ',calculaterootmeansqrerror(data3,data2),' MSE: ', calculatemeansqrerror(data3,data2))
 
-dir = '/Research/ANN-Test-Data/GDB-11/train5/'
-data5 = getfltsfromfile('/home/' + user + dir + file, [2])
-
-dir = '/Research/ANN-Test-Data/GDB-11/train6/'
-data6 = getfltsfromfile('/home/' + user + dir + file, [2])
-
-mean2 = np.mean(data2)
-mean3 = np.mean(data3)
-mean4 = np.mean(data4)
-mean5 = np.mean(data5)
-mean6 = np.mean(data6)
-
-data3 = data3 - (mean6 - mean2)
-data4 = data4 - (mean6 - mean2)
-data5 = data5 - (mean6 - mean2)
-data6 = data6 - (mean6 - mean2)
-
-print ((mean6 - mean2))
-print('RMSE: ',calculaterootmeansqrerror(data3,data2),' MSE: ', calculatemeansqrerror(data3,data2))
-print('RMSE: ',calculaterootmeansqrerror(data4,data2),' MSE: ', calculatemeansqrerror(data4,data2))
-print('RMSE: ',calculaterootmeansqrerror(data5,data2),' MSE: ', calculatemeansqrerror(data5,data2))
-print('RMSE: ',calculaterootmeansqrerror(data6,data2),' MSE: ', calculatemeansqrerror(data6,data2))
-
-#data2 = np.log10(data2)
-#data3 = np.log10(data3)
+data2 = np.log10(data2)
+data3 = np.log10(data3)
 
 #data2 = (data3 - data2)*(data3 - data2)
 #data3 = np.log10(data3)
@@ -172,11 +148,8 @@ font = {'family' : 'Bitstream Vera Sans',
 
 plt.rc('font', **font)
 
-plt.plot(data2, data2, color='blue', label='B3LYP/6-31G*',linewidth=2)
-plt.scatter(data2, data3, color='red', label='ANN - GDB3',linewidth=4)
-plt.scatter(data2, data4, color='orange', label='ANN - GDB4',linewidth=4)
-plt.scatter(data2, data5, color='purple', label='ANN - GDB5',linewidth=4)
-plt.scatter(data2, data6, color='green', label='ANN - GDB6',linewidth=4)
+plt.scatter(data1, data2, color='blue', label='B3LYP/6-31G*',linewidth=2)
+plt.scatter(data1, data3, color='red', label='ANN - GDB3',linewidth=4)
 
 #plt.title("H-Gly-Pro-Hyp-Gly-Ala-Gly-OH")
 plt.title("H-Gly-Pro-Hyp-Gly-Ala-Gly-OH")

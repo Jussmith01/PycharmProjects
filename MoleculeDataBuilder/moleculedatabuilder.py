@@ -21,19 +21,18 @@ def formatsmilesfile(file):
 #-------- Parameters -----------
 
 R = 0.3
-fpf = 'gdb11_s10' #Filename prefix
-wdir = '/home/jujuman/Research/ANN-Test-Data/GDB-11/molgentest/' #working directory
-smfile = '/home/jujuman/Research/ANN-Test-Data/GDB-11/smiledata/gdb11_size10.smi' # Smiles file
+fpf = 'gdb11_s1' #Filename prefix
+wdir = '/home/jujuman/Research/ANN-Test-Data/GDB-11-W98XD-6-31gd/dnntsgdb11_01' #working directory
+smfile = '/home/jujuman/Research/ANN-Test-Data/GDB-11/smiledata/gdb11_size1.smi' # Smiles file
 At = ['C', 'O', 'N'] # Hydrogens added after check
 
-TSS='50' # Training Set Size
-VSS='0' # Validation set size
-LOT='UB3LYP/6-31g*' # High level of theory
+TSS='1000' # Training Set Size
+VSS='100' # Validation set size
+ESS='100' # Test set size
+LOT='UW97XD/6-31g*' # High level of theory
 rdm='uniform' #Random dist
-type='random'
-stsize='2000'
-Ntraj='50'
-MaxKE='200000'
+type='nmrandom'
+Temp='8000.0'
 SCF='Tight'
 
 #------- End Parameters ---------
@@ -62,16 +61,18 @@ for m in molecules:
         if count is 0:
             typecheck = True
 
-    if typecheck is False and random.random() < 0.00001:
+    if typecheck is False and random.random() < 1.0:
 
         f = open(wdir + fpf + '-' + str(Nmol) + '.ipt' , 'w')
 
         #---------- Write Input Variables ------------
         dfname=fpf + '-' + str(Nmol) + '_train.dat'
         vdfname=fpf + '-' + str(Nmol) + '_valid.dat'
+        vdfname=fpf + '-' + str(Nmol) + '_test.dat'
 
         f.write ('TSS=' + TSS + ' \n')
         f.write ('VSS=' + VSS + ' \n')
+        f.write ('ESS=' + ESS + ' \n')
         f.write ('LOT=' + LOT + ' \n')
         f.write ('rdm=' + rdm + '\n')
         f.write ('type=' + type + '\n')
