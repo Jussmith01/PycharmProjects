@@ -30,7 +30,7 @@ TSS = 500
 LOT='UWB97XD/6-31g*' # High level of theory
 rdm='uniform' #Random dist
 type='nmrandom'
-Temp='8000.0'
+Temp='1500.0'
 SCF='Tight'
 
 #------- End Parameters ---------
@@ -72,9 +72,13 @@ for m in molecules:
         vdfname=fpf + '-' + str(Nmol) + '_valid.dat'
         edfname=fpf + '-' + str(Nmol) + '_test.dat'
 
-        f.write ('TSS=' + str(TSS * (3 * m.GetNumAtoms() - 6)) + ' \n')
-        f.write ('VSS=' + str((TSS/10) * (3 * m.GetNumAtoms() - 6)) + ' \n')
-        f.write ('ESS=' + str((TSS/10) * (3 * m.GetNumAtoms() - 6)) + ' \n')
+        V = 6
+        if m.GetNumAtoms() is 2:
+            V = 5
+
+        f.write ('TSS=' + str(TSS * (3 * m.GetNumAtoms() - V)) + ' \n')
+        f.write ('VSS=' + str((TSS/10) * (3 * m.GetNumAtoms() - V)) + ' \n')
+        f.write ('ESS=' + str((TSS/10) * (3 * m.GetNumAtoms() - V)) + ' \n')
         f.write ('LOT=' + LOT + ' \n')
         f.write ('rdm=' + rdm + '\n')
         f.write ('type=' + type + '\n')
