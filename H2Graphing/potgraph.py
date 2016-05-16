@@ -126,7 +126,7 @@ for i in range(0,N):
 
 dir = '/Research/ANN-Test-Data/GDB-11-W98XD-6-31gd/train1/'
 #file = 'L-glutamic-acid.dat_graph.dat'
-file = 'nh3_angle.dat_graph.dat'
+file = 'nh2_bond.dat_graph.dat'
 
 data1 = getfltsfromfile('/home/' + user + dir + file, [0])
 data2 = getfltsfromfile('/home/' + user + dir + file, [1])
