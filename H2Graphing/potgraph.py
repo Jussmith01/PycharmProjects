@@ -124,17 +124,20 @@ for i in range(0,N):
     #plt.scatter(data2, data3, color=cmap((i+1)/float(N)), label=str(i),linewidth=1)
 '''
 
-dir = '/Research/ANN-Test-Data/GDB-11-W98XD-6-31gd/train1/'
+dir = '/Research/ANN-Test-Data/GDB-11-W98XD-6-31gd/train2_2/'
 #file = 'L-glutamic-acid.dat_graph.dat'
-file = 'ch4_bond.dat_graph.dat'
+file = 'gdb11_s02-5_test.dat_graph.dat'
 
 data1 = getfltsfromfile('/home/' + user + dir + file, [0])
 data2 = getfltsfromfile('/home/' + user + dir + file, [1])
 data3 = getfltsfromfile('/home/' + user + dir + file, [2])
+#data3 = getfltsfromfile('/home/' + user + dir + file, [2])
 
-#data1 = 0.5 * data1 + 30.0
 
-print('RMSE: ',calculaterootmeansqrerror(data3,data2),' MSE: ', calculatemeansqrerror(data3,data2))
+#data1 = np.abs(data1-data2)
+#data1 = 0.01 * data1 + 0.5
+
+#print('RMSE: ',calculaterootmeansqrerror(data3,data2),' MSE: ', calculatemeansqrerror(data3,data2))
 
 #data2 = np.log10(data2)
 #data3 = np.log10(data3)
@@ -150,8 +153,8 @@ font = {'family' : 'Bitstream Vera Sans',
 
 plt.rc('font', **font)
 
-plt.scatter(data1, data2, color='blue', label='B3LYP/6-31G*',linewidth=2)
-plt.scatter(data1, data3, color='red', label='ANN - GDB3',linewidth=4)
+plt.plot(data2, data2, color='blue', label='B3LYP/6-31G*',linewidth=2)
+plt.scatter(data2, data3, color='red', label='ANN - GDB3',linewidth=4)
 
 #plt.title("H-Gly-Pro-Hyp-Gly-Ala-Gly-OH")
 plt.title("H-Gly-Pro-Hyp-Gly-Ala-Gly-OH")
