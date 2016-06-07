@@ -21,16 +21,16 @@ def formatsmilesfile(file):
 #-------- Parameters -----------
 
 R = 0.3
-fpf = 'gdb11_s02' #Filename prefix
-wdir = '/home/jujuman/Research/ANN-Test-Data/GDB-11-W98XD-6-31gd/dnntsgdb11_02/' #working directory
-smfile = '/home/jujuman/Research/ANN-Test-Data/GDB-11/smiledata/gdb11_size02.smi' # Smiles file
+fpf = 'gdb11_s01' #Filename prefix
+wdir = '/home/jujuman/Research/ANN-Test-Data/GDB-11-W98XD-6-31gd/dnntsgdb11_01/' #working directory
+smfile = '/home/jujuman/Research/ANN-Test-Data/GDB-11/smiledata/gdb11_size01.smi' # Smiles file
 At = ['C', 'O', 'N'] # Hydrogens added after check
 
-TSS = 450
+TSS = 2000
 LOT='UWB97XD/6-31g*' # High level of theory
 rdm='uniform' #Random dist
 type='nmrandom'
-Temp='2000.0'
+Temp='8000.0'
 SCF='Tight'
 
 #------- End Parameters ---------
@@ -76,16 +76,13 @@ for m in molecules:
         if m.GetNumAtoms() is 2:
             V = 5
 
-        f.write ('TSS=' + str(TSS * (3 * m.GetNumAtoms() - V)) + ' \n')
-        f.write ('VSS=' + str((TSS/10) * (3 * m.GetNumAtoms() - V)) + ' \n')
-        f.write ('ESS=' + str((TSS/10) * (3 * m.GetNumAtoms() - V)) + ' \n')
+        f.write ('TSS=' + str(int(TSS * (3 * m.GetNumAtoms() - V))) + ' \n')
+        f.write ('VSS=' + str(int((TSS/10) * (3 * m.GetNumAtoms() - V))) + ' \n')
+        f.write ('ESS=' + str(int((TSS/10) * (3 * m.GetNumAtoms() - V))) + ' \n')
         f.write ('LOT=' + LOT + ' \n')
         f.write ('rdm=' + rdm + '\n')
         f.write ('type=' + type + '\n')
         f.write ('Temp=' + Temp + '\n')
-        #f.write ('stsize=' + stsize + '\n')
-        #f.write ('Ntraj=' + Ntraj + '\n')
-        #f.write ('MaxKE=' + MaxKE + '\n')
         f.write ('SCF=' + SCF + '\n')
         f.write ('dfname=' + dfname + ' \n')
         f.write ('vdfname=' + vdfname + ' \n')
