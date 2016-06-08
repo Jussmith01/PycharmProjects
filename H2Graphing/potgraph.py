@@ -16,7 +16,7 @@ def getfltsfromfile(file, cols):
     infile_s = []
 
     for line in infile:
-        row = line.strip().split(" ")
+        row = line.strip().split(",")
         infile_s.append(row)
 
     # Truncate and convert to numpy array
@@ -124,13 +124,13 @@ for i in range(0,N):
     #plt.scatter(data2, data3, color=cmap((i+1)/float(N)), label=str(i),linewidth=1)
 '''
 
-dir = '/Research/ANN-Test-Data/GDB-11-W98XD-6-31gd/train2_2/'
+dir = '/Gits/g09DNNTSBuilder/bin/Release/'
 #file = 'L-glutamic-acid.dat_graph.dat'
-file = 'gdb11_s02-5_test.dat_graph.dat'
+file = 'waterdimer_train.dat'
 
-data1 = getfltsfromfile('/home/' + user + dir + file, [0])
-data2 = getfltsfromfile('/home/' + user + dir + file, [1])
-data3 = getfltsfromfile('/home/' + user + dir + file, [2])
+data1 = getfltsfromfile('/home/' + user + dir + file, [18])
+#data2 = getfltsfromfile('/home/' + user + dir + file, [1])
+#data3 = getfltsfromfile('/home/' + user + dir + file, [2])
 #data3 = getfltsfromfile('/home/' + user + dir + file, [2])
 
 
@@ -153,8 +153,8 @@ font = {'family' : 'Bitstream Vera Sans',
 
 plt.rc('font', **font)
 
-plt.plot(data2, data2, color='blue', label='B3LYP/6-31G*',linewidth=2)
-plt.scatter(data2, data3, color='red', label='ANN - GDB3',linewidth=4)
+#plt.plot(data18, data2, color='blue', label='B3LYP/6-31G*',linewidth=2)
+plt.scatter(data1, data1, color='red', label='ANN - GDB3',linewidth=4)
 
 #plt.title("H-Gly-Pro-Hyp-Gly-Ala-Gly-OH")
 plt.title("H-Gly-Pro-Hyp-Gly-Ala-Gly-OH")
