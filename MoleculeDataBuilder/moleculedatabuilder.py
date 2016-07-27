@@ -26,11 +26,11 @@ wdir = '/home/jujuman/Research/ANN-Test-Data/GDB-11-W98XD-6-31gd/dnntsgdb11_01/'
 smfile = '/home/jujuman/Research/ANN-Test-Data/GDB-11/smiledata/gdb11_size01.smi' # Smiles file
 At = ['C', 'O', 'N'] # Hydrogens added after check
 
-TSS = 2000
+TSS = 500
 LOT='UWB97XD/6-31g*' # High level of theory
 rdm='uniform' #Random dist
 type='nmrandom'
-Temp='8000.0'
+Temp='2000.0'
 SCF='Tight'
 
 #------- End Parameters ---------

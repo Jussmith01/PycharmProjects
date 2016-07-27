@@ -52,6 +52,15 @@ def calculatenumderiv(data1, dx):
 
     return data
 
+def calculateelementdiff(data1):
+    C = np.shape(data1)[0]
+    data = np.zeros((C-1, 2))
+    for i in range(0, C-1):
+        data[i,0] = i
+        data[i,1] = (data1[i] - data1[i+1])
+
+    return data
+
 def calculatemean(data1):
     C = np.shape(data1)[0]
     print (C)
@@ -124,15 +133,17 @@ for i in range(0,N):
     #plt.scatter(data2, data3, color=cmap((i+1)/float(N)), label=str(i),linewidth=1)
 '''
 
-dir = '/Research/ANN-Test-Data/GDB-11-W98XD-6-31gd/train1/'
+dir = '/Research/ANN-Test-Data/GDB-11-W98XD-6-31gd/train_all/'
 #file = 'L-glutamic-acid.dat_graph.dat'
-file = 'tolerance.dat'
+file = 'RMSEperATOM.dat'
 
 data1 = getfltsfromfile('/home/' + user + dir + file, [0])
 data2 = getfltsfromfile('/home/' + user + dir + file, [1])
 #data3 = getfltsfromfile('/home/' + user + dir + file, [2])
 #data4 = getfltsfromfile('/home/' + user + dir + file, [3])
 
+#data2 = calculateelementdiff(data2)
+#data3 = calculateelementdiff(data3)
 
 #data1 = np.abs(data1-data2)
 #data1 = 0.01 * data1 + 0.5
@@ -154,15 +165,21 @@ font = {'family' : 'Bitstream Vera Sans',
 
 plt.rc('font', **font)
 
-plt.plot(data1, data2, color='green', label='ANN - GDB3',linewidth=4)
-plt.scatter(data1, data2, color='blue', label='B3LYP/6-31G*',linewidth=2)
-#plt.scatter(data1, data3, color='red', label='ANN - GDB3',linewidth=2)
+print(data2)
+
+#plt.plot(data2[:,0], data2[:,1], color='blue',linewidth=2)
+#plt.scatter(data2[:,0], data2[:,1], color='blue', label='B3LYP/6-31G*',linewidth=4)
+#plt.plot(data3[:,0], data3[:,1], color='green',linewidth=2)
+#plt.scatter(data3[:,0], data3[:,1], color='green', label='ANN - GDB-4.5',linewidth=4)
+plt.scatter(data1, data2, color='blue', label='ANN - GDB3',linewidth=2)
+plt.plot(data1, data2, color='blue', label='ANN - GDB3',linewidth=2)
+#plt.scatter(data1, data3, color='green', label='ANN - GDB3',linewidth=2)
 
 
 #plt.title("H-Gly-Pro-Hyp-Gly-Ala-Gly-OH")
-plt.title("H-Gly-Pro-Hyp-Gly-Ala-Gly-OH")
-plt.xlabel('Target E B3LYP/6-31Gd (Hartree)')
-plt.ylabel('Actual E (Hartree)')
+plt.title("Energy Differences Between 50 Random Structures\nPolypeptide Chain: H-Gly-Pro-Hyp-Gly-Ala-Gly-OH")
+plt.xlabel('Conformation Pair (Count 49)')
+plt.ylabel('Calculated dE (Hartree)')
 plt.legend(bbox_to_anchor=(0.025, 0.975), loc=2, borderaxespad=0.)
 
 
