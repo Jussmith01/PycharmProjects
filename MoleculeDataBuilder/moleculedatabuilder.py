@@ -21,16 +21,16 @@ def formatsmilesfile(file):
 #-------- Parameters -----------
 
 R = 0.3
-fpf = 'gdb11_s07' #Filename prefix
-wdir = '/home/jujuman/Research/ANN-Test-Data/GDB-11-W98XD-6-31gd/dnntsgdb11_07/' #working directory
-smfile = '/home/jujuman/Research/ANN-Test-Data/GDB-11/smiledata/gdb11_size07.smi' # Smiles file
+fpf = 'aminoacid_00' #Filename prefix
+wdir = '/home/jujuman/Research/ANN-Test-Data/GDB-11-W98XD-6-31gd/dnnts_aminoacids/' #working directory
+smfile = '/home/jujuman/Research/ANN-Test-Data/GDB-11-W98XD-6-31gd/dnnts_aminoacids/smiles_aminoacid.smi' # Smiles file
 At = ['C', 'O', 'N'] # Hydrogens added after check
 
-TSS = 20
+TSS = 30
 LOT='WB97X/6-31g*' # High level of theory
 rdm='uniform' #Random dist
 type='nmrandom'
-Temp='600.0'
+Temp='1000.0'
 SCF='Tight'
 
 #------- End Parameters ---------
@@ -76,25 +76,19 @@ for m in molecules:
         V = 6
         if m.GetNumAtoms() is 2:
             V = 5
-	
-	NDat += TSS * (3 * m.GetNumAtoms() - V)
-        f.write ('TSS=' + str(TSS * (3 * m.GetNumAtoms() - V)) + ' \n')
-        f.write ('VSS=' + str((TSS/10) * (3 * m.GetNumAtoms() - V)) + ' \n')
-        f.write ('ESS=' + str((TSS/10) * (3 * m.GetNumAtoms() - V)) + ' \n')
 
-        #f.write ('TSS=' + str(int(TSS * (3 * m.GetNumAtoms() - V))) + ' \n')
-        #f.write ('VSS=' + str(int((TSS/10) * (3 * m.GetNumAtoms() - V))) + ' \n')
-        #f.write ('ESS=' + str(int((TSS/10) * (3 * m.GetNumAtoms() - V))) + ' \n')
-        
-	f.write ('LOT=' + LOT + ' \n')
+        DOF = (3 * m.GetNumAtoms() - V)
+        NDat += TSS * DOF
+
+        f.write ('TSS=' + str(int(TSS * DOF)) + ' \n')
+        f.write ('VSS=' + str(int((TSS/10) * DOF)) + ' \n')
+        f.write ('ESS=' + str(int((TSS/10) * DOF)) + ' \n')
+
+        f.write ('LOT=' + LOT + ' \n')
         f.write ('rdm=' + rdm + '\n')
         f.write ('type=' + type + '\n')
         f.write ('Temp=' + Temp + '\n')
-        #f.write ('stsize=' + stsize + '\n')
-        #f.write ('stsize=' + stsize + '\n')
-        #f.write ('Ntraj=' + Ntraj + '\n')
-        #f.write ('MaxKE=' + MaxKE + '\n')
-        #f.write ('mem=' + '1536' + '\n')
+        f.write ('mem=' + '2048' + '\n')
         f.write ('SCF=' + SCF + '\n')
         f.write ('dfname=' + dfname + ' \n')
         f.write ('vdfname=' + vdfname + ' \n')
