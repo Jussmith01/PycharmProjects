@@ -17,12 +17,12 @@ cmap = mpl.cm.brg
 user = os.environ['USER']
 
 dir = '/Research/ANN-Test-Data/GDB-11-W98XD-6-31gd/train_05/'
-#dir2 = '/Research/ANN-Test-Data/GDB-11-W98XD-6-31gd/train_06/'
+dir = '/Research/ANN-Test-Data/GDB-11-W98XD-6-31gd/train_06/'
 file = 'RMSEperATOM.dat'
 
 data1 = gt.getfltsfromfile('/home/' + user + dir + file, [0])
 data2 = gt.getfltsfromfile('/home/' + user + dir + file, [1])
-#data3 = gt.getfltsfromfile('/home/' + user + dir2 + file, [1])
+data3 = gt.getfltsfromfile('/home/' + user + dir2 + file, [1])
 
 print('Datasize: ' + str(data1.shape[0]))
 

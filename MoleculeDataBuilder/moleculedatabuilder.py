@@ -21,16 +21,16 @@ def formatsmilesfile(file):
 #-------- Parameters -----------
 
 R = 0.3
-fpf = 'gdb11_s01' #Filename prefix
-wdir = '/home/jujuman/Research/ANN-Test-Data/GDB-11-W98XD-6-31gd/dnntsgdb11_01/' #working directory
-smfile = '/home/jujuman/Research/ANN-Test-Data/GDB-11/smiledata/gdb11_size01.smi' # Smiles file
+fpf = 'aminoacid_00' #Filename prefix
+wdir = '/home/jujuman/Research/ANN-Test-Data/GDB-11-W98XD-6-31gd/dnnts_aminoacids/' #working directory
+smfile = '/home/jujuman/Research/ANN-Test-Data/GDB-11-W98XD-6-31gd/dnnts_aminoacids/smiles_aminoacid.smi' # Smiles file
 At = ['C', 'O', 'N'] # Hydrogens added after check
 
-TSS = 500
-LOT='UWB97XD/6-31g*' # High level of theory
+TSS = 30
+LOT='WB97X/6-31g*' # High level of theory
 rdm='uniform' #Random dist
 type='nmrandom'
-Temp='2000.0'
+Temp='1000.0'
 SCF='Tight'
 
 #------- End Parameters ---------
@@ -42,6 +42,7 @@ formatsmilesfile(smfile)
 molecules = Chem.SmilesMolSupplier(smfile, nameColumn=0)
 Nmol = 0
 
+NDat = 0
 #mdcrd = open(wdir + 'molecules.xyz' , 'w')
 
 for m in molecules:
@@ -76,13 +77,18 @@ for m in molecules:
         if m.GetNumAtoms() is 2:
             V = 5
 
-        f.write ('TSS=' + str(int(TSS * (3 * m.GetNumAtoms() - V))) + ' \n')
-        f.write ('VSS=' + str(int((TSS/10) * (3 * m.GetNumAtoms() - V))) + ' \n')
-        f.write ('ESS=' + str(int((TSS/10) * (3 * m.GetNumAtoms() - V))) + ' \n')
+        DOF = (3 * m.GetNumAtoms() - V)
+        NDat += TSS * DOF
+
+        f.write ('TSS=' + str(int(TSS * DOF)) + ' \n')
+        f.write ('VSS=' + str(int((TSS/10) * DOF)) + ' \n')
+        f.write ('ESS=' + str(int((TSS/10) * DOF)) + ' \n')
+
         f.write ('LOT=' + LOT + ' \n')
         f.write ('rdm=' + rdm + '\n')
         f.write ('type=' + type + '\n')
         f.write ('Temp=' + Temp + '\n')
+        f.write ('mem=' + '2048' + '\n')
         f.write ('SCF=' + SCF + '\n')
         f.write ('dfname=' + dfname + ' \n')
         f.write ('vdfname=' + vdfname + ' \n')
@@ -135,3 +141,5 @@ for m in molecules:
         Nmol += 1 #increment counter
     #else:
         #print('Not Using Structure with Smiles: ', Chem.MolToSmiles(m))
+
+print(NDat)

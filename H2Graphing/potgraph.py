@@ -21,7 +21,7 @@ for i in range(0,N):
     file = 'gdb11_s02-' + str(i) + '_train.dat_graph.dat'
 
     data1 = getfltsfromfile('/home/' + user + dir + file, [0])
-    data2 = getfltsfromfile('/home/' + user + dir + file, [1])rm
+    data2 = getfltsfromfile('/home/' + user + dir + file, [1])
     data3 = getfltsfromfile('/home/' + user + dir + file, [2])
 
     data2 = (data3 - data2)*(data3 - data2)
