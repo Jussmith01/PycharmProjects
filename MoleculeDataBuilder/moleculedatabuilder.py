@@ -81,7 +81,12 @@ for m in molecules:
         f.write ('TSS=' + str(TSS * (3 * m.GetNumAtoms() - V)) + ' \n')
         f.write ('VSS=' + str((TSS/10) * (3 * m.GetNumAtoms() - V)) + ' \n')
         f.write ('ESS=' + str((TSS/10) * (3 * m.GetNumAtoms() - V)) + ' \n')
-        f.write ('LOT=' + LOT + ' \n')
+
+        #f.write ('TSS=' + str(int(TSS * (3 * m.GetNumAtoms() - V))) + ' \n')
+        #f.write ('VSS=' + str(int((TSS/10) * (3 * m.GetNumAtoms() - V))) + ' \n')
+        #f.write ('ESS=' + str(int((TSS/10) * (3 * m.GetNumAtoms() - V))) + ' \n')
+        
+	f.write ('LOT=' + LOT + ' \n')
         f.write ('rdm=' + rdm + '\n')
         f.write ('type=' + type + '\n')
         f.write ('Temp=' + Temp + '\n')

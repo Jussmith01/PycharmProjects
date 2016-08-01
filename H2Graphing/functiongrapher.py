@@ -220,9 +220,9 @@ Nzt = 8
 TM = 1
 Rc = 4.5
 Atyp = '[H,C,O,N]'
-EtaR = np.array([32.0])
+EtaR = np.array([2.0])
 EtaA = np.array([2.0])
-Zeta = np.array([16.0])
+Zeta = np.array([2.0])
 
 # ****************************************************
 cmap = mpl.cm.brg
