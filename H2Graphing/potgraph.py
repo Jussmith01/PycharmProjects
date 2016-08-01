@@ -16,7 +16,7 @@ def getfltsfromfile(file, cols):
     infile_s = []
 
     for line in infile:
-        row = line.strip().split(",")
+        row = line.strip().split(" ")
         infile_s.append(row)
 
     # Truncate and convert to numpy array
@@ -104,7 +104,7 @@ for i in range(0,N):
     file = 'gdb11_s02-' + str(i) + '_train.dat_graph.dat'
 
     data1 = getfltsfromfile('/home/' + user + dir + file, [0])
-    data2 = getfltsfromfile('/home/' + user + dir + file, [1])rm
+    data2 = getfltsfromfile('/home/' + user + dir + file, [1])
     data3 = getfltsfromfile('/home/' + user + dir + file, [2])
 
     data2 = (data3 - data2)*(data3 - data2)
@@ -124,12 +124,29 @@ for i in range(0,N):
     #plt.scatter(data2, data3, color=cmap((i+1)/float(N)), label=str(i),linewidth=1)
 '''
 
-dir = '/Gits/g09DNNTSBuilder/bin/Release/'
-#file = 'L-glutamic-acid.dat_graph.dat'
-file = 'waterdimer_train.dat'
+dir = '/Research/ANN-Test-Data/GDB-11-W98XD-6-31gd/train_all/'
+file = 'RMSEperATOM.dat'
 
-data1 = getfltsfromfile('/home/' + user + dir + file, [18])
-#data2 = getfltsfromfile('/home/' + user + dir + file, [1])
+data1 = getfltsfromfile('/home/' + user + dir + file, [0])
+data2 = getfltsfromfile('/home/' + user + dir + file, [1])
+#data3 = getfltsfromfile('/home/' + user + dir + file, [2])
+#data4 = getfltsfromfile('/home/' + user + dir + file, [2])
+
+#data3 = abs(data3)
+
+#dir = '/Research/ANN-Test-Data/GDB-11-W98XD-6-31gd/train1/'
+#file = 'gdb11_s06-0_train.dat'
+#data2 = getfltsfromfile('/home/' + user + dir + file, [57])
+
+#mini = data2.min()
+
+#data2 = data2 - mini
+
+#file = 'gdb11_s01-0_train.dat'
+
+#data2 = getfltsfromfile('/home/' + user + dir + file, [15])
+#data2 =  40.5018696459 + data2
+
 #data3 = getfltsfromfile('/home/' + user + dir + file, [2])
 #data3 = getfltsfromfile('/home/' + user + dir + file, [2])
 
@@ -153,13 +170,18 @@ font = {'family' : 'Bitstream Vera Sans',
 
 plt.rc('font', **font)
 
-#plt.plot(data18, data2, color='blue', label='B3LYP/6-31G*',linewidth=2)
-plt.scatter(data1, data1, color='red', label='ANN - GDB3',linewidth=4)
+#plt.plot(data2, data2, color='blue', label='B3LYP/6-31G*',linewidth=2)
+#plt.scatter(data1, data2, color='red', label='QM Calc',linewidth=4)
+#plt.hist(data1, 20, color='red', label='Harmonic',linewidth=2)
+#plt.hist(data2, 20, color='blue', label='Harmonic',linewidth=2)
+plt.scatter(data1, data2, color='blue', label='Harmonic',linewidth=2)
+plt.plot(data1, data2, color='green', label='Harmonic',linewidth=2)
 
 #plt.title("H-Gly-Pro-Hyp-Gly-Ala-Gly-OH")
-plt.title("H-Gly-Pro-Hyp-Gly-Ala-Gly-OH")
-plt.xlabel('Target E B3LYP/6-31Gd (Hartree)')
-plt.ylabel('Actual E (Hartree)')
+plt.title("Methane (T = 2000K) (200 pts)")
+plt.xlabel('Theoretical Harmonic E (Hartree)')
+plt.ylabel('Calculated Energy (Hartree)')
+
 plt.legend(bbox_to_anchor=(0.025, 0.975), loc=2, borderaxespad=0.)
 
 

@@ -21,16 +21,16 @@ def formatsmilesfile(file):
 #-------- Parameters -----------
 
 R = 0.3
-fpf = 'gdb11_s02' #Filename prefix
-wdir = '/home/jujuman/Research/ANN-Test-Data/GDB-11-W98XD-6-31gd/dnntsgdb11_02/' #working directory
-smfile = '/home/jujuman/Research/ANN-Test-Data/GDB-11/smiledata/gdb11_size02.smi' # Smiles file
+fpf = 'gdb11_s07' #Filename prefix
+wdir = '/home/jujuman/Research/ANN-Test-Data/GDB-11-W98XD-6-31gd/dnntsgdb11_07/' #working directory
+smfile = '/home/jujuman/Research/ANN-Test-Data/GDB-11/smiledata/gdb11_size07.smi' # Smiles file
 At = ['C', 'O', 'N'] # Hydrogens added after check
 
-TSS = 450
-LOT='UWB97XD/6-31g*' # High level of theory
+TSS = 20
+LOT='WB97X/6-31g*' # High level of theory
 rdm='uniform' #Random dist
 type='nmrandom'
-Temp='2000.0'
+Temp='600.0'
 SCF='Tight'
 
 #------- End Parameters ---------
@@ -42,6 +42,7 @@ formatsmilesfile(smfile)
 molecules = Chem.SmilesMolSupplier(smfile, nameColumn=0)
 Nmol = 0
 
+NDat = 0
 #mdcrd = open(wdir + 'molecules.xyz' , 'w')
 
 for m in molecules:
@@ -75,7 +76,8 @@ for m in molecules:
         V = 6
         if m.GetNumAtoms() is 2:
             V = 5
-
+	
+	NDat += TSS * (3 * m.GetNumAtoms() - V)
         f.write ('TSS=' + str(TSS * (3 * m.GetNumAtoms() - V)) + ' \n')
         f.write ('VSS=' + str((TSS/10) * (3 * m.GetNumAtoms() - V)) + ' \n')
         f.write ('ESS=' + str((TSS/10) * (3 * m.GetNumAtoms() - V)) + ' \n')
@@ -84,8 +86,10 @@ for m in molecules:
         f.write ('type=' + type + '\n')
         f.write ('Temp=' + Temp + '\n')
         #f.write ('stsize=' + stsize + '\n')
+        #f.write ('stsize=' + stsize + '\n')
         #f.write ('Ntraj=' + Ntraj + '\n')
         #f.write ('MaxKE=' + MaxKE + '\n')
+        #f.write ('mem=' + '1536' + '\n')
         f.write ('SCF=' + SCF + '\n')
         f.write ('dfname=' + dfname + ' \n')
         f.write ('vdfname=' + vdfname + ' \n')
@@ -138,3 +142,5 @@ for m in molecules:
         Nmol += 1 #increment counter
     #else:
         #print('Not Using Structure with Smiles: ', Chem.MolToSmiles(m))
+
+print(NDat)
