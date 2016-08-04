@@ -18,7 +18,7 @@ user = os.environ['USER']
 
 dir1 = '/Research/ANN-Test-Data/GDB-11-W98XD-6-31gd/train_04/'
 dir2 = '/Research/ANN-Test-Data/GDB-11-W98XD-6-31gd/train_05/'
-dir3 = '/Research/ANN-Test-Data/GDB-11-W98XD-6-31gd/train_06/'
+dir3 = '/Research/ANN-Test-Data/GDB-11-W98XD-6-31gd/train_06_2/'
 dir4 = '/Research/ANN-Test-Data/GDB-11-W98XD-6-31gd/train_06AA/'
 
 file = 'polypep_test.dat_graph'
@@ -49,7 +49,7 @@ font = {'family' : 'Bitstream Vera Sans',
 
 plt.rc('font', **font)
 
-'''
+
 plt.plot(data2[:,0], data2[:,1], color='black', label='wB97X/6-31G*',linewidth=2)
 plt.scatter(data2[:,0], data2[:,1], color='black',linewidth=4)
 plt.plot(data3[:,0], data3[:,1],'r--', color='blue', label='ANN - GDB-4 RMSE: ' + "{:.6f}".format(rmse4) + "Ha/atom",linewidth=2)
@@ -67,6 +67,7 @@ plt.scatter(data2[:,1], data3[:,1], color='blue', label='ANN - GDB-4 RMSE: ' + "
 plt.scatter(data2[:,1], data4[:,1], color='red', label='ANN - GDB-5 RMSE: ' + "{:.6f}".format(rmse5) + "Ha/atom",linewidth=2)
 plt.scatter(data2[:,1], data5[:,1], color='green', label='ANN - GDB-6 RMSE: ' + "{:.6f}".format(rmse6) + "Ha/atom",linewidth=2)
 plt.scatter(data2[:,1], data6[:,1], color='orange', label='ANN - GDB-6AA RMSE: ' + "{:.6f}".format(rmse6AA) + "Ha/atom",linewidth=2)
+'''
 
 plt.title("Energy Differences Between 50 Random Structures\nPolypeptide Chain: H-Gly-Pro-Hyp-Gly-Ala-Gly-OH")
 #plt.xlabel('Conformation Pair (Count 49)')
