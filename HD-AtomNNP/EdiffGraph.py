@@ -22,7 +22,7 @@ dir2 = '/Research/ANN-Test-Data/GDB-11-W98XD-6-31gd/train_06/'
 dir3 = '/Research/ANN-Test-Data/GDB-11-W98XD-6-31gd/train_06_2/'
 dir4 = '/Research/ANN-Test-Data/GDB-11-W98XD-6-31gd/train_06AA/'
 
-file = 'polypep_test.dat_graph'
+file = 'pp_01_test.dat_graph'
 
 data1 = gt.getfltsfromfile('/home/' + user + dir1 + file, [0])
 
