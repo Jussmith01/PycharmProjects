@@ -6,14 +6,14 @@ import numpy as np
 # -----------------------
 # readfile into np array
 # -----------------------
-def getfltsfromfile(file, cols):
+def getfltsfromfile(file, delim, cols):
     # Open and read the data file
     infile = open(file, 'r')
 
     infile_s = []
 
     for line in infile:
-        row = line.strip().split(" ")
+        row = line.strip().split(delim)
         infile_s.append(row)
 
     # Truncate and convert to numpy array
