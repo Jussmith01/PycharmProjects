@@ -9,11 +9,11 @@ import matplotlib as mpl
 import random
 import graphtools as gt
 
-def histograph(dir, file, bins, norm, label, color='black'):
+def histograph(dir, file, bins, norm, label, color='black',alpha=1.0):
     user = os.environ['USER']
     data = gt.getfltsfromfile('/home/' + user + dir + file,' ', [0])
 
-    plt.hist(data, bins, color=color,normed=norm, label=label,linewidth=2)
+    plt.hist(data, bins, color=color,normed=norm, label=label,linewidth=2,alpha=alpha)
 
 
 # -----------------------
@@ -24,24 +24,25 @@ cmap = mpl.cm.brg
 user = os.environ['USER']
 
 font = {'family' : 'Bitstream Vera Sans',
-            'weight' : 'normal',
-            'size'   : 14}
+        'weight' : 'normal',
+        'size'   : 14}
 
 plt.rc('font', **font)
 
-print ('Plotting 07')
-histograph('/Research/GDB-11-W98XD-6-31gd/dnntsgdb11_07/','output.dat',200,0,'','orange')
-print ('Plotting 06')
-histograph('/Research/GDB-11-W98XD-6-31gd/dnntsgdb11_06/','output.dat',100,0,'','blue')
 print ('Plotting 05')
-histograph('/Research/GDB-11-W98XD-6-31gd/dnntsgdb11_05/','output.dat',100,0,'','red')
-print ('Plotting 04')
-histograph('/Research/GDB-11-W98XD-6-31gd/dnntsgdb11_04/','output.dat',100,0,'','green')
+histograph('/Research/GDB-11-wB97X-6-31gd/','dist_all.chk',150,1,'All upto GDB-7','red')
+print ('Plotting 07 All')
+histograph('/Research/GDB-11-wB97X-6-31gd/dnnts_testdata/PeptideCases/testdata/','pp_01_dist.chk',150,1,'pp01','orange',0.75)
+print ('Plotting 06')
+histograph('/Research/GDB-11-wB97X-6-31gd/dnnts_testdata/PeptideCases/testdata/','pp_02_dist.chk',150,1,'pp02','blue',0.5)
+#print ('Plotting 05')
+#histograph('/Research/GDB-11-wB98X-6-31gd/dnntsgdb11_05/','distchk.dat',125,0,'GDB-5','red')
+#print ('Plotting 04')
+#histograph('/Research/GDB-11-wB98X-6-31gd/dnntsgdb11_04/','distchk.dat',100,0,'GDB-4','green')
 
-plt.title("Energy Differences Between 50 Random Structures\nPolypeptide Chain: H-Gly-Pro-Hyp-Gly-Ala-Gly-OH")
-#plt.xlabel('Conformation Pair (Count 49)')
-plt.xlabel('Theoretical dE (Hartree)')
-plt.ylabel('Calculated dE (Hartree)')
+plt.title("Atomic Distance Distribution (OH only)")
+plt.ylabel('Distance Count')
+plt.xlabel('Distance ($\AA$)')
 plt.legend(bbox_to_anchor=(0.025, 0.975), loc=2, borderaxespad=0.)
 
 

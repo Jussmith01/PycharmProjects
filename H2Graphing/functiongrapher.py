@@ -210,19 +210,20 @@ def show2dcontradialgraph (ShfR,eta,Rc,func,title):
 #         Set Parameters
 #--------------------------------
 #File nam
-pf = 'rHCNO-32-a4-8.params' # Output filename
+pf = 'rHCNO-5.2A_32-4.1A_a8-8.params' # Output filename
 
 Nrr = 32
 Na = 4
-Nar = 4
+Nar = 8
 Nzt = 8
 
 TM = 1
-Rc = 4.5
+Rcr = 5.2
+Rca = 4.1
 Atyp = '[H,C,O,N]'
-EtaR = np.array([2.0])
-EtaA = np.array([2.0])
-Zeta = np.array([2.0])
+EtaR = np.array([16.0])
+EtaA = np.array([8.0])
+Zeta = np.array([8.0])
 
 # ****************************************************
 cmap = mpl.cm.brg
@@ -242,16 +243,16 @@ ShfR = np.zeros(Nrr)
 
 #Now instead of multiple etaR we use multiple shifts with a single large EtaR
 for i in range(0,Nrr):
-    stepsize = Rc / float(Nrr+1.0)
+    stepsize = Rcr / float(Nrr+1.0)
     step = i * stepsize + 0.50
     color = i/float(Nrr)
-    computeradialdataset(0.5, Rc, 1000, EtaR[0], Rc,step, plt, cmap(color), '$R_s$ = '+ "{:.2f}".format(step))
+    computeradialdataset(0.5, Rcr, 1000, EtaR[0], Rcr,step, plt, cmap(color), '$R_s$ = '+ "{:.2f}".format(step))
     ShfR[i] = step
 
 plt.title('Radial Environment Functions (REF) \n' + r"${\eta}$ = " + "{:.2f}".format(EtaR[0]))
 plt.ylabel('REF Output')
 plt.xlabel('Angstroms')
-plt.legend(bbox_to_anchor=(0.7, 0.95), loc=2, borderaxespad=0.)
+plt.legend(bbox_to_anchor=(0.9, 0.95), loc=2, borderaxespad=0.)
 plt.show()
 
 #Uncomment for pretty contour plots of the radial environments using a sum and then max function
@@ -285,17 +286,17 @@ plt.title('Modified Angular Environment Functions (AEF) \n' + r"${\zeta}$ = " + 
 # plt.title('Original Angular Environment Functions (OAEF) \n' + r"${\zeta}$ = " + "{:.2f}".format(2.0))
 plt.ylabel('OAEF Output')
 plt.xlabel('Radians')
-plt.legend(bbox_to_anchor=(0.55, 0.95), loc=2, borderaxespad=0.)
+plt.legend(bbox_to_anchor=(0.7, 0.95), loc=2, borderaxespad=0.)
 plt.show()
 
 
 ShfA = np.zeros(Nar)
 
 for i in range(0,Nar):
-    stepsize = Rc / float(Nar+1.0)
+    stepsize = Rca / float(Nar+1.0)
     step = (i * stepsize + 0.5)
     color = i/float(Nrr)
-    computeangularradialdataset(0.5, Rc, 1000, EtaA[0], Rc,step, plt, cmap(color), r"${R_s}$ = " + "{:.2f}".format(step))
+    computeangularradialdataset(0.5, Rca, 1000, EtaA[0], Rca,step, plt, cmap(color), r"${R_s}$ = " + "{:.2f}".format(step))
     ShfA[i] = step
 
 plt.title('Angular (Only Radial) Environment Functions (AREF)')
@@ -306,7 +307,7 @@ plt.show()
 
 #Uncomment for pretty contour plots of the angular environments using a sum and then max function
 #show2dcontangulargraph(ShfA,ShfZ,EtaA1,Zeta,Rc,add,'Sum Angular Output')
-#show2dcontangulargraph(ShfA,ShfZ,EtaA1,Zeta,Rc,max,'Max Angular Output')
+#show2dcontangulargraph(ShfA,ShfZ,EtaA[0],Zeta,Rca,max,'Max Angular Output')
 
 Nt = Nat + Nrt
 print('Total Environmental Vector Size: ',int(Nt))
@@ -316,7 +317,8 @@ f = open(pf,'w')
 
 #Write data to parameters file
 f.write('TM = ' + str(TM) + '\n')
-f.write('Rc = ' + "{:.4e}".format(Rc) + '\n')
+f.write('Rcr = ' + "{:.4e}".format(Rcr) + '\n')
+f.write('Rca = ' + "{:.4e}".format(Rca) + '\n')
 #f.write('EtaR = ' + "{:.4e}".format(EtaR) + '\n')
 printdatatofile(f,'EtaR',EtaR,EtaR.shape[0])
 printdatatofile(f,'ShfR',ShfR,Nrr)

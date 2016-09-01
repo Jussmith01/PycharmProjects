@@ -3,6 +3,10 @@ __author__ = 'jujuman'
 import numpy as np
 #import statsmodels.api as sm
 
+hatokcal = 627.509469
+
+convert = hatokcal  # Ha to Kcal/mol
+
 # -----------------------
 # readfile into np array
 # -----------------------
@@ -21,6 +25,26 @@ def getfltsfromfile(file, delim, cols):
     data = nparray[:, cols]
     data = np.array(data, dtype='f8')
     return data
+
+def getfltsfromfileprob(file, delim, col1, col2, prob):
+    # Open and read the data file
+    infile = open(file, 'r')
+
+    infile_s = []
+
+    for line in infile:
+        if np.random.binomial(1,prob):
+            row = line.strip().split(delim)
+            infile_s.append(row)
+
+    # Truncate and convert to numpy array
+    nparray = np.array(infile_s)
+    data1 = nparray[:, col1]
+    data2 = nparray[:, col2]
+
+    data1 = np.array(data1, dtype='f8')
+    data2 = np.array(data2, dtype='f8')
+    return data1,data2
 
 # -----------------------
 
@@ -57,6 +81,55 @@ def calculateelementdiff(data1):
         data[i,1] = (data1[i] - data1[i+1])
 
     return data
+
+def calculateelementdiff2D(data1):
+    C = np.shape(data1)[0]
+    x = np.zeros((C*C))
+    y = np.zeros((C*C))
+    z = np.zeros((C*C))
+    d = np.zeros((C*(C-1)/2))
+    cnt = 0
+    for i in range(0, C):
+        for j in range(0, C):
+            x[i+j*C] = i
+            y[i+j*C] = j
+            z[i+j*C] = (data1[i] - data1[j])
+            if i > j:
+                d[cnt] = z[i+j*C]
+                cnt += 1
+
+    return x,y,z,d
+
+def calculatecompareelementdiff2D(data1,data2):
+    C = np.shape(data1)[0]
+    x = np.zeros(C*C)
+    y = np.zeros(C*C)
+    z = np.zeros(C*C)
+    d = np.zeros(C*(C+1)/2)
+    cnt = 0
+    for i in range(0, C):
+        for j in range(0, C):
+
+            if i > j:
+                x[i+j*C] = i
+                y[i+j*C] = j
+                z[i+j*C] = (data1[i] - data1[j])
+
+            if j > i:
+                x[i+j*C] = i
+                y[i+j*C] = j
+                z[i+j*C] = -(data2[i] - data2[j])
+
+            if j == i:
+                x[i+j*C] = i
+                y[i+j*C] = j
+                z[i+j*C] = 0.0
+
+            if i > j:
+                d[cnt] = z[i+j*C]
+                cnt += 1
+
+    return x,y,z,d
 
 def calculatemean(data1):
     C = np.shape(data1)[0]

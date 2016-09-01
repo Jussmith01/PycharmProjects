@@ -21,16 +21,16 @@ def formatsmilesfile(file):
 #-------- Parameters -----------
 
 R = 0.3
-fpf = 'aminoacid_00' #Filename prefix
-wdir = '/home/jujuman/Research/ANN-Test-Data/GDB-11-W98XD-6-31gd/dnnts_aminoacids/' #working directory
-smfile = '/home/jujuman/Research/ANN-Test-Data/GDB-11-W98XD-6-31gd/dnnts_aminoacids/smiles_aminoacid.smi' # Smiles file
+fpf = 'gdb11_s08' #Filename prefix
+wdir = '/home/jujuman/Research/ANN-Test-Data/GDB-11-W98XD-6-31gd/dnntsgdb11_08/' #working directory
+smfile = '/home/jujuman/Research/ANN-Test-Data/GDB-11/smiledata/gdb11_size08.smi' # Smiles file
 At = ['C', 'O', 'N'] # Hydrogens added after check
 
-TSS = 30
+TSS = 3
 LOT='WB97X/6-31g*' # High level of theory
 rdm='uniform' #Random dist
 type='nmrandom'
-Temp='1000.0'
+Temp='600.0'
 SCF='Tight'
 
 #------- End Parameters ---------
@@ -81,9 +81,8 @@ for m in molecules:
         NDat += TSS * DOF
 
         f.write ('TSS=' + str(int(TSS * DOF)) + ' \n')
-        f.write ('VSS=' + str(int((TSS/10) * DOF)) + ' \n')
-        f.write ('ESS=' + str(int((TSS/10) * DOF)) + ' \n')
-
+        f.write ('VSS=' + str(int((TSS * DOF)/10.0)) + ' \n')
+        f.write ('ESS=' + str(int((TSS * DOF)/10.0)) + ' \n')
         f.write ('LOT=' + LOT + ' \n')
         f.write ('rdm=' + rdm + '\n')
         f.write ('type=' + type + '\n')
