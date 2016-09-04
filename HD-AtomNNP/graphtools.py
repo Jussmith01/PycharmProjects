@@ -2,10 +2,40 @@ __author__ = 'jujuman'
 
 import numpy as np
 #import statsmodels.api as sm
+import re
 
 hatokcal = 627.509469
 
 convert = hatokcal  # Ha to Kcal/mol
+
+def readxyz (file):
+    xyz = []
+    typ = []
+    Na = []
+
+    fd = open(file, 'r').read()
+
+    rb = re.compile('(\d+?)\s*?\n((?:[A-Z][a-z]?\s+?\S+?\s+?\S+?\s+?\S+?\s)+)')
+    ra = re.compile('([A-Z][a-z]?)\s+?(\S+?)\s+?(\S+?)\s+?(\S+)')
+
+    s = rb.findall(fd)
+
+    for i in s:
+        Na.append(int(i[0]))
+        atm = ra.findall(i[1])
+
+        ntyp = []
+        nxyz = []
+        for j in range(0, int(i[0])):
+            ntyp.append(atm[j][0])
+            nxyz.append(float(atm[j][1]))
+            nxyz.append(float(atm[j][2]))
+            nxyz.append(float(atm[j][3]))
+
+        xyz.append(nxyz)
+        typ.append(ntyp)
+
+    return xyz,typ,Na
 
 # -----------------------
 # readfile into np array
