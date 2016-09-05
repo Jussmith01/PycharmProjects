@@ -13,7 +13,7 @@ nnfdir   = wkdir + 'train_08-a3.1A_r4.5_dn2/networks/'
 # Construct pyNeuroChem class
 nc = pync.pyNeuroChem(cnstfile,saefile,nnfdir,1)
 
-xyz,typ,Na = gt.readxyz('/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_testdata/Atazanavir/at2conf.xyz')
+xyz,typ,Na = gt.readxyz('/home/jujuman/dipeptide-108.xyz')
 
 # Set the conformers in NeuroChem
 nc.setConformers(confs=xyz,types=typ[0])
@@ -23,7 +23,7 @@ print( 'Number of Atoms Loaded: ' + str(nc.getNumAtoms()) )
 print( 'Number of Confs Loaded: ' + str(nc.getNumConfs()) )
 
 # Compute Forces of Conformations
-F = nc.optimizeGeom(0,conv=0.00001,step=0.1,dr=0.001)
+F = nc.optimizeGeom(0,conv=0.00001,step=0.1,dr=0.0009)
 
 print ('-----------------ORIGINAL COORDS---------------')
 for i in xyz:
