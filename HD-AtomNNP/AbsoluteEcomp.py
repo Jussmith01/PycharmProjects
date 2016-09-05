@@ -20,8 +20,8 @@ user = os.environ['USER']
 #dir = '/Research/ANN-Test-Data/GDB-11-W98XD-6-31gd/train_06AA/'
 #dir1 = '/Research/GDB-11-wB97X-6-31gd/train_07/'
 #dir1 = '/Research/trainingcases/wB97X-631gd-train-comet/train_07_a2.9A_r5.2A/'
-dir1 = '/Research/trainingcases/wB97X-631gd-train-highgarden/train_08-a3.1A_r4.5_dn2/'
-dir2 = '/Research/trainingcases/wB97X-631gd-train-highgarden/nw-64-64-64-32/train_07-a3.1A_r4.5/'
+dir1 = '/Research/trainingcases/wB97X-631gd-train-highgarden/train_08-a3.5A_r5.0_dn2/'
+#dir2 = '/Research/trainingcases/wB97X-631gd-train-highgarden/nw-64-64-64-32/train_07-a3.1A_r4.5/'
 
 #file = 'pp_01_test.dat_graph'
 #file = 'polypep_test.dat_graph'
@@ -45,13 +45,13 @@ dir2 = '/Research/trainingcases/wB97X-631gd-train-highgarden/nw-64-64-64-32/trai
 #file='ammoniadimer_test.dat_graph'
 #file2='ammoniadimerPM6_test.dat_graph'
 #file = 'atazanavir_AM1_CLN_test.dat_graph'
-file ='c2h2disdata_train.dat_dmat'
-file1='c2h2disdata_train.dat_graph'
+file ='h2o2dhl_test.dat_graph'
+#file1='c2h2disdata_train.dat_graph'
 #file2='h2bondscanR_test.dat_graph'
 
-data1 = gt.getfltsfromfile('/home/' + user + dir1 + file,',', [0])
-data2 = gt.convert * gt.getfltsfromfile('/home/' + user + dir1 + file1,' ', [1])
-data3 = gt.convert * gt.getfltsfromfile('/home/' + user + dir1 + file1,' ', [2])
+data1 = gt.getfltsfromfile('/home/' + user + dir1 + file,' ', [0])
+data2 = gt.convert * gt.getfltsfromfile('/home/' + user + dir1 + file,' ', [1])
+data3 = gt.convert * gt.getfltsfromfile('/home/' + user + dir1 + file,' ', [2])
 #data4 = gt.convert * gt.getfltsfromfile('/home/' + user + dir1 + file2,' ', [1])
 
 #data4 = gt.getfltsfromfile('/home/' + user + dir2 + file,' ', [1])

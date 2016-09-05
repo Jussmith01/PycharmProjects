@@ -37,6 +37,27 @@ def readxyz (file):
 
     return xyz,typ,Na
 
+def readncdat (file):
+    xyz = []
+    Eact = []
+
+    fd = open(file, 'r')
+
+    fd.readline()
+    fd.readline()
+
+    types=fd.readline().split(",")
+
+    Na = int(types[0])
+    typ = types[1:Na+1]
+
+    for i in fd.readlines():
+        sd = i.strip().split(",")
+        xyz.append(list(map(float, sd[0:3*Na])))
+        Eact.append(float(sd[3*Na]))
+
+    return xyz,typ,Eact
+
 # -----------------------
 # readfile into np array
 # -----------------------
@@ -163,7 +184,6 @@ def calculatecompareelementdiff2D(data1,data2):
 
 def calculatemean(data1):
     C = np.shape(data1)[0]
-    print (C)
     sum = 0.0
     for i in data1:
         sum += i
