@@ -18,7 +18,7 @@ nnfdir   = wkdir + 'train_08-a3.1A_r4.5_dn1/networks/'
 # Construct pyNeuroChem classes
 nc = pync.pyNeuroChem(cnstfile,saefile,nnfdir,0)
 
-xyz,typ,Eact = gt.readncdat('/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_testdata/')
+xyz,typ,Eact = gt.readncdat('/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_testdata/specialtest/data/polypep_test.dat')
 
 Eact = np.array(Eact)
 
