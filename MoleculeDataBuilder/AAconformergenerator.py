@@ -57,7 +57,7 @@ def molconformergenerator (m,fpf,wdir,Nconf,idx):
     SCF='Tight'
     MEM='2048'
 
-    dpf = fpf + '-'
+    dpf = 'dipeptide-'
 
     #------- End Parameters ---------
 
@@ -148,15 +148,26 @@ def gendipeptidelist(AAlist):
     return fasta,nlist
 #-------- Parameters -----------
 
-name = 'Tolterodine'
-wdir = '/home/jujuman/Dropbox/Research/ChemSciencePaper/TestCases/' + name + '/' #working directory
-fpf = name #Filename prefix
-file = name + ".mol"
+#dir = "/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_testdata/Atazanavir/"
+#file = "DR7_ideal.mol"
 
-m = Chem.MolFromMolFile(wdir + file)
+#m = Chem.MolFromMolFile(dir + file)
 
-Nconf = 50
+AAlist = ['A','D','E','F','G','H','I','K','L','N','P','Q','R','S','T','V','W','Y']
+
+fasta,namelist = gendipeptidelist(AAlist)
+
 counter = 0
+for i,j in zip(fasta, namelist):
+    print(j + ":\n" + i)
+    m = Chem.MolFromFASTA(i)
 
-molconformergenerator (m,fpf,wdir,Nconf,counter)
+    Nconf = 4
 
+    fpf = j#'dipeptide' #Filename prefix
+    wdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_dipeptides/' #working directory
+
+    molconformergenerator (m,fpf,wdir,Nconf,counter)
+    counter += Nconf
+
+print("Structures generated: " + str(counter))

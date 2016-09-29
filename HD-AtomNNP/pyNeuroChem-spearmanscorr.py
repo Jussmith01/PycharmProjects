@@ -8,17 +8,17 @@ import numpy as np
 from scipy import stats as st
 
 # Set required files for pyNeuroChem
-wkdir    = '/home/jujuman/Research/trainingcases/wB97X-631gd-train-highgarden/'
+wkdir    = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/train_07/'
 
-#Network 1 Files
-cnstfile = wkdir + 'train_08-a3.1A_r4.5_dn1/rHCNO-4.5A_32-3.1A_a8-8.params'
+#Network Parameter Files
+cnstfile = wkdir + 'rHCNO-4.5A_32-3.1A_a8-8.params'
 saefile  = wkdir + 'sae_6-31gd.dat'
-nnfdir   = wkdir + 'train_08-a3.1A_r4.5_dn1/networks/'
+nnfdir   = wkdir + 'networks/'
 
 # Construct pyNeuroChem classes
 nc = pync.pyNeuroChem(cnstfile,saefile,nnfdir,0)
 
-xyz,typ,Eact = gt.readncdat('/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_testdata/specialtest/data/polypep_test.dat')
+xyz,typ,Eact = gt.readncdat('/home/jujuman/Dropbox/Research/ChemSciencePaper/TestCases/Atomoxetine/Atomoxetine_conformersC_test.dat')
 
 Eact = np.array(Eact)
 

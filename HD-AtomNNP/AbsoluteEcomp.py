@@ -20,7 +20,7 @@ user = os.environ['USER']
 #dir = '/Research/ANN-Test-Data/GDB-11-W98XD-6-31gd/train_06AA/'
 #dir1 = '/Research/GDB-11-wB97X-6-31gd/train_07/'
 #dir1 = '/Research/trainingcases/wB97X-631gd-train-comet/train_07_a2.9A_r5.2A/'
-dir1 = '/Research/trainingcases/wB97X-631gd-train-highgarden/train_08-a3.5A_r5.0_dn2/'
+dir1 = '/Research/GDB-11-wB97X-6-31gd/train_07/'
 #dir2 = '/Research/trainingcases/wB97X-631gd-train-highgarden/nw-64-64-64-32/train_07-a3.1A_r4.5/'
 
 #file = 'pp_01_test.dat_graph'
@@ -45,7 +45,7 @@ dir1 = '/Research/trainingcases/wB97X-631gd-train-highgarden/train_08-a3.5A_r5.0
 #file='ammoniadimer_test.dat_graph'
 #file2='ammoniadimerPM6_test.dat_graph'
 #file = 'atazanavir_AM1_CLN_test.dat_graph'
-file ='h2o2dhl_test.dat_graph'
+file ='gdb11_s08-15006_test.dat_graph'
 #file1='c2h2disdata_train.dat_graph'
 #file2='h2bondscanR_test.dat_graph'
 
@@ -79,8 +79,8 @@ plt.rc('font', **font)
 data1 = data1
 
 #plt.plot(data1, data2, color='black', label='wB97X/6-31G*',linewidth=4)
-plt.scatter(data1, data2, color='black',linewidth=3)
-plt.scatter(data1, data3, color='blue',linewidth=3)
+plt.scatter(data2, data2, color='black',linewidth=3)
+plt.scatter(data2, data3, color='blue',linewidth=3)
 #plt.plot(data1, data3, '--', color='blue', label='ANN - c08b RMSE: ' + "{:.6f}".format(rmse1) + "kcal/mol",linewidth=2)
 #plt.scatter(data1, data4, color='red',linewidth=3)
 #plt.plot(data1, data4, '--', color='red', label='ANN - c07b RMSE: ' + "{:.6f}".format(rmse2) + "kcal/mol",linewidth=2)

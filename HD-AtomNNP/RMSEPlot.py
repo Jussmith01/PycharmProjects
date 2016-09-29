@@ -32,8 +32,9 @@ font = {'family' : 'Bitstream Vera Sans',
 
 plt.rc('font', **font)
 
-graphRMSEperATOM('/Research/trainingcases/wB97X-631gd-train-highgarden/nw-64-64-64-32/train_07-a3.1A_r4.5/','ANN - c07b (Rca: 3.1$\AA$;Rcr: 4.5$\AA$)','blue')
-#graphRMSEperATOM('/Research/trainingdata/wB97X-631gd-train-mordor/train_07-3.4A/','ANN - GDB7 3.4A cutoff','red')
+graphRMSEperATOM('/Research/GDB-11-wB97X-6-31gd/train_08_1/','ANN - c08b (Rca: 3.1$\AA$;Rcr: 4.5$\AA$)','blue')
+graphRMSEperATOM('/Research/GDB-11-wB97X-6-31gd/train_08_3/','ANN - GDB7 3.4A cutoff','red')
+graphRMSEperATOM('/Research/GDB-11-wB97X-6-31gd/train_08_4/','ANN - GDB7 3.4A cutoff','green')
 #graphRMSEperATOM('/Research/GDB-11-wB98X-6-31gd/train_07/tests1/','ANN - GDB6','red')
 
 plt.title("Error per atom per data file of c07b data set\nNetwork tag: c07b-64-64-64-32-r32-a-8x8-ac3.1-rc4.5")

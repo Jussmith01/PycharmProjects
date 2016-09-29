@@ -53,6 +53,7 @@ def readncdat (file):
 
     for i in fd.readlines():
         sd = i.strip().split(",")
+        #print(sd)
         xyz.append(list(map(float, sd[0:3*Na])))
         Eact.append(float(sd[3*Na]))
 

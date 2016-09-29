@@ -21,17 +21,19 @@ def formatsmilesfile(file):
 #-------- Parameters -----------
 
 R = 0.3
-fpf = 'gdb11_s08' #Filename prefix
-wdir = '/home/jujuman/Research/ANN-Test-Data/GDB-11-W98XD-6-31gd/dnntsgdb11_08/' #working directory
-smfile = '/home/jujuman/Research/ANN-Test-Data/GDB-11/smiledata/gdb11_size08.smi' # Smiles file
+fpf = 'gdb11_s10' #Filename prefix
+wdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_10/' #working directory
+smfile = '/home/jujuman/Research/ANN-Test-Data/GDB-11/smiledata/gdb11_size10.smi' # Smiles file
 At = ['C', 'O', 'N'] # Hydrogens added after check
 
 TSS = 3
 LOT='WB97X/6-31g*' # High level of theory
 rdm='uniform' #Random dist
 type='nmrandom'
-Temp='600.0'
+Temp='350.0'
 SCF='Tight'
+
+P = 0.001
 
 #------- End Parameters ---------
 
@@ -60,7 +62,7 @@ for m in molecules:
         if count is 0:
             typecheck = True
 
-    if typecheck is False and random.random() < 1.0:
+    if typecheck is False and random.random() < P:
 
         m = Chem.AddHs(m) # Add Hydrogens
         AllChem.EmbedMolecule(m) # Embed in 3D Space
@@ -80,9 +82,12 @@ for m in molecules:
         DOF = (3 * m.GetNumAtoms() - V)
         NDat += TSS * DOF
 
-        f.write ('TSS=' + str(int(TSS * DOF)) + ' \n')
-        f.write ('VSS=' + str(int((TSS * DOF)/10.0)) + ' \n')
-        f.write ('ESS=' + str(int((TSS * DOF)/10.0)) + ' \n')
+        #f.write ('TSS=' + str(int(TSS * DOF)) + ' \n')
+        #f.write ('VSS=' + str(int((TSS * DOF)/10.0)) + ' \n')
+        #f.write ('ESS=' + str(int((TSS * DOF)/10.0)) + ' \n')
+        f.write ('TSS=' + str(0) + ' \n')
+        f.write ('VSS=' + str(0) + ' \n')
+        f.write ('ESS=' + str(20) + ' \n')
         f.write ('LOT=' + LOT + ' \n')
         f.write ('rdm=' + rdm + '\n')
         f.write ('type=' + type + '\n')
