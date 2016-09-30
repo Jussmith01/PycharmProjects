@@ -6,7 +6,7 @@ import graphtools as gt
 import numpy as np
 import matplotlib.pyplot as plt
 import time as tm
-from scipy import stats as st
+#from scipy import stats as st
 
 def sortbyother(Y, X):
     xy = zip(X, Y)
@@ -30,7 +30,7 @@ nnfdir1   = wkdir1 + 'networks/'
 #nnfdir2   = wkdir2 + 'networks/'
 
 # Construct pyNeuroChem classes
-nc1 = pync.pyNeuroChem(cnstfile1,saefile1,nnfdir1,1)
+nc1 = pync.pyNeuroChem(cnstfile1,saefile1,nnfdir1,0)
 #nc2 = pync.pyNeuroChem(cnstfile2,saefile2,nnfdir2,1)
 
 dtdir = '/home/jujuman/Dropbox/Research/ChemSciencePaper/TestCases/Bonds/Fentanyl/'
@@ -96,9 +96,9 @@ rmse4 = gt.calculaterootmeansqrerror(Eact,Eact3)
 plt.plot   (IDX, Eact, color='black',  label='DFT',linewidth=3)
 plt.scatter(IDX, Eact, marker='o' , color='black',  linewidth=3)
 
-print ( "Spearman corr. 1: " + "{:.3f}".format(st.spearmanr(Ecmp1,Eact)[0]) )
-print ( "Spearman corr. 1: " + "{:.3f}".format(st.spearmanr(Eact2,Eact)[0]) )
-print ( "Spearman corr. 1: " + "{:.3f}".format(st.spearmanr(Eact3,Eact)[0]) )
+#print ( "Spearman corr. 1: " + "{:.3f}".format(st.spearmanr(Ecmp1,Eact)[0]) )
+#print ( "Spearman corr. 1: " + "{:.3f}".format(st.spearmanr(Eact2,Eact)[0]) )
+#print ( "Spearman corr. 1: " + "{:.3f}".format(st.spearmanr(Eact3,Eact)[0]) )
 
 plt.plot   (IDX, Ecmp1, ':', marker=r'D', color='red',  label='TGM-1 RMSE: ' + "{:.3f}".format(rmse1) + ' kcal/mol',  linewidth=2, markersize=8)
 plt.plot   (IDX, Eact2, ':', marker=r'v', color='blue', label='AM1   RMSE: ' + "{:.2f}".format(rmse3) + ' kcal/mol',  linewidth=2, markersize=8)
