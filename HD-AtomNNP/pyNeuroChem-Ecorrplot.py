@@ -131,7 +131,6 @@ Ecmp5 = gt.hatokcal * Ecmp5
 Eact  = gt.hatokcal * Eact
 Eotr  = gt.hatokcal * Eotr
 
-
 rmse1 = gt.calculaterootmeansqrerror(Eact,Eotr)
 rmse2 = gt.calculaterootmeansqrerror(Eact,Ecmp1)
 rmse3 = gt.calculaterootmeansqrerror(Eact,Ecmp2)
