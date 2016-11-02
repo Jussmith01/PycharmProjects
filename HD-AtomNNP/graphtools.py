@@ -3,6 +3,7 @@ __author__ = 'jujuman'
 import numpy as np
 #import statsmodels.api as sm
 import re
+import os.path
 
 hatokcal = 627.509469
 
@@ -11,7 +12,7 @@ convert = hatokcal  # Ha to Kcal/mol
 def readxyz (file):
     xyz = []
     typ = []
-    Na = []
+    Na  = []
 
     fd = open(file, 'r').read()
 
@@ -37,27 +38,39 @@ def readxyz (file):
 
     return xyz,typ,Na
 
-def readncdat (file):
+def readncdat (file,N = 0):
     xyz = []
+    typ = []
     Eact = []
 
-    fd = open(file, 'r')
+    readf = False
 
-    fd.readline()
-    fd.readline()
+    if os.path.isfile(file):
+        readf = True
 
-    types=fd.readline().split(",")
+        fd = open(file, 'r')
 
-    Na = int(types[0])
-    typ = types[1:Na+1]
+        fd.readline()
+        fd.readline()
 
-    for i in fd.readlines():
-        sd = i.strip().split(",")
-        #print(sd)
-        xyz.append(list(map(float, sd[0:3*Na])))
-        Eact.append(float(sd[3*Na]))
+        types=fd.readline().split(",")
 
-    return xyz,typ,Eact
+        Na = int(types[0])
+        typ = types[1:Na+1]
+
+        cnt = 0
+
+        for i in fd.readlines():
+            cnt += 1
+            sd = i.strip().split(",")
+            #print(sd)
+            xyz.append(list(map(float, sd[0:3*Na])))
+            Eact.append(float(sd[3*Na]))
+            if cnt >= N and N > 0:
+                break
+
+
+    return xyz,typ,Eact,readf
 
 # -----------------------
 # readfile into np array
@@ -139,7 +152,7 @@ def calculateelementdiff2D(data1):
     x = np.zeros((C*C))
     y = np.zeros((C*C))
     z = np.zeros((C*C))
-    d = np.zeros((C*(C-1)/2))
+    d = np.zeros(int(C*(C-1)/2))
     cnt = 0
     for i in range(0, C):
         for j in range(0, C):

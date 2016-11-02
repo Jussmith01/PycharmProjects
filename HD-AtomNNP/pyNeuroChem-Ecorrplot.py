@@ -16,6 +16,15 @@ def shiftlsttomin(X):
 
     return X
 
+def setmaxE(X,Y,E):
+    m = min(X)
+    newlist = []
+    for i in range(0,len(X)):
+        if X[i] <= E:
+            newlist.append(Y[i])
+
+    return np.array(newlist,dtype=float)
+
 def sortbyother(Y, X):
     xy = zip(X, Y)
     xy.sort()
@@ -30,6 +39,7 @@ def pyNCcomputeTestSet(cnstfile1,saefile1,nnfdir1,dtdir,dtdftpref,dtpm6dir,dtpm6
     Ecmp = []
     Eotr = []
     Ndat = 0
+    Nmol = 0
     t = 0.0
     for i in range(0,N):
         print ('|----- File ' + str(i) + ' -----|')
@@ -49,6 +59,7 @@ def pyNCcomputeTestSet(cnstfile1,saefile1,nnfdir1,dtdir,dtdftpref,dtpm6dir,dtpm6
                 #Eact +=  Eact_t
                 #Eotr +=  Eotr_t
 
+                Nmol += 1
                 Ndat += len( Eact_t )
 
                 # Set the conformers in NeuroChem
@@ -68,21 +79,21 @@ def pyNCcomputeTestSet(cnstfile1,saefile1,nnfdir1,dtdir,dtdftpref,dtpm6dir,dtpm6
     Eotr = np.array(Eotr,dtype=float)
     Ecmp = np.array(Ecmp,dtype=float)
 
-    return Eact,Ecmp,Eotr,Ndat,t
+    return Eact,Ecmp,Eotr,Ndat,Nmol,t
 
 # Set data fields
-dtdir =  '/home/jujuman/Research/GDB-08-TEST-SET/DFTdata/'
-dtdftpref = 'gdb11_s08-'
+dtdir =  '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_10/testdata/'
+dtdftpref = 'gdb11_s10-'
 
-dtpm6dir =  '/home/jujuman/Research/GDB-08-TEST-SET/PM6data/'
-dtpm6pref = 'gdb11_s08-'
+dtpm6dir =  '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_10/DFTBdata/'
+dtpm6pref = 'gdb11_s10-'
 
 # Set required files for pyNeuroChem
 
 #Network 1 Files
-wkdir1    = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/train_08_4/'
+wkdir1    = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/train_08_3/'
 cnstfile1 = wkdir1 + 'rHCNO-4.6A_32-3.1A_a8-8.params'
-saefile1  = wkdir1 + 'sae_6-31gd.dat'
+saefile1  = wkdir1 + '../sae_6-31gd.dat'
 nnfdir1   = wkdir1 + 'networks/'
 
 # Network 2 Files
@@ -109,13 +120,13 @@ cnstfile5 = wkdir5 + 'rHCNO-3.5A_32-2.8A_a8-8.params'
 saefile5  = wkdir5 + 'sae_6-31gd.dat'
 nnfdir5   = wkdir5 + 'networks/'
 
-N = 5000
+N = 120
 
-Eact,Ecmp1,Eotr,Ndat,t1 = pyNCcomputeTestSet(cnstfile1,saefile1,nnfdir1,dtdir,dtdftpref,dtpm6dir,dtpm6pref,N)
-Eact,Ecmp2,Eotr,Ndat,t2 = pyNCcomputeTestSet(cnstfile2,saefile2,nnfdir2,dtdir,dtdftpref,dtpm6dir,dtpm6pref,N)
-Eact,Ecmp3,Eotr,Ndat,t3 = pyNCcomputeTestSet(cnstfile3,saefile3,nnfdir3,dtdir,dtdftpref,dtpm6dir,dtpm6pref,N)
-Eact,Ecmp4,Eotr,Ndat,t4 = pyNCcomputeTestSet(cnstfile4,saefile4,nnfdir4,dtdir,dtdftpref,dtpm6dir,dtpm6pref,N)
-Eact,Ecmp5,Eotr,Ndat,t5 = pyNCcomputeTestSet(cnstfile5,saefile5,nnfdir5,dtdir,dtdftpref,dtpm6dir,dtpm6pref,N)
+Eact,Ecmp1,Eotr,Ndat,Nmol,t1 = pyNCcomputeTestSet(cnstfile1,saefile1,nnfdir1,dtdir,dtdftpref,dtpm6dir,dtpm6pref,N)
+Eact,Ecmp2,Eotr,Ndat,Nmol,t2 = pyNCcomputeTestSet(cnstfile2,saefile2,nnfdir2,dtdir,dtdftpref,dtpm6dir,dtpm6pref,N)
+Eact,Ecmp3,Eotr,Ndat,Nmol,t3 = pyNCcomputeTestSet(cnstfile3,saefile3,nnfdir3,dtdir,dtdftpref,dtpm6dir,dtpm6pref,N)
+Eact,Ecmp4,Eotr,Ndat,Nmol,t4 = pyNCcomputeTestSet(cnstfile4,saefile4,nnfdir4,dtdir,dtdftpref,dtpm6dir,dtpm6pref,N)
+Eact,Ecmp5,Eotr,Ndat,Nmol,t5 = pyNCcomputeTestSet(cnstfile5,saefile5,nnfdir5,dtdir,dtdftpref,dtpm6dir,dtpm6pref,N)
 
 print ("Time 1: " + "{:.4f}".format(t1/1000.0)  + 's')
 print ("Time 2: " + "{:.4f}".format(t2/1000.0)  + 's')
@@ -131,6 +142,15 @@ Ecmp5 = gt.hatokcal * Ecmp5
 Eact  = gt.hatokcal * Eact
 Eotr  = gt.hatokcal * Eotr
 
+Emax = 400.0
+Ecmp1 = setmaxE(Eact,Ecmp1,Emax)
+Ecmp2 = setmaxE(Eact,Ecmp2,Emax)
+Ecmp3 = setmaxE(Eact,Ecmp3,Emax)
+Ecmp4 = setmaxE(Eact,Ecmp4,Emax)
+Ecmp5 = setmaxE(Eact,Ecmp5,Emax)
+Eotr =  setmaxE(Eact,Eotr, Emax)
+Eact =  setmaxE(Eact,Eact, Emax)
+
 rmse1 = gt.calculaterootmeansqrerror(Eact,Eotr)
 rmse2 = gt.calculaterootmeansqrerror(Eact,Ecmp1)
 rmse3 = gt.calculaterootmeansqrerror(Eact,Ecmp2)
@@ -143,7 +163,7 @@ mn = Eact.min()
 
 #plt.scatter(IDX, Eact, marker='o' , color='black',  linewidth=3)
 
-print ( "Spearman corr. PM6: " + "{:.3f}".format(st.spearmanr(Eotr,Eact)[0]) )
+print ( "Spearman corr. DFTB: " + "{:.3f}".format(st.spearmanr(Eotr,Eact)[0]) )
 print ( "Spearman corr. TGM 08: " + "{:.3f}".format(st.spearmanr(Ecmp1,Eact)[0]) )
 #print ( "Spearman corr. TGM 07: " + "{:.3f}".format(st.spearmanr(Ecmp2,Eact)[0]) )
 #print ( "Spearman corr. TGM 06: " + "{:.3f}".format(st.spearmanr(Ecmp3,Eact)[0]) )
@@ -157,25 +177,22 @@ slope2, intercept2, r_value2, p_value2, std_err2 = st.linregress(Eact,Ecmp1)
 
 fig = plt.figure()
 
-ax1 = fig.add_subplot(121)
+ax1 = fig.add_subplot(221)
 ax1.plot   ((mn,mx), (mn,mx), color='blue',  label='DFT',linewidth=3)
-ax1.scatter (Eact, Eotr, marker=r'o', color='#7BAFD4',  label='PM6     RMSE: ' + "{:.3f}".format(rmse1) + ' kcal/mol slope: ' + "{:.3f}".format(slope1) + " intercept: " + "{:.3f}".format(intercept1) + " $r^2$: " + "{:.3f}".format(r_value1**2),  linewidth=1)
-#plt.scatter (Eact, Ecmp4, marker=r'x', color='red',  label='TGM05 RMSE: ' + "{:.3f}".format(rmse5) + ' kcal/mol slope: ' + "{:.3f}".format(slope5) + " intercept: " + "{:.3f}".format(intercept5) + " $r^2$: " + "{:.3f}".format(r_value5**2),  linewidth=1)
-#plt.scatter (Eact, Ecmp3, marker=r'x', color='CornflowerBlue',  label='TGM06 RMSE: ' + "{:.3f}".format(rmse4) + ' kcal/mol slope: ' + "{:.3f}".format(slope4) + " intercept: " + "{:.3f}".format(intercept4) + " $r^2$: " + "{:.3f}".format(r_value4**2),  linewidth=1)
-#plt.scatter (Eact, Ecmp2, marker=r'x', color='blue',  label='TGM07 RMSE: ' + "{:.3f}".format(rmse3) + ' kcal/mol slope: ' + "{:.3f}".format(slope3) + " intercept: " + "{:.3f}".format(intercept3) + " $r^2$: " + "{:.3f}".format(r_value3**2),  linewidth=1)
-ax1.scatter (Eact, Ecmp1, marker=r'x', color='orange',  label='TGM08 RMSE: ' + "{:.3f}".format(rmse2) + ' kcal/mol slope: ' + "{:.3f}".format(slope2) + " intercept: " + "{:.3f}".format(intercept2) + " $r^2$: " + "{:.3f}".format(r_value2**2),  linewidth=1)
+ax1.scatter (Eact, Eotr, marker=r'o', color='#7BAFD4',  label='DFTB    RMSE: ' + "{:.3f}".format(rmse1) + ' kcal/mol slope: ' + "{:.3f}".format(slope1) + " intercept: " + "{:.3f}".format(intercept1) + " $r^2$: " + "{:.3f}".format(r_value1**2),  linewidth=1)
 
-ax1.set_title("GDB-8 test data correlation (" + str(Ndat) + " data points)")
+ax1.set_title("GDB-10 test data correlation (" + str(Ndat) + " data points from " + str(Nmol) + " molecules)")
 ax1.set_ylabel('$E_{cmp}$ (kcal/mol)')
 ax1.set_xlabel('$E_{ref}$ (kcal/mol)')
 ax1.legend(bbox_to_anchor=(0.01, 0.99), loc=2, borderaxespad=0.,fontsize=14)
 
+
 ax2 = fig.add_subplot(122)
 ar1 = [int(4),int(5),int(6),int(7),int(8)]
 ar2 = [rmse6,rmse5,rmse4,rmse3,rmse2]
-ax2.plot (ar1, ar2,marker=r'o', color='blue',linewidth=4)
+ax2.plot (ar1, ar2,marker=r'o', color='blue',linewidth=4,markersize=10)
 
-ax2.set_title("GDB training set error")
+ax2.set_title("GDB-10 test data error computed on different TGM networks")
 ax2.set_ylabel('RMSE (kcal/mol)')
 ax2.set_xlabel('Max GDB set size')
 

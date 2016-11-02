@@ -104,19 +104,19 @@ font = {'family': 'Bitstream Vera Sans',
 plt.rc('font', **font)
 
 # Set required files for pyNeuroChem
-wkdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/train_08_4/'
+wkdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/train_08_5/'
 
 # Network  Files
-cnstfile = wkdir + 'rHCNO-4.6A_32-3.1A_a8-8.params'
+cnstfile = wkdir + 'rHCNO-4.7A_32-3.2A_a8-8.params'
 saefile  = wkdir + 'sae_6-31gd.dat'
 nnfdir   = wkdir + 'networks/'
 
 # Construct pyNeuroChem classes
-nc = pync.pyNeuroChem(cnstfile,saefile,nnfdir,1)
+nc = pync.pyNeuroChem(cnstfile,saefile,nnfdir,0)
 
 # Read nc DATA
-xyz,typ,Eact = gt.readncdat('/home/jujuman/Dropbox/Research/ChemSciencePaper/TestCases/Retinol/data/retinolconformer_DFT.dat')
-xyz1,typ1,Eact1 = gt.readncdat('/home/jujuman/Dropbox/Research/ChemSciencePaper/TestCases/Retinol/data/retinolconformer_AM1.dat')
+xyz,typ,Eact = gt.readncdat('/home/jujuman/Dropbox/ChemSciencePaper.AER/TestCases/Retinol/data/retinolconformer_DFT.dat')
+xyz1,typ1,Eact1 = gt.readncdat('/home/jujuman/Dropbox/ChemSciencePaper.AER/TestCases/Retinol/data/retinolconformer_DFTB.dat')
 
 Eact = np.array(Eact)
 Eact1 = np.array(Eact1)
@@ -139,13 +139,12 @@ Eact = gt.hatokcal * Eact
 
 Eact1 = gt.hatokcal * Eact1
 
-
 IDX = np.arange(0,Eact.shape[0],1,dtype=float)
 
 fig, axes = plt.subplots(nrows=1, ncols=2)
 
-im1 = graphEdiff2D(axes.flat[0], Eact, Eact1, 'Top left: wB97x/6-31g* - Bottom right: AM1')
-im2 = graphEdiffDelta2D(axes.flat[1], Eact, Eact1, nc.getNumAtoms())
+im1 = graphEdiff2D(axes.flat[0], Eact, Ecmp, 'Top left: wB97x/6-31g* - Bottom right: AM1')
+im2 = graphEdiffDelta2D(axes.flat[1], Eact, Ecmp, nc.getNumAtoms())
 #im3 = graphEdiff2D(axes.flat[2], Eact, Ecmp2, 'Top left: ANN - c08b\nBottom right: wB97x/6-31g*')
 #im4 = graphEdiffDelta2D(axes.flat[3], Eact, Ecmp2, nc2.getNumAtoms())
 
