@@ -79,6 +79,8 @@ def molconformergenerator (m,fpf,wdir,Nconf,idx):
     for i in range(0,m.GetNumConformers()):
         print ("-------Conformer " + str(i) + "------")
         c = m.GetConformer(i)
+        tmp = AllChem.Compute2DCoords(m)
+        Draw.MolToFile(m,wdir + 'c_line_' + str(i) + '.png',size=(200,200))
 
         #---------- Write Input Variables ------------
         dfname=dpf + str(idx+i) + '_train.dat'
@@ -148,14 +150,14 @@ def gendipeptidelist(AAlist):
     return fasta,nlist
 #-------- Parameters -----------
 
-name = 'Tolterodine'
-wdir = '/home/jujuman/Dropbox/Research/ChemSciencePaper/TestCases/' + name + '/' #working directory
+name = 'Retinol'
+wdir = '/home/jujuman/Dropbox/ChemSciencePaper.AER/TestCases/' + name + '/TEST_REMAKE/' #working directory
 fpf = name #Filename prefix
 file = name + ".mol"
 
 m = Chem.MolFromMolFile(wdir + file)
 
-Nconf = 50
+Nconf = 8
 counter = 0
 
 molconformergenerator (m,fpf,wdir,Nconf,counter)

@@ -210,20 +210,21 @@ def show2dcontradialgraph (ShfR,eta,Rc,func,title):
 #         Set Parameters
 #--------------------------------
 #File nam
-pf = 'rHCNO-5.2A_32-4.1A_a8-8.params' # Output filename
+pf = 'rH-3.0A_4-2.5A_a2-2.params' # Output filename
 
-Nrr = 32
-Na = 4
-Nar = 8
-Nzt = 8
+Nrr = 4
+Na = 1
+Nar = 2
+Nzt = 2
 
 TM = 1
-Rcr = 5.2
-Rca = 4.1
-Atyp = '[H,C,O,N]'
-EtaR = np.array([16.0])
-EtaA = np.array([8.0])
-Zeta = np.array([8.0])
+Rcr = 3.0
+Rca = 2.5
+#Atyp = '[H,C,O,N]'
+Atyp = '[H]'
+EtaR = np.array([2.0])
+EtaA = np.array([1.0])
+Zeta = np.array([1.0])
 
 # ****************************************************
 cmap = mpl.cm.brg
@@ -306,8 +307,8 @@ plt.legend(bbox_to_anchor=(0.7, 0.95), loc=2, borderaxespad=0.)
 plt.show()
 
 #Uncomment for pretty contour plots of the angular environments using a sum and then max function
-#show2dcontangulargraph(ShfA,ShfZ,EtaA1,Zeta,Rc,add,'Sum Angular Output')
-#show2dcontangulargraph(ShfA,ShfZ,EtaA[0],Zeta,Rca,max,'Max Angular Output')
+#show2dcontangulargraph(ShfA,ShfZ,EtaA[0],Zeta[0],Rca,add,'Sum Angular Output')
+#show2dcontangulargraph(ShfA,ShfZ,EtaA[0],Zeta[0],Rca,max,'Max Angular Output')
 
 Nt = Nat + Nrt
 print('Total Environmental Vector Size: ',int(Nt))
