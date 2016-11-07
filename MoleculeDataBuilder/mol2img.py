@@ -2,6 +2,7 @@ from rdkit import Chem
 from rdkit.Chem import AllChem
 from rdkit.Chem import Draw
 from PIL import Image
+
 '''
 dir = '/home/jujuman/Dropbox/Research/ChemSciencePaper/TestCases/C10H20Isomers/'
 
