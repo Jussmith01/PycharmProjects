@@ -9,6 +9,17 @@ hatokcal = 627.509469
 
 convert = hatokcal  # Ha to Kcal/mol
 
+def convertatomicnumber(X):
+    X = int(X)
+    if X == 1:
+        return 'H'
+    elif X == 6:
+        return 'C'
+    elif X == 7:
+        return 'N'
+    elif X == 8:
+        return 'O'
+
 def readxyz (file):
     xyz = []
     typ = []
@@ -37,6 +48,21 @@ def readxyz (file):
         typ.append(ntyp)
 
     return xyz,typ,Na
+
+def writexyzfile (fn,xyz,typ):
+    f = open(fn, 'w')
+    f.write('\n')
+    N = len(typ)
+
+    for i in xyz:
+        f.write(str(N) + '\n')
+        for j in range(N):
+            x = i[j*3]
+            y = i[j*3+1]
+            z = i[j*3+2]
+            f.write(typ[j] + ' ' + str(x) + ' ' + str(y) + ' ' + str(z) + '\n')
+        f.write('\n')
+    f.close()
 
 def readncdat (file,N = 0):
     xyz = []
@@ -71,6 +97,52 @@ def readncdat (file,N = 0):
 
 
     return xyz,typ,Eact,readf
+
+def readg09trajdat (file):
+    xyz = []
+    typ = []
+    Enr = []
+
+    fd = open(file, 'r').read()
+
+    # Get energies
+    rE = re.compile('SCF Done:\s+?E\(\S+\)\s+?=\s+?([+,-]?\d+?\.\d+?E?[+,-]?\d+?)\s')
+    s = rE.findall(fd)
+
+    for i in s:
+        Enr.append(float(i))
+
+    # Get coords
+    rB = re.compile('Input orientation:([\S\s]+?)(?=Distance|Rotational)')
+    b = rB.findall(fd)
+
+    for i in b:
+        rX = re.compile('\s+?\d+?\s+?(\d+?)\s+?\d+?\s+?([+,-]?\d+?\.\d+?)\s+?([+,-]?\d+?\.\d+?)\s+?([+,-]?\d+?\.\d+?)\s')
+        c = rX.findall(i)
+
+        t_xyz = []
+        t_typ = []
+
+        for j in c:
+            t_typ.append(convertatomicnumber(j[0]))
+            t_xyz.append(float(j[1]))
+            t_xyz.append(float(j[2]))
+            t_xyz.append(float(j[3]))
+
+        typ.append(t_typ)
+        xyz.append(t_xyz)
+
+    Enr.pop(0)
+    #typ.pop(len(typ)-1)
+    #xyz.pop(len(xyz)-1)
+    #typ.pop(0)
+    #xyz.pop(0)
+
+    #Enr.pop(0)
+    #typ.pop(0)
+    #xyz.pop(0)
+
+    return xyz,typ,Enr
 
 # -----------------------
 # readfile into np array

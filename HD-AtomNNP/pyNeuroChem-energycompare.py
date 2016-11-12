@@ -35,6 +35,10 @@ xyz,typ,Eact,tmp    = gt.readncdat(dtdir + 'isomer_structures_DFT.dat')
 xyz2,typ2,Eact2,tmp = gt.readncdat(dtdir + 'isomer_structures_DFTB.dat')
 xyz3,typ3,Eact3,tmp = gt.readncdat(dtdir + 'isomer_structures_PM6.dat')
 
+xyz = [xyz[0],xyz[1]]
+xyz2 = [xyz2[0],xyz2[1]]
+xyz3 = [xyz3[0],xyz3[1]]
+
 print(typ)
 print(xyz)
 
@@ -58,6 +62,9 @@ _t1b = tm.time()
 Ecmp1 = np.array( nc1.computeEnergies() )
 print('Computation complete 1. Time: ' + "{:.4f}".format((tm.time() - _t1b) * 1000.0)  + 'ms')
 
+
+print(Ecmp1)
+
 # Construct pyNeuroChem classes
 nc2 = pync.pyNeuroChem(cnstfile2,saefile2,nnfdir2,0)
 
@@ -73,6 +80,8 @@ print('Computing energies 1...')
 _t2b = tm.time()
 Ecmp2 = np.array( nc2.computeEnergies() )
 print('Computation complete 1. Time: ' + "{:.4f}".format((tm.time() - _t2b) * 1000.0)  + 'ms')
+
+print(Ecmp2)
 
 n = 0
 m = 13
