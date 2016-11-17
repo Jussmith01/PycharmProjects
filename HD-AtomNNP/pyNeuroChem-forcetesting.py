@@ -18,7 +18,7 @@ xyz = [[0.00000,0.00000,0.37124,0.00000, 0.00000,-0.37124]]
 typ = ['H','H']
 
 # Construct pyNeuroChem class
-nc = pync.pyNeuroChem(cnstfile, saefile, nnfdir, 0)
+nc = pync.pyNeuroChem(cnstfile, saefile, nnfdir, 1)
 
 # Set the conformers in NeuroChem
 nc.setConformers(confs=xyz,types=typ)
