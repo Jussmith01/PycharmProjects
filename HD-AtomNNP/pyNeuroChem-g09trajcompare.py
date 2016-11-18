@@ -15,12 +15,12 @@ def sortbyother(Y, X):
     return np.array(Y)
 
 # Set required files for pyNeuroChem
-wkdir1    = '/home/jujuman/Scratch/Research/trainingcases/wB97X-631gd-train-highgarden/train_08-a3.1A_r4.6_dn1/'
-#wkdir1 = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/train_08_4/'
+wkdir1 = '/home/jujuman/Dropbox/ChemSciencePaper.AER/ANI-1-ntwk/'
+wkdir1 = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/train_08_8/'
 
 #Network 1 Files
-cnstfile1 = wkdir1 + 'rHCNO-4.6A_32-3.1A_a8-8.params'
-saefile1  = wkdir1 + '../sae_6-31gd.dat'
+cnstfile1 = wkdir1 + 'rHCNO-4.8A_32-3.2A_a8-8.params'
+saefile1  = wkdir1 + 'sae_6-31gd.dat'
 nnfdir1   = wkdir1 + 'networks/'
 
 dtdir = '/home/jujuman/Scratch/Research/ANN-Test-Data/MDinG09testing/'
@@ -87,7 +87,7 @@ plt.title("BO MD Trajectory - Ranolazine")
 
 plt.ylabel('$\Delta$E calculated (kcal/mol)')
 plt.xlabel('Step number')
-plt.legend(bbox_to_anchor=(0.35, 0.98), loc=2, borderaxespad=0.,fontsize=16)
+#plt.legend(bbox_to_anchor=(0.35, 0.98), loc=2, borderaxespad=0.,fontsize=16)
 
 font = {'family' : 'Bitstream Vera Sans',
         'weight' : 'normal',

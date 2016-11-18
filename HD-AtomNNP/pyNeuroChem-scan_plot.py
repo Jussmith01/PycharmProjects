@@ -91,26 +91,16 @@ def produce_scan(ax,title,xlabel,cnstfile,saefile,nnfdir,dtdir,dt1,dt2,dt3,smin,
     ax.legend(bbox_to_anchor=(0.2, 0.98), loc=2, borderaxespad=0., fontsize=14)
 
 # Set required files for pyNeuroChem
-wkdir1    = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/train_08_8/'
+wkdir    = '/home/jujuman/Research/NeuroChemForceTesting/train_01/'
+cnstfile = wkdir + 'rH-3.0A_4-2.5A_a2-2.params'
+saefile  = wkdir + '../sae_6-31gd.dat'
+nnfdir   = wkdir + 'networks/'
 
-#Network 1 Files
-cnstfile1 = wkdir1 + 'rHCNO-4.8A_32-3.2A_a8-8.params'
-saefile1  = wkdir1 + '../sae_6-31gd.dat'
-nnfdir1   = wkdir1 + 'networks/'
+dtdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_testdata/'
 
-dtdir1 = '/home/jujuman/Dropbox/ChemSciencePaper.AER/TestCases/Bonds/Fentanyl/'
-dtdir2 = '/home/jujuman/Dropbox/ChemSciencePaper.AER/TestCases/Bonds/Fentanyl/'
-dtdir3 = '/home/jujuman/Dropbox/ChemSciencePaper.AER/TestCases/Dihedrals/4-Cyclohexyl-1-butanol/'
-dtdir4 = '/home/jujuman/Dropbox/ChemSciencePaper.AER/TestCases/Dihedrals/Lisdexamfetamine/'
+fig, axes = plt.subplots(nrows=1, ncols=1)
 
-#dtdir4 = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_testdata/butane/'
-
-fig, axes = plt.subplots(nrows=2, ncols=2)
-
-produce_scan(axes.flat[0],'Fentanyl NC bond stretch','Bond distance ($\AA$)'                ,cnstfile1,saefile1,nnfdir1,dtdir1,'data_bond_scan_DFT.dat' ,'data_bond_scan_DFTB.dat','data_bond_scan_PM6.dat' ,10,35,0.0025,1.3)
-produce_scan(axes.flat[1],'Fentanyl CCC angle bend','Angle ($^\circ$)'                      ,cnstfile1,saefile1,nnfdir1,dtdir2,'data_angle_scan_DFT.dat'   ,'data_angle_scan_DFTB.dat'  ,'data_angle_scan_PM6.dat',28,110,0.5,80.0)
-produce_scan(axes.flat[2],'4-Cyclohexyl-1-butanol CCCC dihedral rotation','Angle ($^\circ$)',cnstfile1,saefile1,nnfdir1,dtdir3,'dhl_scan_DFT.dat'          ,'dhl_scan_DFTB.dat'         ,'dhl_scan_PM6.dat'       ,0,144,2.5,0.0)
-produce_scan(axes.flat[3],'Lisdexamfetamine NCCC dihedral rotation',      'Angle ($^\circ$)',cnstfile1,saefile1,nnfdir1,dtdir4,'data_dhl_scan_DFT.dat'   ,'data_dhl_scan_DFTB.dat'   ,'data_dhl_scan_PM6.dat'  ,0,144,2.5,0.0)
+produce_scan(axes,'Fentanyl NC bond stretch','Bond distance ($\AA$)'                ,cnstfile,saefile,nnfdir,dtdir,'h2bondscan_test.dat' ,'h2bondscan_test.dat','h2bondscan_test.dat' ,0,998,0.00005,0.6)
 
 font = {'family' : 'Bitstream Vera Sans',
         'weight' : 'normal',
