@@ -213,16 +213,16 @@ def show2dcontradialgraph (ShfR,eta,Rc,func,title):
 pf = 'rH-3.0A_4-2.5A_a2-2.params' # Output filename
 
 Nrr = 4
-Na = 1
-Nar = 2
-Nzt = 2
+Na = 2
+Nar = 1
+Nzt = 1
 
 TM = 1
 Rcr = 3.0
 Rca = 2.5
 #Atyp = '[H,C,O,N]'
-Atyp = '[H]'
-EtaR = np.array([2.0])
+Atyp = '[H,O]'
+EtaR = np.array([4.0])
 EtaA = np.array([1.0])
 Zeta = np.array([1.0])
 

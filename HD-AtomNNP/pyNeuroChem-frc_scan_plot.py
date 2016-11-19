@@ -14,8 +14,10 @@ def sortbyother(Y, X):
     X, Y = zip(*xy)
     return np.array(Y)
 
-def produce_scan(title,xlabel,cnstfile,saefile,nnfdir,dtdir,dt1,smin,smax,iscale,ishift):
+def produce_scan(title,xlabel,cnstfile,saefile,nnfdir,dtdir,dt1,smin,smax,iscale,ishift,atm):
     xyz, frc, typ, Eact, chk = gt.readncdatwforce(dtdir + dt1)
+
+    print(xyz)
 
     Eact = np.array(Eact)
 
@@ -41,6 +43,8 @@ def produce_scan(title,xlabel,cnstfile,saefile,nnfdir,dtdir,dt1,smin,smax,iscale
     F = np.array(nc1.computeAnalyticalForces())
     print('Force computation complete. Time: ' + "{:.4f}".format((tm.time() - _t1b) * 1000.0) + 'ms')
 
+    #Fn = np.array(nc1.computeNumericalForces(dr=0.0001))
+
     n = smin
     m = smax
     Ecmp1 = gt.hatokcal * Ecmp1
@@ -48,9 +52,9 @@ def produce_scan(title,xlabel,cnstfile,saefile,nnfdir,dtdir,dt1,smin,smax,iscale
 
     IDX = np.arange(0, Eact.shape[0], 1, dtype=float) * iscale + ishift
 
-    IDX = IDX[0:350]
-    Eact = Eact[n:m]
-    Ecmp1 = Ecmp1[n:m]
+    IDX = IDX
+    Eact = Eact
+    Ecmp1 = Ecmp1
 
     Ecmp1 = Ecmp1 - Ecmp1.min()
     Eact  = Eact  - Eact.min()
@@ -59,11 +63,11 @@ def produce_scan(title,xlabel,cnstfile,saefile,nnfdir,dtdir,dt1,smin,smax,iscale
 
     print("Spearman corr. 1: " + "{:.3f}".format(st.spearmanr(Ecmp1, Eact)[0]))
 
-    fig, axes = plt.subplots(nrows=1, ncols=2)
+    fig, axes = plt.subplots(nrows=2, ncols=2)
 
-    axes.flat[0].plot(IDX, Eact[0:350], '-', color='black', label='DFT',
+    axes.flat[0].plot(IDX, Eact, '-', color='black', label='DFT',
              linewidth=6)
-    axes.flat[0].plot(IDX, Ecmp1[0:350], '--', color='red', label='ANI-1',
+    axes.flat[0].plot(IDX, Ecmp1, '--', color='red', label='ANI-1',
              linewidth=6)
 
     #ax.plot(IDX, Eact, color='black', label='DFT', linewidth=3)
@@ -80,25 +84,28 @@ def produce_scan(title,xlabel,cnstfile,saefile,nnfdir,dtdir,dt1,smin,smax,iscale
     axes.flat[0].set_xlabel(xlabel)
     axes.flat[0].legend(bbox_to_anchor=(0.2, 0.98), loc=2, borderaxespad=0., fontsize=14)
 
-    F = (F[:,2]/4.0)[0:350]
-    Fn = (gt.calculatenumderiv(Ecmp1/gt.hatokcal,0.001)[:,1])[0:350]
-    Fa = (1.8897259885789*np.array(frc)[:,2])[0:350]
-    print (F)
-    print (Fa)
+    #print (Fn)
 
-    th = axes.flat[1].set_title("Force in the z direction for atom 1",fontsize=20)
-    th.set_position([0.5,1.005])
+    for i in range(0,3):
+        Fq = F[:,3*atm+i]
+        #Fnq = Fn[:,i]
+        Faq = (1.8897259885789*np.array(frc)[:,3*atm+i])
+        print (Fq)
+        print (Faq)
 
-    axes.flat[1].plot(IDX, Fa, '-', color='black', label='DFT',
-        linewidth=6)
-    axes.flat[1].plot(IDX, Fn, '-', color='blue', label='ANI Numerical',
-        linewidth=6)
-    axes.flat[1].plot(IDX, F, '--', color='red', label='ANI Analytical',
-        linewidth=6)
+        th = axes.flat[i+1].set_title("Force for atom 1: coordinate " + str(i),fontsize=20)
+        th.set_position([0.5,1.005])
 
-    axes.flat[1].set_ylabel('Force (Ha/A)')
-    axes.flat[1].set_xlabel(xlabel)
-    axes.flat[1].legend(bbox_to_anchor=(0.2, 0.98), loc=2, borderaxespad=0., fontsize=14)
+        axes.flat[i+1].plot(IDX, Faq, '-', color='black', label='DFT',
+            linewidth=6)
+        #axes.flat[i+1].plot(IDX, Fnq, '-', color='blue', label='ANI Numerical',
+        #    linewidth=6)
+        axes.flat[i+1].plot(IDX, Fq, '--', color='red', label='ANI Analytical',
+            linewidth=6)
+
+        axes.flat[i+1].set_ylabel('Force (Ha/A)')
+        axes.flat[i+1].set_xlabel(xlabel)
+        axes.flat[i+1].legend(bbox_to_anchor=(0.2, 0.98), loc=2, borderaxespad=0., fontsize=14)
 
     font = {'family' : 'Bitstream Vera Sans',
         'weight' : 'normal',
@@ -109,12 +116,12 @@ def produce_scan(title,xlabel,cnstfile,saefile,nnfdir,dtdir,dt1,smin,smax,iscale
     plt.show()
 
 # Set required files for pyNeuroChem
-wkdir    = '/home/jujuman/Research/NeuroChemForceTesting/train_01/'
-cnstfile = wkdir + 'rH-3.0A_4-2.5A_a2-2.params'
+wkdir    = '/home/jujuman/Research/NeuroChemForceTesting/train_02/'
+cnstfile = wkdir + 'rHO-3.0A_4-2.5A_a2-2.params'
 saefile  = wkdir + '../sae_6-31gd.dat'
 nnfdir   = wkdir + 'networks/'
 
-dtdir = '/home/jujuman/Research/ANN-Test-Data/RCDBForceTesting/'
+dtdir = '/home/jujuman/Research/NeuroChemForceTesting/'
 
-produce_scan('Fentanyl NC bond stretch','Bond distance ($\AA$)'                ,cnstfile,saefile,nnfdir,dtdir,'trainingData.dat' ,0,949,0.001,0.55)
+produce_scan('Fentanyl NC bond stretch','Bond distance ($\AA$)'                ,cnstfile,saefile,nnfdir,dtdir,'trainingData.dat' ,0,249,0.001,0.85,2)
 

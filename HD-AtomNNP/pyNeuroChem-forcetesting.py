@@ -5,8 +5,8 @@ import pyNeuroChem as pync
 import numpy as np
 
 # Set required files for pyNeuroChem
-wkdir    = '/home/jujuman/Research/NeuroChemForceTesting/train_01/'
-cnstfile = wkdir + 'rH-3.0A_4-2.5A_a2-2.params'
+wkdir    = '/home/jujuman/Research/NeuroChemForceTesting/train_02/'
+cnstfile = wkdir + 'rHO-3.0A_4-2.5A_a2-2.params'
 saefile  = wkdir + '../sae_6-31gd.dat'
 nnfdir   = wkdir + 'networks/'
 
@@ -14,7 +14,9 @@ xyz = [[0.00000,0.00000,0.37124,0.00000, 0.00000,-0.37124]
 	  ,[0.00000,0.372635,0.00000,0.00000,-0.372635, 0.00000]]
 	  #,[0.00000,0.00000,0.41000,0.00000, 0.00000,-0.41000]]
 
-typ = ['H','H']
+xyz = [[0.0, 0.0, 0.118604, 0.0, 0.67007291, -0.40437055, 0.0, -0.75981897, -0.474415]]#, [0.0, 0.0, 0.118604, 0.0, 0.67086124, -0.40498585, 0.0, -0.75981897, -0.474415]]
+
+typ = ['O','H','H']
 
 # Construct pyNeuroChem class
 nc = pync.pyNeuroChem(cnstfile, saefile, nnfdir, 0)
