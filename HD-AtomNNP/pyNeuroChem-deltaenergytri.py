@@ -145,10 +145,10 @@ font = {'family': 'Bitstream Vera Sans',
 plt.rc('font', **font)
 
 # Set required files for pyNeuroChem
-wkdir = '/home/jujuman/Scratch/Research/trainingcases/wB97X-631gd-train-highgarden/train_08-a3.1A_r4.6_dn1/'
+wkdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/train_08_8/'
 
 # Network  Files
-cnstfile = wkdir + 'rHCNO-4.6A_32-3.1A_a8-8.params'
+cnstfile = wkdir + 'rHCNO-4.8A_32-3.2A_a8-8.params'
 saefile  = wkdir + '../sae_6-31gd.dat'
 nnfdir   = wkdir + 'networks/'
 

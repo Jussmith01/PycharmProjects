@@ -64,6 +64,42 @@ def writexyzfile (fn,xyz,typ):
         f.write('\n')
     f.close()
 
+def readncdatwforce (file,N = 0):
+    xyz = []
+    typ = []
+    frc = []
+    Eact = []
+
+    readf = False
+
+    if os.path.isfile(file):
+        readf = True
+
+        fd = open(file, 'r')
+
+        fd.readline()
+        fd.readline()
+
+        types=fd.readline().split(",")
+
+        Na = int(types[0])
+        typ = types[1:Na+1]
+
+        cnt = 0
+
+        for i in fd.readlines():
+            cnt += 1
+            sd = i.strip().split(",")
+            #print(sd)
+            xyz.append(list(map(float, sd[0:3*Na])))
+            Eact.append(float(sd[3*Na]))
+            frc.append(list(map(float,sd[3*Na+1:2*3*Na+1])))
+            if cnt >= N and N > 0:
+                break
+
+
+    return xyz,frc,typ,Eact,readf
+
 def readncdat (file,N = 0):
     xyz = []
     typ = []
