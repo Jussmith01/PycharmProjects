@@ -123,5 +123,5 @@ nnfdir   = wkdir + 'networks/'
 
 dtdir = '/home/jujuman/Research/NeuroChemForceTesting/'
 
-produce_scan('Fentanyl NC bond stretch','Bond distance ($\AA$)'                ,cnstfile,saefile,nnfdir,dtdir,'trainingData.dat' ,0,249,0.001,0.85,2)
+produce_scan('Fentanyl NC bond stretch','Bond distance ($\AA$)'                ,cnstfile,saefile,nnfdir,dtdir,'trainingData.dat' ,0,249,0.001,0.85,1)
 
