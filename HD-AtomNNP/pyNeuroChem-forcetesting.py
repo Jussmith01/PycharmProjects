@@ -5,7 +5,7 @@ import pyNeuroChem as pync
 import numpy as np
 
 # Set required files for pyNeuroChem
-wkdir    = '/home/jujuman/Research/NeuroChemForceTesting/train_02/'
+wkdir    = '/home/jujuman/Dropbox/Research/NeuroChemForceTesting/train_02/'
 cnstfile = wkdir + 'rHO-3.0A_4-2.5A_a2-2.params'
 saefile  = wkdir + '../sae_6-31gd.dat'
 nnfdir   = wkdir + 'networks/'

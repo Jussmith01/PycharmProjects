@@ -17,8 +17,6 @@ def sortbyother(Y, X):
 def produce_scan(title,xlabel,cnstfile,saefile,nnfdir,dtdir,dt1,smin,smax,iscale,ishift,atm):
     xyz, frc, typ, Eact, chk = gt.readncdatwforce(dtdir + dt1)
 
-    print(xyz)
-
     Eact = np.array(Eact)
 
     # Construct pyNeuroChem classes
@@ -73,16 +71,16 @@ def produce_scan(title,xlabel,cnstfile,saefile,nnfdir,dtdir,dt1,smin,smax,iscale
     #ax.plot(IDX, Eact, color='black', label='DFT', linewidth=3)
     #ax.scatter(IDX, Eact, marker='o', color='black', linewidth=4)
 
-    th = axes.flat[0].set_title('H2 bond stretch potential',fontsize=20)
-    th.set_position([0.5,1.005])
+    th = axes.flat[0].set_title(title,fontsize=13)
+    th.set_position([0.5,1.00])
 
     # Set Limits
-    #ax.set_xlim([ IDX.min(),IDX.max()])
+    axes.flat[0].set_xlim([ IDX.min(),IDX.max()])
     #axes.flat[0].set_ylim([Eact.min()-1.0,Eact.max()+1.0])
 
     axes.flat[0].set_ylabel('$\Delta$E calculated (kcal/mol)')
     axes.flat[0].set_xlabel(xlabel)
-    axes.flat[0].legend(bbox_to_anchor=(0.2, 0.98), loc=2, borderaxespad=0., fontsize=14)
+    axes.flat[0].legend(bbox_to_anchor=(0.2, 0.98), loc=2, borderaxespad=0., fontsize=12)
 
     #print (Fn)
 
@@ -93,8 +91,10 @@ def produce_scan(title,xlabel,cnstfile,saefile,nnfdir,dtdir,dt1,smin,smax,iscale
         print (Fq)
         print (Faq)
 
-        th = axes.flat[i+1].set_title("Force for atom 1: coordinate " + str(i),fontsize=20)
-        th.set_position([0.5,1.005])
+        th = axes.flat[i+1].set_title("Force for atom " + str(atm) + ": coordinate " + str(i),fontsize=13)
+        th.set_position([0.5,1.00])
+
+        axes.flat[i+1].set_xlim([IDX.min(), IDX.max()])
 
         axes.flat[i+1].plot(IDX, Faq, '-', color='black', label='DFT',
             linewidth=6)
@@ -105,23 +105,23 @@ def produce_scan(title,xlabel,cnstfile,saefile,nnfdir,dtdir,dt1,smin,smax,iscale
 
         axes.flat[i+1].set_ylabel('Force (Ha/A)')
         axes.flat[i+1].set_xlabel(xlabel)
-        axes.flat[i+1].legend(bbox_to_anchor=(0.2, 0.98), loc=2, borderaxespad=0., fontsize=14)
+        axes.flat[i+1].legend(bbox_to_anchor=(0.2, 0.98), loc=2, borderaxespad=0., fontsize=12)
 
     font = {'family' : 'Bitstream Vera Sans',
         'weight' : 'normal',
-        'size'   : 18}
+        'size'   : 12}
 
     plt.rc('font', **font)
 
     plt.show()
 
 # Set required files for pyNeuroChem
-wkdir    = '/home/jujuman/Research/NeuroChemForceTesting/train_02/'
+wkdir    = '/home/jujuman/Dropbox/Research/NeuroChemForceTesting/train_02/'
 cnstfile = wkdir + 'rHO-3.0A_4-2.5A_a2-2.params'
 saefile  = wkdir + '../sae_6-31gd.dat'
 nnfdir   = wkdir + 'networks/'
 
-dtdir = '/home/jujuman/Research/NeuroChemForceTesting/'
+dtdir = '/home/jujuman/Dropbox/Research/NeuroChemForceTesting/'
 
-produce_scan('Fentanyl NC bond stretch','Bond distance ($\AA$)'                ,cnstfile,saefile,nnfdir,dtdir,'trainingData.dat' ,0,249,0.001,0.85,1)
+produce_scan('H2O bond stretch (O-H)','Bond distance ($\AA$)'                ,cnstfile,saefile,nnfdir,dtdir,'trainingData.dat' ,0,249,0.001,0.85,1)
 

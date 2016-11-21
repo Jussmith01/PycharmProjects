@@ -221,6 +221,16 @@ def getfltsfromfileprob(file, delim, col1, col2, prob):
 
 # -----------------------
 
+def generatedmat(crds,Na):
+    dmat = []
+
+    for i in range(0,Na):
+        for j in range(i+1, Na):
+            dmat.append(((crds[i*3] - crds[j*3])**2+(crds[i*3+1] - crds[j*3+1])**2+(crds[i*3+2] - crds[j*3+2])**2)**0.5)
+
+    return dmat
+
+
 # ----------------------------
 # Calculate Mean Squared Diff
 # ----------------------------
