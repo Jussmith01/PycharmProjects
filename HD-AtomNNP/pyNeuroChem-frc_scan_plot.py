@@ -108,20 +108,21 @@ def produce_scan(title,xlabel,cnstfile,saefile,nnfdir,dtdir,dt1,smin,smax,iscale
         axes.flat[i+1].legend(bbox_to_anchor=(0.2, 0.98), loc=2, borderaxespad=0., fontsize=12)
 
     font = {'family' : 'Bitstream Vera Sans',
-        'weight' : 'normal',
-        'size'   : 12}
+            'weight' : 'normal',
+            'size'   : 12}
 
     plt.rc('font', **font)
 
     plt.show()
 
 # Set required files for pyNeuroChem
-wkdir    = '/home/jujuman/Dropbox/Research/NeuroChemForceTesting/train_02/'
-cnstfile = wkdir + 'rHO-3.0A_4-2.5A_a2-2.params'
-saefile  = wkdir + '../sae_6-31gd.dat'
+wkdir    = '/home/jujuman/Dropbox/ChemSciencePaper.AER/ANI-1-ntwk/'
+cnstfile = wkdir + 'rHCNO-4.6A_32-3.1A_a8-8.params'
+saefile  = wkdir + 'sae_6-31gd.dat'
 nnfdir   = wkdir + 'networks/'
 
 dtdir = '/home/jujuman/Dropbox/Research/NeuroChemForceTesting/'
 
-produce_scan('H2O bond stretch (O-H)','Bond distance ($\AA$)'                ,cnstfile,saefile,nnfdir,dtdir,'trainingData.dat' ,0,249,0.001,0.85,1)
-
+produce_scan('H2O bond stretch (O-H)','Bond distance ($\AA$)'                ,cnstfile,saefile,nnfdir,dtdir,'OH_bond_h2o.dat' ,0,249,0.001,0.85,0)
+produce_scan('H2O bond stretch (O-H)','Bond distance ($\AA$)'                ,cnstfile,saefile,nnfdir,dtdir,'OH_bond_h2o.dat' ,0,249,0.001,0.85,1)
+produce_scan('H2O bond stretch (O-H)','Bond distance ($\AA$)'                ,cnstfile,saefile,nnfdir,dtdir,'OH_bond_h2o.dat' ,0,249,0.001,0.85,2)
