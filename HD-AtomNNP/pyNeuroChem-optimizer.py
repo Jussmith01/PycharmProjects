@@ -22,8 +22,8 @@ xyz1,typ1,Na1 = gt.readxyz('/home/jujuman/Dropbox/ChemSciencePaper.AER/TestCases
 #xyz1 = [[0.000000,    0.000000,    0.118604, 0.000000,    0.759819,   -0.474415, 0.000000,-0.759819,-0.474415]]#, [0.0, 0.0, 0.118604, 0.0, 0.67086124, -0.40498585, 0.0, -0.75981897, -0.474415]]
 #xyz2 = [0.000000,    0.000000,    0.119814,0.000000,    0.761299,   -0.479258,0.000000,   -0.761299,   -0.479258]
 
-#Na = 3
-#typ = ['O','H','H']
+#Na = [3]
+#typ = [['O','H','H']]
 
 
 # Set the conformers in NeuroChem
@@ -36,7 +36,7 @@ print( 'Number of Confs Loaded: ' + str(nc.getNumConfs()) )
 # O of Conformations
 print('Optimizing...')
 _t1b = tm.time()
-F = nc.optimizeGeom(0,conv=0.000001,step=0.01,dr=0.0066514)
+F = nc.optimizeGeomBFGS()
 print('Optimization complete. Time: ' + "{:.4f}".format((tm.time() - _t1b) * 1000.0) + 'ms')
 
 print ('-----------------ORIGINAL COORDS---------------')
