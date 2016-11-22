@@ -13,7 +13,7 @@ saefile  = wkdir + 'sae_6-31gd.dat'
 nnfdir   = wkdir + 'networks/'
 
 # Construct pyNeuroChem class
-nc = pync.pyNeuroChem(cnstfile,saefile,nnfdir,0)
+nc = pync.pyNeuroChem(cnstfile,saefile,nnfdir,1)
 
 xyz,typ,Na = gt.readxyz('/home/jujuman/Dropbox/ChemSciencePaper.AER/TestCases/Retinol/optimization/opt_test_NO.xyz')
 xyz1,typ1,Na1 = gt.readxyz('/home/jujuman/Dropbox/ChemSciencePaper.AER/TestCases/Retinol/optimization/opt_test_GO.xyz')
