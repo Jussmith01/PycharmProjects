@@ -41,12 +41,12 @@ saefile1  = wkdir1 + 'sae_6-31gd.dat'
 nnfdir1   = wkdir1 + 'networks/'
 
 # Construct pyNeuroChem classes
-nc1 = pync.pyNeuroChem(cnstfile1,saefile1,nnfdir1,0)
+nc1 = pync.pyNeuroChem(cnstfile1,saefile1,nnfdir1,1)
 
 idx = []
 tme = []
 
-for i in range(5,50):
+for i in range(10,20):
     xyz,typ,Na = generatemolgrid(['H','C','N','O'],10,10*i)
 
     # Set the conformers in NeuroChem
@@ -57,14 +57,23 @@ for i in range(5,50):
     print( '1) Number of Confs Loaded: ' + str(nc1.getNumConfs()) )
 
     # Compute Forces of Conformations
-    print('Computing energies 1...')
+    print('Computing energy 1...')
     _t1b = tm.time()
     Ecmp1 = np.array( nc1.computeEnergies() )
-    print('Computation complete 1. Time: ' + "{:.4f}".format((tm.time() - _t1b) * 1000.0)  + 'ms')
+    _t1e = tm.time()
+    print('Energy computation complete. Time: ' + "{:.4f}".format((_t1e - _t1b) * 1000.0)  + 'ms')
+
+    print('Computing forces 1...')
+    _t2b = tm.time()
+    F = np.array( nc1.computeAnalyticalForces() )
+    _t2e = tm.time()
+    print('Force computation complete. Time: ' + "{:.4f}".format((_t2e - _t2b) * 1000.0)  + 'ms')
+
+    print('Force to Energy: ' + "{:.4f}".format((_t2e - _t2b)/(_t1e - _t1b)))
 
     if i > 10:
         idx.append(nc1.getNumAtoms())
-        tme.append((tm.time() - _t1b) * 1000.0)
+        tme.append((_t1e - _t1b + _t2e - _t2b ) * 1000.0)
 
 print( st.linregress(np.log10(idx),np.log10(tme)) )
 

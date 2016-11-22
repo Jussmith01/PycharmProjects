@@ -15,16 +15,8 @@ nnfdir   = wkdir + 'networks/'
 # Construct pyNeuroChem class
 nc = pync.pyNeuroChem(cnstfile,saefile,nnfdir,1)
 
-xyz,typ,Na = gt.readxyz('/home/jujuman/Dropbox/ChemSciencePaper.AER/TestCases/Retinol/optimization/opt_test_NO.xyz')
-xyz1,typ1,Na1 = gt.readxyz('/home/jujuman/Dropbox/ChemSciencePaper.AER/TestCases/Retinol/optimization/opt_test_GO.xyz')
-
-#xyz = [[0.000000,    0.000000,    0.198604, 0.000000,    0.95819,   -0.424415, 0.000000,-0.759819,-0.554415]]#, [0.0, 0.0, 0.118604, 0.0, 0.67086124, -0.40498585, 0.0, -0.75981897, -0.474415]]
-#xyz1 = [[0.000000,    0.000000,    0.118604, 0.000000,    0.759819,   -0.474415, 0.000000,-0.759819,-0.474415]]#, [0.0, 0.0, 0.118604, 0.0, 0.67086124, -0.40498585, 0.0, -0.75981897, -0.474415]]
-#xyz2 = [0.000000,    0.000000,    0.119814,0.000000,    0.761299,   -0.479258,0.000000,   -0.761299,   -0.479258]
-
-#Na = [3]
-#typ = [['O','H','H']]
-
+xyz,typ,Na = gt.readxyz('/home/jujuman/Dropbox/ChemSciencePaper.AER/TestCases/Dihedrals/4-Cyclohexyl-1-butanol/optimization/dhl_NO.xyz')
+xyz1,typ1,Na1 = gt.readxyz('/home/jujuman/Dropbox/ChemSciencePaper.AER/TestCases/Dihedrals/4-Cyclohexyl-1-butanol/optimization/dhl_GO.xyz')
 
 # Set the conformers in NeuroChem
 nc.setConformers(confs=xyz,types=typ[0])

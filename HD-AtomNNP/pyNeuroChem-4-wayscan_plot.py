@@ -19,6 +19,8 @@ def produce_scan(ax,title,xlabel,cnstfile,saefile,nnfdir,dtdir,dt1,dt2,dt3,smin,
     xyz2, typ2, Eact2, chk = gt.readncdat(dtdir + dt2)
     xyz3, typ3, Eact3, chk = gt.readncdat(dtdir + dt3)
 
+    #gt.writexyzfile("/home/jujuman/Dropbox/ChemSciencePaper.AER/TestCases/Dihedrals/4-Cyclohexyl-1-butanol/optimization/dihedral_"+dt1+".xyz",xyz,typ)
+
     Eact = np.array(Eact)
     Eact2 = np.array(Eact2)
     Eact3 = np.array(Eact3)
@@ -90,13 +92,11 @@ def produce_scan(ax,title,xlabel,cnstfile,saefile,nnfdir,dtdir,dt1,dt2,dt3,smin,
     ax.set_xlabel(xlabel)
     ax.legend(bbox_to_anchor=(0.2, 0.98), loc=2, borderaxespad=0., fontsize=14)
 
-# Set required files for pyNeuroChem
-wkdir1    = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/train_08_8/'
-
 #Network 1 Files
-cnstfile1 = wkdir1 + 'rHCNO-4.8A_32-3.2A_a8-8.params'
-saefile1  = wkdir1 + '../sae_6-31gd.dat'
-nnfdir1   = wkdir1 + 'networks/'
+wkdir    = '/home/jujuman/Dropbox/ChemSciencePaper.AER/ANI-1-ntwk/'
+cnstfile1 = wkdir + 'rHCNO-4.6A_32-3.1A_a8-8.params'
+saefile1  = wkdir + 'sae_6-31gd.dat'
+nnfdir1   = wkdir + 'networks/'
 
 dtdir1 = '/home/jujuman/Dropbox/ChemSciencePaper.AER/TestCases/Bonds/Fentanyl/'
 dtdir2 = '/home/jujuman/Dropbox/ChemSciencePaper.AER/TestCases/Bonds/Fentanyl/'

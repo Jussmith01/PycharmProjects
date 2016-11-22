@@ -60,7 +60,7 @@ def writexyzfile (fn,xyz,typ):
             x = i[j*3]
             y = i[j*3+1]
             z = i[j*3+2]
-            f.write(typ[j] + ' ' + str(x) + ' ' + str(y) + ' ' + str(z) + '\n')
+            f.write(typ[j] + ' ' + "{:.7f}".format(x) + ' ' + "{:.7f}".format(y) + ' ' + "{:.7f}".format(z) + '\n')
         f.write('\n')
     f.close()
 
