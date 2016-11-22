@@ -15,8 +15,8 @@ nnfdir   = wkdir + 'networks/'
 # Construct pyNeuroChem class
 nc = pync.pyNeuroChem(cnstfile,saefile,nnfdir,1)
 
-xyz,typ,Na = gt.readxyz('/home/jujuman/Dropbox/ChemSciencePaper.AER/TestCases/Dihedrals/4-Cyclohexyl-1-butanol/optimization/dhl_NO.xyz')
-xyz1,typ1,Na1 = gt.readxyz('/home/jujuman/Dropbox/ChemSciencePaper.AER/TestCases/Dihedrals/4-Cyclohexyl-1-butanol/optimization/dhl_GO.xyz')
+xyz,typ,Na = gt.readxyz('/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_testdata/Atazanavir/optimization/opt_test_NO.xyz')
+xyz1,typ1,Na1 = gt.readxyz('/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_testdata/Atazanavir/optimization/opt_test_NO.xyz')
 
 # Set the conformers in NeuroChem
 nc.setConformers(confs=xyz,types=typ[0])
@@ -28,7 +28,7 @@ print( 'Number of Confs Loaded: ' + str(nc.getNumConfs()) )
 # O of Conformations
 print('Optimizing...')
 _t1b = tm.time()
-F = nc.optimizeGeomBFGS()
+F = nc.optimizeGeomBFGS(conv=0.000001)
 print('Optimization complete. Time: ' + "{:.4f}".format((tm.time() - _t1b) * 1000.0) + 'ms')
 
 print ('-----------------ORIGINAL COORDS---------------')
