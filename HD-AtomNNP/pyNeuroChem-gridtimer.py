@@ -57,13 +57,13 @@ for i in range(1,20):
     print( '1) Number of Confs Loaded: ' + str(nc1.getNumConfs()) )
 
     # Compute Forces of Conformations
-    print('Computing energy 1...')
+    print('Computing energy...')
     _t1b = tm.time()
     Ecmp1 = np.array( nc1.computeEnergies() )
     _t1e = tm.time()
     print('Energy computation complete. Time: ' + "{:.4f}".format((_t1e - _t1b) * 1000.0)  + 'ms')
 
-    print('Computing forces 1...')
+    print('Computing forces...')
     _t2b = tm.time()
     F = np.array( nc1.computeAnalyticalForces() )
     _t2e = tm.time()

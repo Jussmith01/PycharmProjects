@@ -42,19 +42,19 @@ for i in F:
         print (typ[0][j] + ' ' + "{:.7f}".format(i[j*3+0]) + ' ' + "{:.7f}".format(i[j*3+1]) + ' ' + "{:.7f}".format(i[j*3+2]))
 
 
-d0 = np.array(gt.generatedmat(xyz[0],Na[0]))
-print("Initial (distance matrix):")
-print(d0)
+#d0 = np.array(gt.generatedmat(xyz[0],Na[0]))
+#print("Initial (distance matrix):")
+#print(d0)
 
-d1 = np.array(gt.generatedmat(xyz1[0],Na[0]))
-print("wb97x opt (distance matrix):")
-print(d1)
+#d1 = np.array(gt.generatedmat(xyz1[0],Na[0]))
+#print("wb97x opt (distance matrix):")
+#print(d1)
 
-d2 = np.array(gt.generatedmat(F[0],Na[0]))
-print("ANI opt (distance matrix):")
-print(d2)
+#d2 = np.array(gt.generatedmat(F[0],Na[0]))
+#print("ANI opt (distance matrix):")
+#print(d2)
 
-print("\nRMSE of distance matrix --")
-print("   ANI opt   vs. wb97x opt: " + "{:.7f}".format(gt.calculaterootmeansqrerror(d1,d2)))
-print("   wb97x opt vs. pre-opt: " + "{:.7f}".format(gt.calculaterootmeansqrerror(d1,d0)))
-print("   ANI opt   vs. pre-opt  : " + "{:.7f}".format(gt.calculaterootmeansqrerror(d2,d0)))
+#print("\nRMSE of distance matrix --")
+#print("   ANI opt   vs. wb97x opt: " + "{:.7f}".format(gt.calculaterootmeansqrerror(d1,d2)))
+#print("   wb97x opt vs. pre-opt: " + "{:.7f}".format(gt.calculaterootmeansqrerror(d1,d0)))
+#print("   ANI opt   vs. pre-opt  : " + "{:.7f}".format(gt.calculaterootmeansqrerror(d2,d0)))
