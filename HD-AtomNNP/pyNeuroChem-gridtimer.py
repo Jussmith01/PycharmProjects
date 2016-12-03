@@ -41,13 +41,13 @@ saefile1  = wkdir1 + 'sae_6-31gd.dat'
 nnfdir1   = wkdir1 + 'networks/'
 
 # Construct pyNeuroChem classes
-nc1 = pync.pyNeuroChem(cnstfile1,saefile1,nnfdir1,1)
+nc1 = pync.pyNeuroChem(cnstfile1,saefile1,nnfdir1,0)
 
 idx = []
 tme = []
 
-for i in range(10,20):
-    xyz,typ,Na = generatemolgrid(['H','C','N','O'],10,10*i)
+for i in range(1,20):
+    xyz,typ,Na = generatemolgrid(['H','C','N','O'],10,10)
 
     # Set the conformers in NeuroChem
     nc1.setConformers(confs=xyz,types=typ)

@@ -67,23 +67,23 @@ def corrEplot(ax,d1,d2,shr1,shr2):
 
 
 # Set data fields
-dtdir =  '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_10/testdata/'
-fpref = 'gdb11_10-'
-fpost = '_test.dat'
-rng = [0,140]
+dtdir =  '/home/jujuman/Research/GDB-11-wB97X-6-31gd/testdata/'
+#fpref = 'gdb11_10-'
+#fpost = '_test.dat'
+#rng = [0,140]
 
 files = listdir(dtdir)
 #print (files)
 # Set required files for pyNeuroChem
 
 #Network 1 Files
-wkdir1    = '/home/jujuman/Scratch/Research/trainingcases/wB97X-631gd-train-highgarden/train_08-a3.1A_r4.6_dn1/'
-cnstfile1 = wkdir1 + 'rHCNO-4.6A_32-3.1A_a8-8.params'
-saefile1  = wkdir1 + '../sae_6-31gd.dat'
+wkdir1    = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dataset_size_testing/train-ani1-10_percent_2/'
+cnstfile1 = wkdir1 + 'rHCNO-4.5A_32-3.1A_a8-8.params'
+saefile1  = wkdir1 + 'sae_6-31gd.dat'
 nnfdir1   = wkdir1 + 'networks/'
 
 # Construct pyNeuroChem classes
-nc = pync.pyNeuroChem(cnstfile1, saefile1, nnfdir1, 0)
+nc = pync.pyNeuroChem(cnstfile1, saefile1, nnfdir1, 1)
 
 Ecmp = []
 Eact = []
@@ -192,14 +192,14 @@ print ("{:.7f}".format(r_value1**2))
 print ("{:.7f}".format(time))
 print (str(Ndps))
 
-slope1, intercept1, r_value1, p_value1, std_err1 = st.linregress(Eact,Ecmp)
+#slope1, intercept1, r_value1, p_value1, std_err1 = st.linregress(Eact,Ecmp)
 
-fig, axes = plt.subplots(nrows=2, ncols=2)
+#fig, axes = plt.subplots(nrows=2, ncols=2)
 
-corrEplot(axes.flat[0],Eact,Ecmp,Eact.min(),Eact.max())
-corrEplot(axes.flat[1],Eact,Ecmp,Eact.min(),Eact.max())
-corrEplot(axes.flat[2],Eact,Ecmp,Eact.min(),Eact.max())
-corrEplot(axes.flat[3],Eact,Ecmp,Eact.min(),Eact.max())
+#corrEplot(axes.flat[0],Eact,Ecmp,Eact.min(),Eact.max())
+#corrEplot(axes.flat[1],Eact,Ecmp,Eact.min(),Eact.max())
+#corrEplot(axes.flat[2],Eact,Ecmp,Eact.min(),Eact.max())
+#corrEplot(axes.flat[3],Eact,Ecmp,Eact.min(),Eact.max())
 
 #plt.plot (Eact, Eact, color='black',  label='DFT', linewidth=1)
 #plt.scatter (Eact, Ecmp, marker=r'x', color='red',  label='TGM RMSE: ' + "{:.3f}".format(rmse1),  linewidth=1)

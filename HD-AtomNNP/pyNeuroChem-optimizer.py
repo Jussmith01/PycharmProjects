@@ -13,10 +13,10 @@ saefile  = wkdir + 'sae_6-31gd.dat'
 nnfdir   = wkdir + 'networks/'
 
 # Construct pyNeuroChem class
-nc = pync.pyNeuroChem(cnstfile,saefile,nnfdir,1)
+nc = pync.pyNeuroChem(cnstfile,saefile,nnfdir,0)
 
-xyz,typ,Na = gt.readxyz('/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_testdata/Atazanavir/optimization/opt_test_NO.xyz')
-xyz1,typ1,Na1 = gt.readxyz('/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_testdata/Atazanavir/optimization/opt_test_NO.xyz')
+xyz,typ,Na = gt.readxyz('/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_begdb/begdb-h2oclusters/xyz/4216_water10PP2.xyz')
+xyz1,typ1,Na1 = gt.readxyz('/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_begdb/begdb-h2oclusters/xyz/4216_water10PP2.xyz')
 
 # Set the conformers in NeuroChem
 nc.setConformers(confs=xyz,types=typ[0])

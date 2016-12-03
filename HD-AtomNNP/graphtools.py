@@ -27,7 +27,7 @@ def readxyz (file):
 
     fd = open(file, 'r').read()
 
-    rb = re.compile('(\d+?)\s*?\n((?:[A-Z][a-z]?\s+?\S+?\s+?\S+?\s+?\S+?\s)+)')
+    rb = re.compile('\s*?\n?\s*?(\d+?)\s*?\n((?:\s*?[A-Z][a-z]?.+(?:\n|))+)')
     ra = re.compile('([A-Z][a-z]?)\s+?(\S+?)\s+?(\S+?)\s+?(\S+)')
 
     s = rb.findall(fd)
