@@ -20,7 +20,7 @@ xyz = [[0.0, 0.0, 0.118604, 0.0, 0.67007291, -0.40437055, 0.0, -0.75981897, -0.4
 
 typ = ['O','H','H']
 
-xyz,typ,Na = gt.readxyz('/home/jujuman/Dropbox/ChemSciencePaper.AER/TestCases/Retinol/optimization/opt_test_AO.xyz')
+xyz,typ,Na = gt.readxyz('/home/jujuman/Dropbox/ChemSciencePaper.AER/TestCases/Ranolazine/optimization/test_AO2.xyz')
 
 # Construct pyNeuroChem class
 nc = pync.pyNeuroChem(cnstfile, saefile, nnfdir, 0)
@@ -38,5 +38,4 @@ F = np.array(nc.computeAnalyticalForces())
 print ('-----------------DATA---------------')
 #E = gt.hatokcal*E
 print (E)
-print (E - -855.131652832031250)
 print (F)

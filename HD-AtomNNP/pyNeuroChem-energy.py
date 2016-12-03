@@ -2,6 +2,7 @@ __author__ = 'jujuman'
 
 # Import pyNeuroChem
 import pyNeuroChem as pync
+import numpy as np
 import graphtools as gt
 
 # Set required files for pyNeuroChem
@@ -10,45 +11,23 @@ cnstfile = wkdir + 'rHCNO-4.6A_32-3.1A_a8-8.params'
 saefile  = wkdir + 'sae_6-31gd.dat'
 nnfdir   = wkdir + 'networks/'
 
+xyz = [[0.00000000,  0.07775414,  0.14191920,  0.00000000,  0.87511754, -0.40200517,  0.00000000, -0.64261788, -0.50009561]
+	  ,[0.00000000,  0.07782031,  0.14223997,  0.00000000,  0.87485045, -0.40213168,  0.00000000, -0.64241695, -0.50028986]
+	  ,[0.00000000,  0.07782238,  0.14223947,  0.00000000,  0.87484127, -0.40213102,  0.00000000, -0.64240986, -0.50029004]]
+typ = [['O','H','H']]
+Na  = [[3]]
 
-wkdir    = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/train_08_5/'
-cnstfile = wkdir + 'rHCNO-4.7A_32-3.2A_a8-8.params'
-saefile  = wkdir + '../sae_6-31gd.dat'
-nnfdir   = wkdir + 'networks/'
+# Construct pyNeuroChem class
+nc = pync.pyNeuroChem(cnstfile, saefile, nnfdir, 0)
 
-xyz = [[],[],[]]
-typ = [[],[],[]]
-Na  = [[],[],[]]
+# Set the conformers in NeuroChem
+nc.setConformers(confs=xyz,types=typ[0])
 
-xyz[0],typ[0],Na[0] = gt.readxyz('/home/jujuman/Scratch/Research/TestingCases/DimerSeparationTests/dimerstruct.xyz')
-xyz[1],typ[1],Na[1] = gt.readxyz('/home/jujuman/Scratch/Research/TestingCases/DimerSeparationTests/monomer1.xyz')
-xyz[2],typ[2],Na[2] = gt.readxyz('/home/jujuman/Scratch/Research/TestingCases/DimerSeparationTests/monomer2.xyz')
+# Print some data from the NeuroChem
+print( 'Number of Atoms Loaded: ' + str(nc.getNumAtoms()) )
+print( 'Number of Confs Loaded: ' + str(nc.getNumConfs()) )
 
-Ea1 = -496.9336409
-Ea2 = -248.4579414
-Ea3 = -248.4577671
-
-E = []
-
-for i in range(len(xyz)):
-	# Construct pyNeuroChem class
-	nc = pync.pyNeuroChem(cnstfile, saefile, nnfdir, 0)
-
-	# Set the conformers in NeuroChem
-	nc.setConformers(confs=xyz[i],types=typ[i][0])
-
-	# Print some data from the NeuroChem
-	print( 'Number of Atoms Loaded: ' + str(nc.getNumAtoms()) )
-	print( 'Number of Confs Loaded: ' + str(nc.getNumConfs()) )
-
-	# Compute Energies of Conformations
-	E.append(nc.computeEnergies()[0])
+# Compute Energies of Conformations
+E = np.array( nc.computeEnergies() )
 
 print(E)
-
-print ('-----------------DATA---------------')
-d1 = gt.hatokcal*(E[0] - (E[1] + E[2]))
-d2 = gt.hatokcal*(Ea1 - (Ea2 + Ea3))
-print (d1)
-print (d2)
-print (d1 - d2)

@@ -13,10 +13,19 @@ saefile  = wkdir + 'sae_6-31gd.dat'
 nnfdir   = wkdir + 'networks/'
 
 # Construct pyNeuroChem class
-nc = pync.pyNeuroChem(cnstfile,saefile,nnfdir,1)
+nc = pync.pyNeuroChem(cnstfile,saefile,nnfdir,0)
 
-xyz,typ,Na = gt.readxyz('/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_testdata/Atazanavir/optimization/opt_test_NO.xyz')
-xyz1,typ1,Na1 = gt.readxyz('/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_testdata/Atazanavir/optimization/opt_test_NO.xyz')
+#xyz,typ,Na = gt.readxyz('/home/jujuman/Dropbox/ChemSciencePaper.AER/TestCases/Ranolazine/optimization/test_GO.xyz')
+#xyz1,typ1,Na1 = gt.readxyz('/home/jujuman/Dropbox/ChemSciencePaper.AER/TestCases/Ranolazine/optimization/test_GO.xyz')
+
+xyz = [[0.0, 0.0, 0.118604, 0.0, 1.07007291, -0.40437055, 0.0, -0.75981897, -0.474415]]
+
+xyz = [[0.0000,  0.0000,  0.6042, 0.0000,  0.0000, -0.6042, 0.0000,  2.0211,  1.1601, -0.8843, -0.5106,  1.1601,  0.8843, -0.5106,  1.1601,  0.0000, -1.0211, -1.1601, -0.8843,  0.5106, -1.1601,  0.8843,  0.5106, -1.1601]]
+
+
+typ = [['C','C','H','H','H','H','H','H']]
+
+Na = [[8]]
 
 # Set the conformers in NeuroChem
 nc.setConformers(confs=xyz,types=typ[0])
@@ -42,19 +51,19 @@ for i in F:
         print (typ[0][j] + ' ' + "{:.7f}".format(i[j*3+0]) + ' ' + "{:.7f}".format(i[j*3+1]) + ' ' + "{:.7f}".format(i[j*3+2]))
 
 
-d0 = np.array(gt.generatedmat(xyz[0],Na[0]))
-print("Initial (distance matrix):")
-print(d0)
+#d0 = np.array(gt.generatedmat(xyz[0],Na[0]))
+#print("Initial (distance matrix):")
+#print(d0)
 
-d1 = np.array(gt.generatedmat(xyz1[0],Na[0]))
-print("wb97x opt (distance matrix):")
-print(d1)
+#d1 = np.array(gt.generatedmat(xyz1[0],Na[0]))
+#print("wb97x opt (distance matrix):")
+#print(d1)
 
-d2 = np.array(gt.generatedmat(F[0],Na[0]))
-print("ANI opt (distance matrix):")
-print(d2)
+#d2 = np.array(gt.generatedmat(F[0],Na[0]))
+#print("ANI opt (distance matrix):")
+#print(d2)
 
-print("\nRMSE of distance matrix --")
-print("   ANI opt   vs. wb97x opt: " + "{:.7f}".format(gt.calculaterootmeansqrerror(d1,d2)))
-print("   wb97x opt vs. pre-opt: " + "{:.7f}".format(gt.calculaterootmeansqrerror(d1,d0)))
-print("   ANI opt   vs. pre-opt  : " + "{:.7f}".format(gt.calculaterootmeansqrerror(d2,d0)))
+#print("\nRMSE of distance matrix --")
+#print("   ANI opt   vs. wb97x opt: " + "{:.7f}".format(gt.calculaterootmeansqrerror(d1,d2)))
+#print("   wb97x opt vs. pre-opt: " + "{:.7f}".format(gt.calculaterootmeansqrerror(d1,d0)))
+#print("   ANI opt   vs. pre-opt  : " + "{:.7f}".format(gt.calculaterootmeansqrerror(d2,d0)))
