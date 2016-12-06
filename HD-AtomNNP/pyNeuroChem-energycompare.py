@@ -15,29 +15,26 @@ def sortbyother(Y, X):
     return np.array(Y)
 
 # Set required files for pyNeuroChem
-wkdir1    = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/train_08_9/'
-wkdir2    = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/train_08_5/'
+wkdir1    = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dataset_size_testing/train_08_0.25_1/'
 
 #Network 1 Files
-cnstfile1 = wkdir1 + 'rHCNO-4.8A_32-3.1A_a8-8.params'
+cnstfile1 = wkdir1 + 'rHCNO-4.5A_32-3.1A_a8-8.params'
 saefile1  = wkdir1 + 'sae_6-31gd.dat'
 nnfdir1   = wkdir1 + 'networks/'
 
-# Network 2 Files
-cnstfile2 = wkdir2 + 'rHCNO-4.7A_32-3.2A_a8-8.params'
-saefile2  = wkdir2 + 'sae_6-31gd.dat'
-nnfdir2   = wkdir2 + 'networks/'
-
-dtdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_testdata/WaterDimer/'
+dtdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/traindata/'
 
 #xyz,typ,Eact = gt.readncdat('../data_irc.dat')
-xyz,typ,Eact,tmp    = gt.readncdat(dtdir + 'trainingData.dat')
+xyz,typ,Eact,tmp    = gt.readncdat(dtdir + 'gdb11_s08-25920_train.dat')
 #xyz2,typ2,Eact2,tmp = gt.readncdat(dtdir + 'isomer_structures_DFTB.dat')
 #xyz3,typ3,Eact3,tmp = gt.readncdat(dtdir + 'isomer_structures_PM6.dat')
 
 #xyz = [xyz[0],xyz[1]]
 #xyz2 = [xyz2[0],xyz2[1]]
 #xyz3 = [xyz3[0],xyz3[1]]
+
+xyz = np.asarray(xyz,dtype=np.float32)
+xyz = xyz.reshape((xyz.shape[0],len(typ),3))
 
 print(typ)
 print(xyz)
@@ -59,7 +56,7 @@ print( '1) Number of Confs Loaded: ' + str(nc1.getNumConfs()) )
 # Compute Forces of Conformations
 print('Computing energies 1...')
 _t1b = tm.time()
-Ecmp1 = np.array( nc1.computeEnergies() )
+Ecmp1 = nc1.energy()
 print('Computation complete 1. Time: ' + "{:.4f}".format((tm.time() - _t1b) * 1000.0)  + 'ms')
 
 
@@ -93,15 +90,20 @@ Eact  = gt.hatokcal * Eact
 #Eact2 = gt.hatokcal * Eact2[n:m]
 #Eact3 = gt.hatokcal * Eact3[n:m]
 
+dE = abs(Eact - Ecmp1)
+
+for i in range (0,dE.shape[0]):
+    print ( str(i) + ' ' + str(dE[i]) )
+
 IDX = 0.01*np.arange(0,Eact.shape[0],1,dtype=float) + 1
-#IDX2 = sortbyother(IDX, Eact)
+IDX2 = sortbyother(IDX, Eact)
 #print IDX2
 
-#Ecmp1 = sortbyother(Ecmp1, Eact)
+Ecmp1 = sortbyother(Ecmp1, Eact)
 #Ecmp2 = sortbyother(Ecmp2, Eact)
 #Eact2 = sortbyother(Eact2, Eact)
 #Eact3 = sortbyother(Eact3, Eact)
-#Eact  = np.sort( Eact )
+Eact  = np.sort( Eact )
 
 #print (Eact2.min())
 

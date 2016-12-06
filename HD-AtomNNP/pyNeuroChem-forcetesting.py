@@ -20,7 +20,7 @@ xyz = [[0.0, 0.0, 0.118604, 0.0, 0.67007291, -0.40437055, 0.0, -0.75981897, -0.4
 
 typ = ['O','H','H']
 
-xyz,typ,Na = gt.readxyz('/home/jujuman/Dropbox/ChemSciencePaper.AER/TestCases/Ranolazine/optimization/test_AO2.xyz')
+#xyz,typ,Na = gt.readxyz('/home/jujuman/Dropbox/ChemSciencePaper.AER/TestCases/Ranolazine/optimization/test_AO2.xyz')
 
 # Construct pyNeuroChem class
 nc = pync.pyNeuroChem(cnstfile, saefile, nnfdir, 0)
@@ -33,8 +33,8 @@ print( 'Number of Atoms Loaded: ' + str(nc.getNumAtoms()) )
 print( 'Number of Confs Loaded: ' + str(nc.getNumConfs()) )
 
 # Compute Energies of Conformations
-E = np.array(nc.computeEnergies())
-F = np.array(nc.computeAnalyticalForces())
+E = nc.computeEnergies()
+F = nc.computeAnalyticalForces()
 print ('-----------------DATA---------------')
 #E = gt.hatokcal*E
 print (E)

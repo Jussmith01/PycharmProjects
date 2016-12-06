@@ -17,6 +17,14 @@ def sortbyother(Y, X):
 def produce_scan(title,xlabel,cnstfile,saefile,nnfdir,dtdir,dt1,smin,smax,iscale,ishift,atm):
     xyz, frc, typ, Eact, chk = gt.readncdatwforce(dtdir + dt1)
 
+    xyz = np.asarray(xyz,dtype=np.float32)
+    xyz = xyz.reshape((xyz.shape[0],len(typ),3))
+
+    print(xyz)
+
+    frc = np.asarray(frc,dtype=np.float32)
+    frc = frc.reshape((frc.shape[0],len(typ),3))
+
     Eact = np.array(Eact)
 
     # Construct pyNeuroChem classes
@@ -32,13 +40,13 @@ def produce_scan(title,xlabel,cnstfile,saefile,nnfdir,dtdir,dt1,smin,smax,iscale
     # Compute Energies of Conformations
     print('Computing energies...')
     _t1b = tm.time()
-    Ecmp1 = np.array(nc1.computeEnergies())
+    Ecmp1 = nc1.energy()
     print('Energy computation complete. Time: ' + "{:.4f}".format((tm.time() - _t1b) * 1000.0) + 'ms')
 
     # Compute Forces of Conformations
     print('Compute forces...')
     _t1b = tm.time()
-    F = np.array(nc1.computeAnalyticalForces())
+    F = nc1.force()
     print('Force computation complete. Time: ' + "{:.4f}".format((tm.time() - _t1b) * 1000.0) + 'ms')
 
     #Fn = np.array(nc1.computeNumericalForces(dr=0.0001))
@@ -85,9 +93,9 @@ def produce_scan(title,xlabel,cnstfile,saefile,nnfdir,dtdir,dt1,smin,smax,iscale
     #print (Fn)
 
     for i in range(0,3):
-        Fq = F[:,3*atm+i]
+        Fq = F[:,:,i][:,atm]
         #Fnq = Fn[:,i]
-        Faq = (1.8897259885789*np.array(frc)[:,3*atm+i])
+        Faq = (1.8897259885789*np.array(frc)[:,:,i][:,atm])
         print (Fq)
         print (Faq)
 
@@ -116,13 +124,18 @@ def produce_scan(title,xlabel,cnstfile,saefile,nnfdir,dtdir,dt1,smin,smax,iscale
     plt.show()
 
 # Set required files for pyNeuroChem
-wkdir    = '/home/jujuman/Dropbox/ChemSciencePaper.AER/ANI-1-ntwk/'
-cnstfile = wkdir + 'rHCNO-4.6A_32-3.1A_a8-8.params'
-saefile  = wkdir + 'sae_6-31gd.dat'
+wkdir    = '/home/jujuman/Research/NeuroChemForceTesting/train_02/'
+cnstfile = wkdir + 'rHO-3.0A_4-2.5A_a2-2.params'
+saefile  = wkdir + '../sae_6-31gd.dat'
 nnfdir   = wkdir + 'networks/'
 
-dtdir = '/home/jujuman/Dropbox/Research/NeuroChemForceTesting/'
+test = np.array([[[1.0,2.0,3.0],[3.0,4.0,5.0]]
+                ,[[5.0,6.0,7.0],[7.0,8.0,9.0]]],dtype=np.float32)
 
-produce_scan('H2O bond stretch (O-H)','Bond distance ($\AA$)'                ,cnstfile,saefile,nnfdir,dtdir,'OH_bond_h2o.dat' ,0,249,0.001,0.85,0)
-produce_scan('H2O bond stretch (O-H)','Bond distance ($\AA$)'                ,cnstfile,saefile,nnfdir,dtdir,'OH_bond_h2o.dat' ,0,249,0.001,0.85,1)
-produce_scan('H2O bond stretch (O-H)','Bond distance ($\AA$)'                ,cnstfile,saefile,nnfdir,dtdir,'OH_bond_h2o.dat' ,0,249,0.001,0.85,2)
+print(test[:,:,0][:,1])
+
+dtdir = '/home/jujuman/Research/NeuroChemForceTesting/'
+
+produce_scan('H2O bond stretch (O-H)','Bond distance ($\AA$)'                ,cnstfile,saefile,nnfdir,dtdir,'trainingData.dat' ,0,249,0.001,0.85,0)
+#produce_scan('H2O bond stretch (O-H)','Bond distance ($\AA$)'                ,cnstfile,saefile,nnfdir,dtdir,'OH_bond_h2o.dat' ,0,249,0.001,0.85,1)
+#produce_scan('H2O bond stretch (O-H)','Bond distance ($\AA$)'                ,cnstfile,saefile,nnfdir,dtdir,'OH_bond_h2o.dat' ,0,249,0.001,0.85,2)

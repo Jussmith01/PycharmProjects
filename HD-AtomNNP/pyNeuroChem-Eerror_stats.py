@@ -67,7 +67,8 @@ def corrEplot(ax,d1,d2,shr1,shr2):
 
 
 # Set data fields
-dtdir =  '/home/jujuman/Research/GDB-11-wB97X-6-31gd/testdata/'
+dtdir =  '/home/jujuman/Research/GDB-11-wB97X-6-31gd/traindata/'
+#dtdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_10/testdata/'
 #fpref = 'gdb11_10-'
 #fpost = '_test.dat'
 #rng = [0,140]
@@ -77,7 +78,7 @@ files = listdir(dtdir)
 # Set required files for pyNeuroChem
 
 #Network 1 Files
-wkdir1    = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dataset_size_testing/train-ani1-10_percent_2/'
+wkdir1    = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dataset_size_testing/train_08_0.25_1/'
 cnstfile1 = wkdir1 + 'rHCNO-4.5A_32-3.1A_a8-8.params'
 saefile1  = wkdir1 + 'sae_6-31gd.dat'
 nnfdir1   = wkdir1 + 'networks/'
@@ -96,70 +97,94 @@ sd = [0,100000.0]
 err = []
 sze = []
 
+Herror = 0.0
+Wfile = ''
+
+Lerror = 100.0
+Bfile = ''
+
+Nf = len(files)
+cnt = 0
+
 for i in files:
+    cnt += 1
 #for i in range(rng[0],rng[1]):
     #xyz,typ,Eact_t,readf    = gt.readncdat(dtdir + fpref + str(i) + fpost)
-    xyz,typ,Eact_t,readf    = gt.readncdat(dtdir + i)
+    xyz,typ,Eact_W,readf    = gt.readncdat(dtdir + i)
 
-    if readf:
-        # Set the conformers in NeuroChem
-        nc.setConformers(confs=xyz,types=typ)
+    xyz = np.asarray(xyz,dtype=np.float32)
+    xyz = xyz.reshape((xyz.shape[0],len(typ),3))
+
+    if readf and xyz.shape[0] > 0:
 
         #print('FILE: ' + dtdir + fpref + str(i) + fpost)
-        print('FILE: ' + dtdir + i)
+        print('FILE: ' + str(cnt) + ' of ' + str(Nf) + ' ' + i)
 
-        # Print some data from the NeuroChem
-        print( '1) Number of Atoms Loaded: ' + str(nc.getNumAtoms()) )
-        print( '1) Number of Confs Loaded: ' + str(nc.getNumConfs()) )
+        Nm = xyz.shape[0]
+        Na = xyz.shape[1]
 
-        # Compute Energies of Conformations
-        print('Computing energies...')
-        _t1b = tm.time()
-        Ecmp_t = nc.computeEnergies()
-        _t2b = (tm.time() - _t1b) * 1000.0
-        print('Computation complete. Time: ' + "{:.4f}".format(_t2b)  + 'ms')
+        Nat = Na * Nm
 
-        Ecmp_t = setmaxE(Eact_t, Ecmp_t, 300.0)
-        Eact_t = setmaxE(Eact_t, Eact_t, 300.0)
+        Nit = int(np.ceil(Nat/65000.0))
+        Nmo = int(65000/Na)
+        Nmx = Nm
 
-        tNa = nc.getNumAtoms()
-        err.append(gt.hatokcal * gt.calculaterootmeansqrerror(np.array(Eact_t, dtype=float),np.array(Ecmp_t, dtype=float)) / float(tNa))
-        sze.append(float(len(Eact_t)))
+        for j in range(0,Nit):
+            #print("Index: " + str(j*Nmo) + " " + str(min(j*Nmo+Nmo,Nm)) )
 
-        #print('Ncmp: ' + str(len(Ecmp_t)))
-        #print('Nact: ' + str(len(Eact_t)))
+            # Setup idicies
+            i1 = j*Nmo
+            i2 = min(j*Nmo+Nmo,Nm)
 
-        #print(Ecmp_t)
-        #print(Eact_t)
+            #copy array subset
+            Eact_t = Eact_W[i1:i2]
 
-        #delE = np.abs( np.array(Ecmp_t) - np.array(Eact_t) )/float(nc.getNumAtoms())
+            # Set the conformers in NeuroChem
+            nc.setConformers(confs=xyz[i1:i2],types=typ)
 
-        #maxe = delE.max()
-        #mine = delE.min()
+            # Print some data from the NeuroChem
+            #print( '1) Number of Atoms Loaded: ' + str(nc.getNumAtoms()) )
+            #print( '1) Number of Confs Loaded: ' + str(nc.getNumConfs()) )
 
-        #plt_by_index(delE, i)
+            # Compute Energies of Conformations
+            #print('Computing energies...')
+            _t1b = tm.time()
+            Ecmp_t = nc.energy()
+            _t2b = (tm.time() - _t1b) * 1000.0
+            #print('Computation complete. Time: ' + "{:.4f}".format(_t2b)  + 'ms')
 
-        #if ld[1] < maxe:
-        #    ld[1] = maxe
-        #    ld[0] = i
+            Ecmp_t = setmaxE(Eact_t, Ecmp_t, 30000.0)
+            Eact_t = setmaxE(Eact_t, Eact_t, 30000.0)
 
-        #if sd[1] > mine:
-        #    sd[1] = mine
-        #    sd[0] = i
+            deltas = gt.hatokcal * np.abs(Ecmp_t - np.array(Eact_t, dtype=float))
+            Me = max (deltas)
+            if Me > Herror:
+                Herror = Me
+                Wfile = i
 
-        #Eerr.append( gt.calculaterootmeansqrerror(np.array(Eact), np.array(Ecmp))/float(nc.getNumAtoms()) )
+            Le = min (deltas)
+            if Le < Lerror:
+                Lerror = Le
+                Bfile = i
 
-        time += _t2b
+            #print (gt.hatokcal * gt.calculaterootmeansqrerror(np.array(Eact_t, dtype=float),Ecmp_t))
 
-        Ecmp += Ecmp_t
-        Eact += Eact_t
+            tNa = nc.getNumAtoms()
+            err.append(gt.hatokcal * gt.calculaterootmeansqrerror(np.array(Eact_t, dtype=float),Ecmp_t) / float(tNa))
+            sze.append(float(len(Eact_t)))
 
+            time += _t2b
+
+            Ecmp += Ecmp_t
+            Eact += Eact_t
 
 #plt_by_index(np.array(Eerr),-1)
 
 Ndps = len(Ecmp)
 
-print('MAXE')
+print ('\nMax Delta (kcal/mol): ' + str(Herror) + ' FILE: ' + Wfile)
+print ('Min Delta (kcal/mol): ' + str(Lerror) + ' FILE: ' + Bfile)
+print('\nMAXE')
 print(ld)
 print('MINE')
 print(sd)
