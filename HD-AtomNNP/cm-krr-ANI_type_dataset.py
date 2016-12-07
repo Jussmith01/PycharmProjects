@@ -14,7 +14,7 @@ dtdir='/home/jujuman/Research/LinearModelTesting/data/'
 
 files = listdir(dtdir)
 
-N = 11
+N = 14
 
 X = np.empty([1,N*N],dtype=float)
 y = np.empty([1],dtype=float)
@@ -52,7 +52,7 @@ y = y_scaler.transform(y)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.2, random_state=42)
 
 # Prepare linear model
-clf = linear_model.SGDRegressor()
+clf = linear_model.SGDRegressor(n_iter=50)
 #clf = KernelRidge(alpha=0.1)
 
 # Fit model
