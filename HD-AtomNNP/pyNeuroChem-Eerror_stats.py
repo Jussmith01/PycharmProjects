@@ -67,7 +67,7 @@ def corrEplot(ax,d1,d2,shr1,shr2):
 
 
 # Set data fields
-dtdir =  '/home/jujuman/Research/GDB-11-wB97X-6-31gd/traindata/'
+dtdir =  '/home/jujuman/Research/GDB-11-wB97X-6-31gd/testdata/'
 #dtdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_10/testdata/'
 #fpref = 'gdb11_10-'
 #fpost = '_test.dat'
@@ -78,13 +78,13 @@ files = listdir(dtdir)
 # Set required files for pyNeuroChem
 
 #Network 1 Files
-wkdir1    = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dataset_size_testing/train_08_0.25_1/'
+wkdir1    = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dataset_size_testing/train_08_0.50_1/'
 cnstfile1 = wkdir1 + 'rHCNO-4.5A_32-3.1A_a8-8.params'
 saefile1  = wkdir1 + 'sae_6-31gd.dat'
 nnfdir1   = wkdir1 + 'networks/'
 
 # Construct pyNeuroChem classes
-nc = pync.pyNeuroChem(cnstfile1, saefile1, nnfdir1, 1)
+nc = pync.pyNeuroChem(cnstfile1, saefile1, nnfdir1, 0)
 
 Ecmp = []
 Eact = []
@@ -153,8 +153,8 @@ for i in files:
             _t2b = (tm.time() - _t1b) * 1000.0
             #print('Computation complete. Time: ' + "{:.4f}".format(_t2b)  + 'ms')
 
-            Ecmp_t = setmaxE(Eact_t, Ecmp_t, 30000.0)
-            Eact_t = setmaxE(Eact_t, Eact_t, 30000.0)
+            Ecmp_t = setmaxE(Eact_t, Ecmp_t, 300.0)
+            Eact_t = setmaxE(Eact_t, Eact_t, 300.0)
 
             deltas = gt.hatokcal * np.abs(Ecmp_t - np.array(Eact_t, dtype=float))
             Me = max (deltas)
