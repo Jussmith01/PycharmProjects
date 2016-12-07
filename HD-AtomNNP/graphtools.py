@@ -100,7 +100,7 @@ def readncdatwforce (file,N = 0):
 
     return xyz,frc,typ,Eact,readf
 
-def readncdat (file,N = 0):
+def readncdat (file,type = np.float,N = 0):
     xyz = []
     typ = []
     Eact = []
@@ -131,7 +131,10 @@ def readncdat (file,N = 0):
             if cnt >= N and N > 0:
                 break
 
+    xyz = np.asarray(xyz,dtype=type)
+    xyz = xyz.reshape((xyz.shape[0],len(typ),3))
 
+    Eact = np.asarray(Eact,dtype=type)
     return xyz,typ,Eact,readf
 
 def readg09trajdat (file):
@@ -168,7 +171,6 @@ def readg09trajdat (file):
         typ.append(t_typ)
         xyz.append(t_xyz)
 
-    Enr.pop(0)
     #typ.pop(len(typ)-1)
     #xyz.pop(len(xyz)-1)
     #typ.pop(0)

@@ -68,11 +68,8 @@ def corrEplot(ax,d1,d2,shr1,shr2):
 
 # Set data fields
 dtdir =  '/home/jujuman/Research/GDB-11-wB97X-6-31gd/testdata/'
-<<<<<<< HEAD
+
 dtdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_10/testdata/'
-=======
-#dtdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_10/testdata/'
->>>>>>> a1c0ef93376354140be56e55bff38dfb33f3b0e2
 #fpref = 'gdb11_10-'
 #fpost = '_test.dat'
 #rng = [0,140]
