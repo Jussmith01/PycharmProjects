@@ -47,7 +47,10 @@ def readxyz (file):
         xyz.append(nxyz)
         typ.append(ntyp)
 
-    return xyz,typ,Na
+    xyz = np.asarray(xyz,dtype=np.float32)
+    xyz = xyz.reshape((xyz.shape[0],len(typ[0]),3))
+
+    return xyz,typ[0],Na
 
 def writexyzfile (fn,xyz,typ):
     f = open(fn, 'w')

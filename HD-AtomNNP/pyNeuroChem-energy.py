@@ -11,18 +11,19 @@ cnstfile = wkdir + 'rHCNO-4.6A_32-3.1A_a8-8.params'
 saefile  = wkdir + 'sae_6-31gd.dat'
 nnfdir   = wkdir + 'networks/'
 
+#dtdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_01/data/'
+#xyz,typ,Eact,tmp    = gt.readncdat(dtdir + 'gdb11_s01-1_test.dat',np.float32)
 
+xyz,typ,Na = gt.readxyz('/home/jujuman/Dropbox/ChemSciencePaper.AER/TestCases/test_for_dipoles/nh2bz.xyz')
 
-#for i in range(0,3):
-
-print (xyz2)
+print(xyz)
 
 # Construct pyNeuroChem class
 nc = pync.pyNeuroChem(cnstfile, saefile, nnfdir, 0)
 
 # Set the conformers in NeuroChem
-#nc.setConformers(confs=xyz,types=typ)
-nc.setMolecule(coords=xyz2,types=typ)
+nc.setConformers(confs=xyz,types=typ)
+#nc.setMolecule(coords=xyz,types=typ)
 
 # Print some data from the NeuroChem
 print( 'Number of Atoms Loaded: ' + str(nc.getNumAtoms()) )
@@ -39,12 +40,8 @@ F = nc.force()
 print('\nF:')
 print(F)
 
-O1 = nc.optimize(conv=0.00001)
+AE = nc.aenergies()
 
-print (O1.dtype)
-nc.setMolecule(coords=O1,types=typ)
-
-E1 = nc.energy()
-#print('\nE')
-print(E1)
-
+print('\nAE:')
+print(AE)
+print(typ)
