@@ -11,12 +11,10 @@ cnstfile = wkdir + 'rHCNO-4.6A_32-3.1A_a8-8.params'
 saefile  = wkdir + 'sae_6-31gd.dat'
 nnfdir   = wkdir + 'networks/'
 
-#dtdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_01/data/'
-#xyz,typ,Eact,tmp    = gt.readncdat(dtdir + 'gdb11_s01-1_test.dat',np.float32)
-
-xyz,typ,Na = gt.readxyz('/home/jujuman/Dropbox/ChemSciencePaper.AER/TestCases/test_for_dipoles/nh2bz.xyz')
-
-print(xyz)
+dtdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_01/data/'
+xyz,typ,Eact,tmp    = gt.readncdat(dtdir + 'gdb11_s01-1_test.dat',np.float32)
+#file = '/home/jujuman/Dropbox/ChemSciencePaper.AER/TestCases/test_for_dipoles/no2nh2bz.xyz'
+#xyz,typ,Na = gt.readxyz(file)
 
 # Construct pyNeuroChem class
 nc = pync.pyNeuroChem(cnstfile, saefile, nnfdir, 0)
@@ -45,3 +43,10 @@ AE = nc.aenergies()
 print('\nAE:')
 print(AE)
 print(typ)
+
+#f = open(file + '.aedata', 'w')
+
+#for i in range(0,len(typ)):
+#    f.write( typ[i] + ' ' + "{:.7f}".format(AE[i]) + '\n' )
+
+#f.close()

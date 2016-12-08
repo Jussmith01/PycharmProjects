@@ -11,25 +11,15 @@ import graphtools as gt
 import coulomb_matrix as cm
 import matplotlib.pyplot as plt
 
-dtdir='/home/jujuman/Dropbox/Research/LinearModelTesting/data/'
-#dtdir='/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_02/testdata/'
-files = listdir(dtdir)
+import threading as tr
+import time
 
-N = 16
+threadLock = tr.Lock()
 
-X = np.empty([1,N*N],dtype=float)
-y = np.empty([1],dtype=float)
-c
-print('Computing...')
-_t1b = tm.time()
-
-cnt=0
-for i in files:
-    cnt += 1
-    print('FILE:' + str(cnt) + 'of' + str(len(files)))
+def worker (file,N,X,y):
 
     # Get training molecules
-    xyz_tr,typ_tr,Eact_tr,readf = gt.readncdat(dtdir + i,np.float32)
+    xyz_tr,typ_tr,Eact_tr,readf = gt.readncdat(file, np.float32)
 
     # Compute energy of atoms at infinite separation
     ise = cm.computerISE(typ_tr)
@@ -38,9 +28,45 @@ for i in files:
     Xtr = np.asfortranarray( cm.GenCMatData(xyz_tr,typ_tr,N) )
 
     # Add data to pot
+    threadLock.acquire()
+    #print('Thread: ' + str(tr._get_ident))
     X = np.concatenate( (X, Xtr) , axis=0)
     y = np.concatenate( (y, Eact_tr - ise) , axis=0)
+    threadLock.release()
 
+def waitforthreads(N):
+    return bool(tr.active_count() <= N)
+
+dtdir='/home/jujuman/Dropbox/Research/LinearModelTesting/data/'
+#dtdir='/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_02/testdata/'
+files = listdir(dtdir)
+
+N = 14
+
+X = np.empty([1,N*N],dtype=float)
+y = np.empty([1],dtype=float)
+
+print('Computing...')
+_t1b = tm.time()
+
+cnt=0
+
+cv = tr.Condition()
+
+threads = []
+for i in files:
+
+    while tr.active_count() >= 7:
+        time.sleep(1)
+
+    cnt += 1
+    print('FILE: ' + str(cnt) + ' of ' + str(len(files)))
+    t = tr.Thread(target=worker,args=(dtdir + i,N,X,y))
+    threads.append(t)
+    t.start()
+
+while tr.active_count() >= 7:
+    time.sleep(1)
 
 X = X[1:]
 y = y[1:]
