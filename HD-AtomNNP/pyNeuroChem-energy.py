@@ -11,21 +11,25 @@ cnstfile = wkdir + 'rHCNO-4.6A_32-3.1A_a8-8.params'
 saefile  = wkdir + 'sae_6-31gd.dat'
 nnfdir   = wkdir + 'networks/'
 
-dtdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_01/data/'
-xyz,typ,Eact,tmp    = gt.readncdat(dtdir + 'gdb11_s01-1_test.dat',np.float32)
-#file = '/home/jujuman/Dropbox/ChemSciencePaper.AER/TestCases/test_for_dipoles/no2nh2bz.xyz'
-#xyz,typ,Na = gt.readxyz(file)
+#dtdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_01/data/'
+#xyz,typ,Eact,tmp    = gt.readncdat(dtdir + 'gdb11_s01-1_test.dat',np.float32)
+file = '/home/jujuman/Downloads/datasets_public/benzene_md/benzene_000001.xyz'
+xyz,typ,Na = gt.readxyz(file)
 
 # Construct pyNeuroChem class
 nc = pync.pyNeuroChem(cnstfile, saefile, nnfdir, 0)
 
 # Set the conformers in NeuroChem
-nc.setConformers(confs=xyz,types=typ)
+nc.setMolecule(coords=xyz[0],types=typ)
 #nc.setMolecule(coords=xyz,types=typ)
 
 # Print some data from the NeuroChem
 print( 'Number of Atoms Loaded: ' + str(nc.getNumAtoms()) )
 print( 'Number of Confs Loaded: ' + str(nc.getNumConfs()) )
+
+O = nc.optimize(conv=0.000001)
+
+print(O)
 
 # Compute Energies of Conformations
 E = nc.energy()

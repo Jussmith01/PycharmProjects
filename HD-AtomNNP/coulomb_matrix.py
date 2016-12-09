@@ -19,7 +19,7 @@ def periodicfunc(element):
     """
     
     # replace with your path if necessary
-    f = open("/home/jujuman/python/PycharmProjects/HD-AtomNNP/CoulombMatrix/pt.txt")
+    f = open("/home/jujuman/Python/PycharmProjects/HD-AtomNNP/CoulombMatrix/pt.txt")
     atomicnum = [line.split()[1] for line in f if line.split()[0] == element]
     f.close()
     return int(atomicnum[0])
@@ -32,35 +32,38 @@ def CMatrix(xyzmatrix, atomlist, dim, sort=True):
 
     xyzheader = len(atomlist)
     
-    i=0 ; j=0    
+    #i=0 ; j=0
     cij=np.zeros((dim,dim))
     chargearray = np.zeros((xyzheader,1))
     
     chargearray = [periodicfunc(symbol)  for symbol in atomlist]
     
     for i in range(xyzheader):
-        for j in range(xyzheader):
+        for j in range(i,xyzheader):
             if i == j:
-                cij[i,j]=0.5*chargearray[i]**2.4
+                cij[i,j] = 0.5*chargearray[i]**2.4
             else:
-                dist= np.linalg.norm(xyzmatrix[i,:] - xyzmatrix[j,:])              
-                cij[i,j]=chargearray[i]*chargearray[j]/dist   
+                dist = np.linalg.norm(xyzmatrix[i,:] - xyzmatrix[j,:])
+                cij[j,i] = cij[i,j] = chargearray[i]*chargearray[j]/dist
     
     if sort==True:
         summation = np.array([sum(x**2) for x in cij])
-        sorted_mat = cij[np.argsort(summation)[::-1,],:]    
+        sorted_mat = cij[np.argsort(summation)[::-1,],:]
+        print(sorted_mat)
         return sorted_mat.ravel()
     
     else: 
         return cij.ravel()
 
 def GenCMatData(xyz,typ,N):
-    cmats = []
-    for i in xyz:
-        mat = CMatrix(i,typ,N)
-        cmats.append(mat)
 
-    return np.array(cmats)
+    M = xyz.shape[0]
+    cmats = np.empty([xyz.shape[0], N * N], dtype=float)
+
+    for i in range(0,M):
+        cmats[i] = CMatrix(xyz[i],typ,N)
+
+    return cmats
 
 def computerISE(typ):
     H= -0.500607632585

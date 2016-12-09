@@ -11,37 +11,11 @@ import graphtools as gt
 import coulomb_matrix as cm
 import matplotlib.pyplot as plt
 
-import threading as tr
-import time
-
-threadLock = tr.Lock()
-
-def worker (file,N,X,y):
-
-    # Get training molecules
-    xyz_tr,typ_tr,Eact_tr,readf = gt.readncdat(file, np.float32)
-
-    # Compute energy of atoms at infinite separation
-    ise = cm.computerISE(typ_tr)
-
-    # Compute training coulomb matrices
-    Xtr = np.asfortranarray( cm.GenCMatData(xyz_tr,typ_tr,N) )
-
-    # Add data to pot
-    threadLock.acquire()
-    #print('Thread: ' + str(tr._get_ident))
-    X = np.concatenate( (X, Xtr) , axis=0)
-    y = np.concatenate( (y, Eact_tr - ise) , axis=0)
-    threadLock.release()
-
-def waitforthreads(N):
-    return bool(tr.active_count() <= N)
-
 dtdir='/home/jujuman/Dropbox/Research/LinearModelTesting/data/'
 #dtdir='/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_02/testdata/'
 files = listdir(dtdir)
 
-N = 14
+N = 5
 
 X = np.empty([1,N*N],dtype=float)
 y = np.empty([1],dtype=float)
@@ -51,22 +25,25 @@ _t1b = tm.time()
 
 cnt=0
 
-cv = tr.Condition()
-
-threads = []
 for i in files:
-
-    while tr.active_count() >= 7:
-        time.sleep(1)
-
     cnt += 1
     print('FILE: ' + str(cnt) + ' of ' + str(len(files)))
-    t = tr.Thread(target=worker,args=(dtdir + i,N,X,y))
-    threads.append(t)
-    t.start()
 
-while tr.active_count() >= 7:
-    time.sleep(1)
+    # Set file
+    file = dtdir + i
+
+    # Get training molecules
+    xyz_tr, typ_tr, Eact_tr, readf = gt.readncdat(file, np.float32)
+
+    # Compute energy of atoms at infinite separation
+    ise = cm.computerISE(typ_tr)
+
+    # Compute training coulomb matrices
+    Xtr = np.asfortranarray(cm.GenCMatData(xyz_tr, typ_tr, N))
+
+    # Add data to pot
+    X = np.concatenate((X, Xtr), axis=0)
+    y = np.concatenate((y, Eact_tr - ise), axis=0)
 
 X = X[1:]
 y = y[1:]
@@ -100,6 +77,8 @@ Ecmp = clf.predict(X_test)
 
 Ecmp = gt.hatokcal*(y_scaler.inverse_transform(Ecmp))
 Eact = gt.hatokcal*(y_scaler.inverse_transform(y_test))
+#Ecmp = gt.hatokcal*(Ecmp)
+#Eact = gt.hatokcal*(y_test)
 
 # Compute RMSE in kcal/mol
 rmse = gt.calculaterootmeansqrerror(Ecmp,Eact)
