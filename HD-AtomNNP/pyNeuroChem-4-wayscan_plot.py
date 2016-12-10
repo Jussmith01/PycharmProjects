@@ -15,15 +15,15 @@ def sortbyother(Y, X):
     return np.array(Y)
 
 def produce_scan(ax,title,xlabel,cnstfile,saefile,nnfdir,dtdir,dt1,dt2,dt3,smin,smax,iscale,ishift):
-    xyz, typ, Eact, chk = gt.readncdat(dtdir + dt1)
+    xyz, typ, Eact, chk = gt.readncdat(dtdir + dt1,np.float32)
     xyz2, typ2, Eact2, chk = gt.readncdat(dtdir + dt2)
     xyz3, typ3, Eact3, chk = gt.readncdat(dtdir + dt3)
 
     #gt.writexyzfile("/home/jujuman/Dropbox/ChemSciencePaper.AER/TestCases/Dihedrals/4-Cyclohexyl-1-butanol/optimization/dihedral_"+dt1+".xyz",xyz,typ)
 
-    Eact = np.array(Eact)
-    Eact2 = np.array(Eact2)
-    Eact3 = np.array(Eact3)
+    #Eact = np.array(Eact)
+    #Eact2 = np.array(Eact2)
+    #Eact3 = np.array(Eact3)
 
     # Construct pyNeuroChem classes
     nc1 = pync.pyNeuroChem(cnstfile, saefile, nnfdir, 1)
@@ -38,7 +38,7 @@ def produce_scan(ax,title,xlabel,cnstfile,saefile,nnfdir,dtdir,dt1,dt2,dt3,smin,
     # Compute Forces of Conformations
     print('Computing energies 1...')
     _t1b = tm.time()
-    Ecmp1 = np.array(nc1.computeEnergies())
+    Ecmp1 = nc1.energy()
     print('Computation complete 1. Time: ' + "{:.4f}".format((tm.time() - _t1b) * 1000.0) + 'ms')
 
     n = smin
@@ -93,7 +93,7 @@ def produce_scan(ax,title,xlabel,cnstfile,saefile,nnfdir,dtdir,dt1,dt2,dt3,smin,
     ax.legend(bbox_to_anchor=(0.2, 0.98), loc=2, borderaxespad=0., fontsize=14)
 
 #Network 1 Files
-wkdir    = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dataset_size_testing/train-ani1-10_percent_1/'
+wkdir    = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dataset_size_testing/train_08_0.50_1/'
 cnstfile1 = wkdir + 'rHCNO-4.5A_32-3.1A_a8-8.params'
 saefile1  = wkdir + 'sae_6-31gd.dat'
 nnfdir1   = wkdir + 'networks/'

@@ -67,7 +67,7 @@ def corrEplot(ax,d1,d2,shr1,shr2):
 
 
 # Set data fields
-dtdir =  '/home/jujuman/Research/GDB-11-wB97X-6-31gd/testdata/'
+dtdir =  '/home/jujuman/Research/GDB-11-wB97X-6-31gd/traindata/'
 
 dtdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_10/testdata/'
 #fpref = 'gdb11_10-'
@@ -79,7 +79,7 @@ files = listdir(dtdir)
 # Set required files for pyNeuroChem
 
 #Network 1 Files
-wkdir1    = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dataset_size_testing/train_08_0.50_1/'
+wkdir1    = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dataset_size_testing/train_08_1.00/'
 cnstfile1 = wkdir1 + 'rHCNO-4.5A_32-3.1A_a8-8.params'
 saefile1  = wkdir1 + 'sae_6-31gd.dat'
 nnfdir1   = wkdir1 + 'networks/'
@@ -210,7 +210,7 @@ print ("{:.7f}".format(100.0*(mae1/(mx - mn))))
 print ("{:.7f}".format(rmse1))
 print ("{:.7f}".format(100.0*(rmse1/(mx - mn))))
 print ("{:.7f}".format(MAPE(Eact,Ecmp)))
-print ("{:.7f}".format( ((sze / float(Ndps)) * err).sum() ))
+print ('Per atom RMSE (kcal/mol) = ' + "{:.7f}".format( ((sze / float(Ndps)) * err).sum() ))
 print ("{:.7f}".format(slope1))
 print ("{:.7f}".format(intercept1))
 print ("{:.7f}".format(r_value1))

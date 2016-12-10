@@ -19,7 +19,7 @@ def periodicfunc(element):
     """
     
     # replace with your path if necessary
-    f = open("/home/jujuman/Python/PycharmProjects/HD-AtomNNP/CoulombMatrix/pt.txt")
+    f = open("/home/jujuman/python/PycharmProjects/HD-AtomNNP/CoulombMatrix/pt.txt")
     atomicnum = [line.split()[1] for line in f if line.split()[0] == element]
     f.close()
     return int(atomicnum[0])
@@ -49,7 +49,6 @@ def CMatrix(xyzmatrix, atomlist, dim, sort=True):
     if sort==True:
         summation = np.array([sum(x**2) for x in cij])
         sorted_mat = cij[np.argsort(summation)[::-1,],:]
-        print(sorted_mat)
         return sorted_mat.ravel()
     
     else: 
