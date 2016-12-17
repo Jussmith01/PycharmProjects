@@ -13,7 +13,7 @@ nnfdir   = wkdir + 'networks/'
 
 #dtdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_01/data/'
 #xyz,typ,Eact,tmp    = gt.readncdat(dtdir + 'gdb11_s01-1_test.dat',np.float32)
-file = '/home/jujuman/Downloads/datasets_public/benzene_md/benzene_000001.xyz'
+file = '/home/jujuman/Research/GDB-9-C7O2H_isomers/dsgdb9nsd_080323.xyz'
 xyz,typ,Na = gt.readxyz(file)
 
 # Construct pyNeuroChem class
