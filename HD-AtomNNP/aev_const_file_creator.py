@@ -38,7 +38,7 @@ def angularradialfunctioncos(X,eta,Rc,Rs):
 #          Radial Function Cos
 # ------------------------------------------
 def angularradialfunctioncos2(X,Y,eta,Rc,Rs):
-    F = np.exp(-eta*((X + Y)/2.0 - Rs)**2) * np.sqrt(cutoffcos(X,Rc) * cutoffcos(Y,Rc))
+    F = np.exp(-eta*((X + Y)/2.0 - Rs)**2)# * np.sqrt(cutoffcos(X,Rc) * cutoffcos(Y,Rc))
     return F
 
 
@@ -212,19 +212,19 @@ def show2dcontradialgraph (ShfR,eta,Rc,func,title):
 #File nam
 pf = 'rHCNO-3.0A_4-2.5A_a2-2.params' # Output filename
 
-Nrr = 8
+Nrr = 32
 Na = 2
-Nar = 4
-Nzt = 4
+Nar = 16
+Nzt = 16
 
 TM = 1
-Rcr = 4.0
-Rca = 3.0
+Rcr = 4.6
+Rca = 3.1
 #Atyp = '[H,C,O,N]'
 Atyp = '[H,C,N,O]'
-EtaR = np.array([4.0])
-EtaA = np.array([4.0])
-Zeta = np.array([4.0])
+EtaR = np.array([32.0])
+EtaA = np.array([32.0])
+Zeta = np.array([32.0])
 
 # ****************************************************
 cmap = mpl.cm.brg
@@ -308,7 +308,7 @@ plt.show()
 
 #Uncomment for pretty contour plots of the angular environments using a sum and then max function
 #show2dcontangulargraph(ShfA,ShfZ,EtaA[0],Zeta[0],Rca,add,'Sum Angular Output')
-#show2dcontangulargraph(ShfA,ShfZ,EtaA[0],Zeta[0],Rca,max,'Max Angular Output')
+show2dcontangulargraph(ShfA,ShfZ,EtaA[0],Zeta[0],Rca,max,'Max Angular Output')
 
 Nt = Nat + Nrt
 print('Total Environmental Vector Size: ',int(Nt))
