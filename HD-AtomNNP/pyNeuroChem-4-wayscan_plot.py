@@ -26,7 +26,7 @@ def produce_scan(ax,title,xlabel,cnstfile,saefile,nnfdir,dtdir,dt1,dt2,dt3,smin,
     #Eact3 = np.array(Eact3)
 
     # Construct pyNeuroChem classes
-    nc1 = pync.pyNeuroChem(cnstfile, saefile, nnfdir, 1)
+    nc1 = pync.pyNeuroChem(cnstfile, saefile, nnfdir, 0)
 
     # Set the conformers in NeuroChem
     nc1.setConformers(confs=xyz, types=typ)
@@ -93,8 +93,8 @@ def produce_scan(ax,title,xlabel,cnstfile,saefile,nnfdir,dtdir,dt1,dt2,dt3,smin,
     ax.legend(bbox_to_anchor=(0.2, 0.98), loc=2, borderaxespad=0., fontsize=14)
 
 #Network 1 Files
-wkdir    = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dataset_size_testing/train_08_0.50_1/'
-cnstfile1 = wkdir + 'rHCNO-4.5A_32-3.1A_a8-8.params'
+wkdir    = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/train_08_9/'
+cnstfile1 = wkdir + 'rHCNO-4.6A_16-3.1A_a4-8.params'
 saefile1  = wkdir + 'sae_6-31gd.dat'
 nnfdir1   = wkdir + 'networks/'
 

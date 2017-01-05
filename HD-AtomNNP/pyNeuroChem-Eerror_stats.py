@@ -67,9 +67,9 @@ def corrEplot(ax,d1,d2,shr1,shr2):
 
 
 # Set data fields
-dtdir =  '/home/jujuman/Research/GDB-11-wB97X-6-31gd/traindata/'
+dtdir =  '/home/jujuman/Research/GDB-11-wB97X-6-31gd/testdata/'
 
-dtdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_10/testdata/'
+#dtdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_10/testdata/'
 #fpref = 'gdb11_10-'
 #fpost = '_test.dat'
 #rng = [0,140]
@@ -79,8 +79,8 @@ files = listdir(dtdir)
 # Set required files for pyNeuroChem
 
 #Network 1 Files
-wkdir1    = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dataset_size_testing/train_08_1.00/'
-cnstfile1 = wkdir1 + 'rHCNO-4.5A_32-3.1A_a8-8.params'
+wkdir1    = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/smallAEV_testing/train_384-128-128-64-1/'
+cnstfile1 = wkdir1 + 'rHCNO-4.6A_16-3.1A_a4-8.params'
 saefile1  = wkdir1 + 'sae_6-31gd.dat'
 nnfdir1   = wkdir1 + 'networks/'
 
