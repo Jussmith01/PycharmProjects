@@ -16,10 +16,10 @@ def sortbyother(Y, X):
 
 # Set required files for pyNeuroChem
 wkdir1 = '/home/jujuman/Dropbox/ChemSciencePaper.AER/ANI-1-ntwk/'
-wkdir1 = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/train_08_8/'
+wkdir1 = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/train_08_9/'
 
 #Network 1 Files
-cnstfile1 = wkdir1 + 'rHCNO-4.8A_32-3.2A_a8-8.params'
+cnstfile1 = wkdir1 + 'rHCNO-4.6A_16-3.1A_a4-8.params'
 saefile1  = wkdir1 + 'sae_6-31gd.dat'
 nnfdir1   = wkdir1 + 'networks/'
 
@@ -27,12 +27,12 @@ dtdir = '/home/jujuman/Scratch/Research/ANN-Test-Data/MDinG09testing/'
 dtdir = '/home/jujuman/Dropbox/Research/MDTests/'
 
 #xyz,typ,Eact = gt.readncdat('../data_irc.dat')
-xyz,typ,Eact = gt.readg09trajdat(dtdir + 'ranolazine_md.log')
+xyz,typ,Eact = gt.readg09trajdat(dtdir + 'ranolazine_md.log',np.float32)
 #xyz,typ,Eact = gt.readg09trajdat(dtdir + 'md.log')
 #xyz2,typ2,Eact2,tmp = gt.readncdat(dtdir + 'ranolazine_dftb.dat')
 typ = typ[0]
 
-gt.writexyzfile('traj.xyz',xyz,typ)
+#gt.writexyzfile('traj.xyz',xyz,typ)
 
 print(typ)
 print(len(xyz))
@@ -54,7 +54,7 @@ print( '1) Number of Confs Loaded: ' + str(nc1.getNumConfs()) )
 # Compute Forces of Conformations
 print('Computing energies 1...')
 _t1b = tm.time()
-Ecmp1 = np.array( nc1.computeEnergies() )
+Ecmp1 = np.array( nc1.energy() )
 print('Computation complete 1. Time: ' + "{:.4f}".format((tm.time() - _t1b) * 1000.0)  + 'ms')
 
 #n = 0

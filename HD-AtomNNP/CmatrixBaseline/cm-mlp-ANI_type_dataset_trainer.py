@@ -60,7 +60,7 @@ def getNdat(file, N):
 
 #-------------------------------------------------
 # Training params
-wkdir = '/home/jujuman/Research/CMatrixBaseline_data/data50p/'
+wkdir = '/home/jujuman/Research/CMatrixBaseline_data/data25p/'
 tdatafn = wkdir + 'train_cm_data.dat'
 vdatafn = wkdir + 'valid_cm_data.dat'
 paramfile = wkdir + 'parameters.pkl'

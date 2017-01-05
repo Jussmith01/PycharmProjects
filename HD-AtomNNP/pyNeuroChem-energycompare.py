@@ -15,10 +15,10 @@ def sortbyother(Y, X):
     return np.array(Y)
 
 # Set required files for pyNeuroChem
-wkdir1    = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dataset_size_testing/train_08_1.00/'
+wkdir1    = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/smallAEV_testing/train_384-256-128-64-1_c08e/'
 
 #Network 1 Files
-cnstfile1 = wkdir1 + 'rHCNO-4.5A_32-3.1A_a8-8.params'
+cnstfile1 = wkdir1 + 'rHCNO-4.6A_16-3.1A_a4-8.params'
 saefile1  = wkdir1 + 'sae_6-31gd.dat'
 nnfdir1   = wkdir1 + 'networks/'
 

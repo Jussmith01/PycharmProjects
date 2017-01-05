@@ -10,13 +10,13 @@ import numpy as np
 import graphtools as gt
 import coulomb_matrix as cm
 
-cmdfile = '/home/jujuman/Research/CMatrixBaseline_data/test_cm_data'
+cmdfile = '/home/jujuman/Research/CMatrixBaseline_data/data05p/valid_cm_data'
 
-dtdir='/home/jujuman/Research/GDB-11-wB97X-6-31gd/testdata/'
+dtdir='/home/jujuman/Research/GDB-11-wB97X-6-31gd/validdata/'
 #dtdir='/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_03/testdata/'
 files = listdir(dtdir)
 
-P = 0.5
+P = 0.05
 N = 32
 
 print('Computing coulomb matrices...')
