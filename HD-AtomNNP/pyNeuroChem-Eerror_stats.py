@@ -19,6 +19,13 @@ def setmaxE(X,Y,E):
 
     return newlist
 
+def setminE(X,Y):
+    m = min(X)
+    newlist = []
+    newlist.append(Y.min())
+
+    return newlist
+
 def MAE (act,pre):
     N = act.shape[0]
     e = (np.abs(pre-act)).sum()
@@ -67,9 +74,9 @@ def corrEplot(ax,d1,d2,shr1,shr2):
 
 
 # Set data fields
-dtdir =  '/home/jujuman/Research/GDB-11-wB97X-6-31gd/testdata/'
-
-#dtdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_10/testdata/'
+#dtdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/testdata/'
+#dtdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/peptidetestdata/'
+dtdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_10/testdata/'
 #fpref = 'gdb11_10-'
 #fpost = '_test.dat'
 #rng = [0,140]
@@ -79,13 +86,17 @@ files = listdir(dtdir)
 # Set required files for pyNeuroChem
 
 #Network 1 Files
-wkdir1    = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/smallAEV_testing/train_384-128-128-64-1/'
+#wkdir1    = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dataset_size_testing/train08b_05p_4/'
+wkdir1    = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/smallAEV_testing/train_384-256-128-64-1/'
+
 cnstfile1 = wkdir1 + 'rHCNO-4.6A_16-3.1A_a4-8.params'
 saefile1  = wkdir1 + 'sae_6-31gd.dat'
 nnfdir1   = wkdir1 + 'networks/'
 
+E_max = 300.0 # an energy cuttoff for error considerations in kcal/mol
+
 # Construct pyNeuroChem classes
-nc = pync.pyNeuroChem(cnstfile1, saefile1, nnfdir1, 0)
+nc = pync.pyNeuroChem(cnstfile1, saefile1, nnfdir1, 1)
 
 Ecmp = []
 Eact = []
@@ -107,6 +118,8 @@ Bfile = ''
 Nf = len(files)
 cnt = 0
 
+mNa = 100
+
 for i in files:
     cnt += 1
 #for i in range(rng[0],rng[1]):
@@ -123,6 +136,9 @@ for i in files:
 
         Nm = xyz.shape[0]
         Na = xyz.shape[1]
+
+        if Na < mNa:
+            mNa = Na
 
         Nat = Na * Nm
 
@@ -154,8 +170,14 @@ for i in files:
             _t2b = (tm.time() - _t1b) * 1000.0
             #print('Computation complete. Time: ' + "{:.4f}".format(_t2b)  + 'ms')
 
-            Ecmp_t = setmaxE(Eact_t, Ecmp_t, 300.0)
-            Eact_t = setmaxE(Eact_t, Eact_t, 300.0)
+            #Ecmp_t = Ecmp_t - Ecmp_t.min()
+            #Eact_t = Eact_t - Eact_t.min()
+
+            Ecmp_t = setmaxE(Eact_t, Ecmp_t, E_max)
+            Eact_t = setmaxE(Eact_t, Eact_t, E_max)
+
+            #Ecmp_t = setminE(Eact_t, Ecmp_t)
+            #Eact_t = setminE(Eact_t, Eact_t)
 
             deltas = gt.hatokcal * np.abs(Ecmp_t - np.array(Eact_t, dtype=float))
             Me = max (deltas)
@@ -168,7 +190,7 @@ for i in files:
                 Lerror = Le
                 Bfile = i
 
-            #print (gt.hatokcal * gt.calculaterootmeansqrerror(np.array(Eact_t, dtype=float),Ecmp_t))
+            print (gt.hatokcal * gt.calculaterootmeansqrerror(np.array(Eact_t, dtype=float),Ecmp_t))
 
             tNa = nc.getNumAtoms()
             err.append(gt.hatokcal * gt.calculaterootmeansqrerror(np.array(Eact_t, dtype=float),Ecmp_t) / float(tNa))
@@ -189,6 +211,8 @@ print('\nMAXE')
 print(ld)
 print('MINE')
 print(sd)
+
+print('Min Na: ' + str(mNa))
 
 Ecmp = gt.hatokcal * np.array(Ecmp, dtype=float)
 Eact = gt.hatokcal * np.array(Eact, dtype=float)
