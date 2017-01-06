@@ -26,7 +26,7 @@ def produce_scan(ax,title,xlabel,cnstfile,saefile,nnfdir,dtdir,dt1,dt2,dt3,smin,
     #Eact3 = np.array(Eact3)
 
     # Construct pyNeuroChem classes
-    nc1 = pync.pyNeuroChem(cnstfile, saefile, nnfdir, 1)
+    nc1 = pync.pyNeuroChem(cnstfile, saefile, nnfdir, 0)
 
     # Set the conformers in NeuroChem
     nc1.setConformers(confs=xyz, types=typ)
