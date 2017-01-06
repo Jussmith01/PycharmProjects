@@ -29,7 +29,7 @@ def formatsmilesfile(file):
 R = 0.3
 fpf = 'gdb11_s10' #Filename prefix
 #wdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_10/' #working directory
-smfile = '/home/jujuman/Research/ANN-Test-Data/GDB-11-B3LYP-6-31gd/smiledata/gdb11_size07.smi' # Smiles file
+smfile = '/home/jujuman/Research/ANN-Test-Data/GDB-11-B3LYP-6-31gd/smiledata/gdb11_size06.smi' # Smiles file
 At = ['C', 'O', 'N'] # Hydrogens added after check
 P = 1.0
 
@@ -55,6 +55,8 @@ NDat = 0
 c_sp1 = []
 c_sp2 = []
 c_sp3 = []
+n_sp2 = []
+n_sp3 = []
 
 for m in molecules:
     if m is None: continue
@@ -132,6 +134,14 @@ for m in molecules:
                 print ('SP3 Carbon Found! : ' + str(AE1[i]))
                 c_sp3.append(AE1[i])
 
+            if typ[i] == 'N' and hbr[i] == 'SP2':
+                print ('SP3 Carbon Found! : ' + str(AE1[i]))
+                n_sp2.append(AE1[i])
+
+            if typ[i] == 'N' and hbr[i] == 'SP3':
+                print ('SP3 Carbon Found! : ' + str(AE1[i]))
+                n_sp3.append(AE1[i])
+
         Nmol += 1 #increment counter
 
 
@@ -155,6 +165,8 @@ axes.set_xlabel('Energy (Ha)')
 axes.hist(c_sp1, 500, color='red',normed=True, label='C SP',linewidth=2,alpha=0.6)
 axes.hist(c_sp2, 50, color='blue',normed=True, label='C SP2',linewidth=2,alpha=0.6)
 axes.hist(c_sp3, 50, color='orange',normed=True, label='C SP3',linewidth=2,alpha=0.6)
+axes.hist(n_sp2, 50, color='green',normed=True, label='N SP2',linewidth=2,alpha=0.6)
+axes.hist(n_sp3, 50, color='black',normed=True, label='N SP3',linewidth=2,alpha=0.6)
 
 plt.legend(bbox_to_anchor=(0.6, 0.98), loc=2, borderaxespad=0., fontsize=14)
 
