@@ -53,10 +53,22 @@ def CMatrix(xyzmatrix, atomlist, dim, sort=True):
     else: 
         return cij.ravel()
 
+
 def GenCMatData(xyz,typ,N):
 
     M = xyz.shape[0]
     cmats = np.empty([xyz.shape[0], N * N + 1], dtype=np.float32)
+
+    for i in range(0,M):
+        cmats[i,0:N*N] = CMatrix(xyz[i],typ,N)
+
+    return cmats
+
+
+def GenCMatData2(xyz,typ,N):
+
+    M = xyz.shape[0]
+    cmats = np.empty([xyz.shape[0], N * N], dtype=np.float32)
 
     for i in range(0,M):
         cmats[i,0:N*N] = CMatrix(xyz[i],typ,N)

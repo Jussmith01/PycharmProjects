@@ -56,7 +56,7 @@ def readxyz (file):
 def writexyzfile (fn,xyz,typ):
     f = open(fn, 'w')
     f.write('\n')
-    N = len(typ)
+    N = typ.shape[0]
 
     for i in xyz:
         f.write(str(N) + '\n')
@@ -141,7 +141,7 @@ def readncdat (file,type = np.float,N = 0):
     Eact = np.asarray(Eact,dtype=type)
     return xyz,typ,Eact,readf
 
-def readg09trajdat (file):
+def readg09trajdat (file,type):
     xyz = []
     typ = []
     Enr = []
@@ -180,10 +180,15 @@ def readg09trajdat (file):
     #typ.pop(0)
     #xyz.pop(0)
 
-    #Enr.pop(0)
+    Enr.pop(0)
     #typ.pop(0)
     #xyz.pop(0)
 
+    #print (len(typ[0]))
+    xyz = np.asarray(xyz,dtype=type)
+    xyz = xyz.reshape((xyz.shape[0],len(typ[0]),3))
+
+    Enr = np.asarray(Enr,dtype=type)
     return xyz,typ,Enr
 
 # -----------------------

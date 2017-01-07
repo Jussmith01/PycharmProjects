@@ -38,7 +38,7 @@ def angularradialfunctioncos(X,eta,Rc,Rs):
 #          Radial Function Cos
 # ------------------------------------------
 def angularradialfunctioncos2(X,Y,eta,Rc,Rs):
-    F = np.exp(-eta*((X + Y)/2.0 - Rs)**2)# * np.sqrt(cutoffcos(X,Rc) * cutoffcos(Y,Rc))
+    F = np.exp(-eta*((X + Y)/2.0 - Rs)**2) * np.sqrt(cutoffcos(X,Rc) * cutoffcos(Y,Rc))
     return F
 
 
@@ -210,21 +210,21 @@ def show2dcontradialgraph (ShfR,eta,Rc,func,title):
 #         Set Parameters
 #--------------------------------
 #File nam
-pf = 'rHCNO-3.0A_4-2.5A_a2-2.params' # Output filename
+pf = 'rHCNO-4.6A_16-3.1A_a4-8.params' # Output filename
 
-Nrr = 32
-Na = 2
-Nar = 16
-Nzt = 16
+Nrr = 16
+Na = 4
+Nar = 4
+Nzt = 8
 
 TM = 1
 Rcr = 4.6
 Rca = 3.1
 #Atyp = '[H,C,O,N]'
 Atyp = '[H,C,N,O]'
-EtaR = np.array([32.0])
-EtaA = np.array([32.0])
-Zeta = np.array([32.0])
+EtaR = np.array([16.0])
+EtaA = np.array([6.0])
+Zeta = np.array([8.0])
 
 # ****************************************************
 cmap = mpl.cm.brg
@@ -244,7 +244,7 @@ ShfR = np.zeros(Nrr)
 
 #Now instead of multiple etaR we use multiple shifts with a single large EtaR
 for i in range(0,Nrr):
-    stepsize = Rcr / float(Nrr+1.0)
+    stepsize = (Rcr-0.5) / float(Nrr)
     step = i * stepsize + 0.50
     color = i/float(Nrr)
     computeradialdataset(0.5, Rcr, 1000, EtaR[0], Rcr,step, plt, cmap(color), '$R_s$ = '+ "{:.2f}".format(step))
@@ -253,7 +253,7 @@ for i in range(0,Nrr):
 plt.title('Radial Environment Functions (REF) \n' + r"${\eta}$ = " + "{:.2f}".format(EtaR[0]))
 plt.ylabel('REF Output')
 plt.xlabel('Angstroms')
-plt.legend(bbox_to_anchor=(0.9, 0.95), loc=2, borderaxespad=0.)
+plt.legend(bbox_to_anchor=(0.9, 1.05), loc=2, borderaxespad=0.)
 plt.show()
 
 #Uncomment for pretty contour plots of the radial environments using a sum and then max function
@@ -294,7 +294,7 @@ plt.show()
 ShfA = np.zeros(Nar)
 
 for i in range(0,Nar):
-    stepsize = Rca / float(Nar+1.0)
+    stepsize = (Rca-0.5) / float(Nar)
     step = (i * stepsize + 0.5)
     color = i/float(Nrr)
     computeangularradialdataset(0.5, Rca, 1000, EtaA[0], Rca,step, plt, cmap(color), r"${R_s}$ = " + "{:.2f}".format(step))
@@ -308,7 +308,7 @@ plt.show()
 
 #Uncomment for pretty contour plots of the angular environments using a sum and then max function
 #show2dcontangulargraph(ShfA,ShfZ,EtaA[0],Zeta[0],Rca,add,'Sum Angular Output')
-show2dcontangulargraph(ShfA,ShfZ,EtaA[0],Zeta[0],Rca,max,'Max Angular Output')
+#show2dcontangulargraph(ShfA,ShfZ,EtaA[0],Zeta[0],Rca,max,'Max Angular Output')
 
 Nt = Nat + Nrt
 print('Total Environmental Vector Size: ',int(Nt))

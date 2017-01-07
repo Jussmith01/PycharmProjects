@@ -145,22 +145,19 @@ font = {'family': 'Bitstream Vera Sans',
 plt.rc('font', **font)
 
 # Set required files for pyNeuroChem
-wkdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/train_08_8/'
+wkdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/smallAEV_testing/train_384-256-128-64-1_c08e/'
 
 # Network  Files
-cnstfile = wkdir + 'rHCNO-4.8A_32-3.2A_a8-8.params'
-saefile  = wkdir + '../sae_6-31gd.dat'
+cnstfile = wkdir + 'rHCNO-4.6A_16-3.1A_a4-8.params'
+saefile  = wkdir + 'sae_6-31gd.dat'
 nnfdir   = wkdir + 'networks/'
 
 # Construct pyNeuroChem classes
 nc = pync.pyNeuroChem(cnstfile,saefile,nnfdir,0)
 
 # Read nc DATA
-xyz,typ,Eact,tmp = gt.readncdat('/home/jujuman/Dropbox/ChemSciencePaper.AER/TestCases/Retinol/data/retinolconformer_DFT.dat')
+xyz,typ,Eact,tmp = gt.readncdat('/home/jujuman/Dropbox/ChemSciencePaper.AER/TestCases/Retinol/data/retinolconformer_DFT.dat',np.float32)
 xyz1,typ1,Eact1,tmp = gt.readncdat('/home/jujuman/Dropbox/ChemSciencePaper.AER/TestCases/Retinol/data/retinolconformer_DFTB.dat')
-
-Eact = np.array(Eact)
-Eact1 = np.array(Eact1)
 
 # Set the conformers in NeuroChem
 nc.setConformers(confs=xyz,types=typ)
@@ -172,7 +169,7 @@ print( 'Number of Confs Loaded: ' + str(nc.getNumConfs()) )
 # Compute Forces of Conformations
 print('Computing energies...')
 _t1b = tm.time()
-Ecmp = np.array( nc.computeEnergies() )
+Ecmp = nc.energy()
 print('Computation complete. Time: ' + "{:.4f}".format((tm.time() - _t1b) * 1000.0)  + 'ms')
 
 Ecmp = gt.hatokcal * Ecmp

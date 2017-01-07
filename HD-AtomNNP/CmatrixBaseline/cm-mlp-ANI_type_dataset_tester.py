@@ -8,10 +8,28 @@ from sklearn.externals import joblib
 
 from os import listdir
 import time as tm
+import random
 
 import numpy as np
 import graphtools as gt
 import matplotlib.pyplot as plt
+
+import coulomb_matrix as cm
+
+def read_data_files_convert_cm(file,N):
+
+    # Get training molecules
+    xyz_tr, typ_tr, Eact_tr, readf = gt.readncdat(file, np.float32)
+
+    # Compute energy of atoms at infinite separation
+    ise = cm.computerISE(typ_tr)
+
+    Eact_tr = (Eact_tr - ise)
+
+    Nm = Eact_tr.shape[0]
+    cmat = cm.GenCMatData2(xyz_tr,typ_tr,N)
+
+    return cmat,Eact_tr,ise
 
 def read_data_indexed(input_file,N,M,Nd,idx,idx_arr,cmats):
 
@@ -47,25 +65,30 @@ def getNdat(file, N):
     file.seek(0)
     return Nd
 
+def setmaxE(X,Y,E):
+    m = min(X)
+    newlist = []
+    for i in range(0,len(X)):
+        if gt.hatokcal * abs(X[i]-m) <= E:
+            newlist.append(Y[i])
+
+    return newlist
+
 # Training params
-wkdir = '/home/jujuman/Research/CMatrixBaseline_data/data50p/'
-tdatafn = wkdir + 'test_cm_data.dat'
+wkdir = '/home/jujuman/Research/CMatrixBaseline_data/data05p/'
+tdatafn = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/testdata/'
+#tdatafn = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_10/testdata/'
 paramfile = wkdir + 'parameters.pkl'
 scalerfile = wkdir + 'scaler.pkl'
 
 N = 32
-M = 10000
+#M = 100
 P = 1.0
 
 # Set this based on training sets ymin
-y_min = -3.96939
+y_min = -3.95532
 
 # ------- Begin MLP Regressor Prediction -------
-t_file = open(tdatafn, 'r')
-
-Ntd = getNdat(t_file,N)
-print ('Test data: ' + str(Ntd))
-
 print ('Building scalers...')
 # Transform data
 X_scaler = joblib.load(scalerfile)
@@ -75,48 +98,63 @@ print ('Y-min: ' + str(y_min))
 # Set timer
 _t1b = tm.time()
 
-# Initilize working memory
-t_cmats = np.empty([M,N*N+1],dtype=np.float32)
-
 # Prepare MLP model
 clf = joblib.load(paramfile)
 
-# Create data index
-t_Ainx = np.arange(Ntd)
+# Get files
+files = listdir(tdatafn)
 
-# Rand Init
-np.random.shuffle(t_Ainx)
-
-# Get number of batches
-Ntb = int( P * np.floor(Ntd/M) )
-
-print ('# of test batches: ' + str(Ntb))
+print ('# of test files: ' + str(len(files)))
 print ('Begin prediction...')
+
+Ecmp = []
+Eact = []
 
 #---------BEGIN VALIDATION LOOP---------
 # Set square diff container
 sqd = 0.0
 
+random.shuffle(files)
+
 batch = 0
-for i in range(0,Ntb):
+dpts = 0
+for i in files:
     batch += 1
 
     # Get training data
-    X, y = read_data_indexed(t_file,N,M,Ntd,i,t_Ainx,t_cmats)
+    X, y, ise = read_data_files_convert_cm(tdatafn+i,N)
+
+    Nm = y.shape[0]
 
     # Transform data
     X_train = X_scaler.transform(X)
 
     # Compute training delta E
-    dE = y_min * clf.predict(X_train) - y
+    y_tmp = y_min * clf.predict(X_train)# + ise
+
+    # Undo ISE shift
+    y = y# + ise
+    dE = y_tmp - y
+
+    #y_tmp = y_tmp / y_min
+    #y = y / y_min
+
+    # Restrict
+    Ecmp_t = setmaxE(y, y_tmp, 300.0)
+    Eact_t = setmaxE(y, y, 300.0)
+
+    Ecmp += Ecmp_t
+    Eact += Eact_t
+
+    dpts += len(Eact_t)
 
     # Compute sum of squared diff
     btcherr = (dE * dE).sum()
     sqd += btcherr
 
-    print ('Batch ' + str(batch) + ' of ' + str(Ntb) + ' complete. RMSE(kcal/mol): ' + "{:.5f}".format(gt.hatokcal*np.sqrt(btcherr/float(M))))
+    print ('File ' + str(batch) + ' of ' + str(len(files)) + ' complete. RMSE(kcal/mol): ' + "{:.5f}".format(gt.hatokcal*np.sqrt(btcherr/float(Nm))))
 
-mse_t = sqd / float(Ntb*M)
+mse_t = sqd / float(dpts)
 
 print('|-----------Prediction Complete-----------|')
 print('  Epoch error MSE(Ha) -- ')
@@ -127,37 +165,29 @@ print('     Test: ' + "{:.5f}".format(gt.hatokcal*np.sqrt(mse_t)))
 
 print('|-----------------------------------------|')
 
-# Compute and print r^2 score
-#print( clf.score(X_test,y_test) )
-
-# Store predicted energies
-#Ecmp = clf.predict(X_test)
-
-#Ecmp = gt.hatokcal*(y_min*Ecmp)
-#Eact = gt.hatokcal*(y_test)
+Ecmp = gt.hatokcal * np.array(Ecmp, dtype=float)
+Eact = gt.hatokcal * np.array(Eact, dtype=float)
 
 # Compute RMSE in kcal/mol
-#rmse = gt.calculaterootmeansqrerror(Ecmp,Eact)
+rmse = gt.calculaterootmeansqrerror(Ecmp,Eact)
 
 # End timer
 _t1e = tm.time()
 print('Computation complete. Time: ' + "{:.4f}".format((_t1e - _t1b)) + 's')
 
 # Output model information
-#print ('RMSE: ' + str(rmse))
-#print(clf.coef_)
-#print(clf.intercept_)
+print ('RMSE: ' + str(rmse))
 
 # Plot
-#plt.scatter(Eact, Ecmp, label='Baseline RMSE: ' + '%s' % float('%.3g' % rmse) + ' kcal/mol', color='red')
-#plt.scatter(Eact, Eact, label='DFT', color='blue')
+plt.scatter(Eact, Ecmp, label='Baseline RMSE: ' + '%s' % float('%.3g' % rmse) + ' kcal/mol', color='red')
+plt.scatter(Eact, Eact, label='DFT', color='blue')
 
-#plt.title('GDB-2 - CM/MLP energy correlation to DFT')
-#plt.xlabel('E act (kcal/mol)')
-#plt.ylabel('E cmp (kcal/mol)')
-#plt.legend(bbox_to_anchor=(0.05, 0.95), loc=2, borderaxespad=0.)
+plt.title('GDB-10 testset - CM/MLP relative energy correlation to DFT')
+plt.xlabel('E act (kcal/mol)')
+plt.ylabel('E cmp (kcal/mol)')
+plt.legend(bbox_to_anchor=(0.05, 0.95), loc=2, borderaxespad=0.)
 
 # -----
 # PLOT
 # -----
-#plt.show()
+plt.show()

@@ -16,7 +16,7 @@ dtdir='/home/jujuman/Research/GDB-11-wB97X-6-31gd/validdata/'
 #dtdir='/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_03/testdata/'
 files = listdir(dtdir)
 
-P = 1.00
+P = 0.05
 N = 32
 
 print('Computing coulomb matrices...')
