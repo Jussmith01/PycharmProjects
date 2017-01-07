@@ -87,13 +87,13 @@ files = listdir(dtdir)
 
 #Network 1 Files
 #wkdir1    = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dataset_size_testing/train08b_05p_4/'
-wkdir1    = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/smallAEV_testing/train_384-256-128-64-1/'
+wkdir1    = '/home/jujuman/Research/wB97X-631gd-train-highgarden/train_08-a3.1A_r4.6_AEV384_1/'
 
 cnstfile1 = wkdir1 + 'rHCNO-4.6A_16-3.1A_a4-8.params'
-saefile1  = wkdir1 + 'sae_6-31gd.dat'
+saefile1  = wkdir1 + '../sae_6-31gd.dat'
 nnfdir1   = wkdir1 + 'networks/'
 
-E_max = 300.0 # an energy cuttoff for error considerations in kcal/mol
+E_max = 200.0 # an energy cuttoff for error considerations in kcal/mol
 
 # Construct pyNeuroChem classes
 nc = pync.pyNeuroChem(cnstfile1, saefile1, nnfdir1, 1)
@@ -170,8 +170,8 @@ for i in files:
             _t2b = (tm.time() - _t1b) * 1000.0
             #print('Computation complete. Time: ' + "{:.4f}".format(_t2b)  + 'ms')
 
-            #Ecmp_t = Ecmp_t - Ecmp_t.min()
-            #Eact_t = Eact_t - Eact_t.min()
+            Ecmp_t = Ecmp_t - Ecmp_t.min()
+            Eact_t = Eact_t - Eact_t.min()
 
             Ecmp_t = setmaxE(Eact_t, Ecmp_t, E_max)
             Eact_t = setmaxE(Eact_t, Eact_t, E_max)

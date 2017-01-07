@@ -129,11 +129,14 @@ def readncdat (file,type = np.float,N = 0):
         for i in fd.readlines():
             cnt += 1
             sd = i.strip().split(",")
-            #print(sd)
+            print(sd)
             xyz.append(list(map(float, sd[0:3*Na])))
             Eact.append(float(sd[3*Na]))
             if cnt >= N and N > 0:
                 break
+    else :
+        print ('CANNOT FIND FILE!')
+        exit()
 
     xyz = np.asarray(xyz,dtype=type)
     xyz = xyz.reshape((xyz.shape[0],len(typ),3))

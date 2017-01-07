@@ -29,14 +29,14 @@ def formatsmilesfile(file):
 R = 0.3
 fpf = 'gdb11_s10' #Filename prefix
 #wdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_10/' #working directory
-smfile = '/home/jujuman/Research/ANN-Test-Data/GDB-11-B3LYP-6-31gd/smiledata/gdb11_size05.smi' # Smiles file
+smfile = '/home/jujuman/Research/RawGDB11Database/gdb11_size02.smi' # Smiles file
 At = ['C', 'O', 'N'] # Hydrogens added after check
 P = 1.0
 
 # Set required files for pyNeuroChem
-wkdir    = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/smallAEV_testing/train_384-256-128-64-1_c08e/'
+wkdir    = '/home/jujuman/Research/wB97X-631gd-train-highgarden/train_08-a3.1A_r4.6_AEV384_1/'
 cnstfile = wkdir + 'rHCNO-4.6A_16-3.1A_a4-8.params'
-saefile  = wkdir + 'sae_6-31gd.dat'
+saefile  = wkdir + '../sae_6-31gd.dat'
 nnfdir   = wkdir + 'networks/'
 
 #------- End Parameters ---------
@@ -58,11 +58,10 @@ c_sp3 = []
 n_sp2 = []
 n_sp3 = []
 
-AV_T1 = np.zeros((1,64),dtype=np.float32)
-AV_T2 = np.zeros((1,64),dtype=np.float32)
-AV_T3 = np.zeros((1,64),dtype=np.float32)
-
-print (AV_T1)
+AV_H = np.zeros((1,64),dtype=np.float32)
+AV_C = np.zeros((1,64),dtype=np.float32)
+AV_N = np.zeros((1,64),dtype=np.float32)
+AV_O = np.zeros((1,64),dtype=np.float32)
 
 for m in molecules:
     if m is None: continue
@@ -130,6 +129,22 @@ for m in molecules:
         for i in range (0,m.GetNumAtoms()):
 
             if typ[i] == 'H':
+                AV = nc.activations(atom_idx=i, layer_idx=2)
+                AV_H = np.vstack([AV_H, AV])
+
+            if typ[i] == 'C':
+                AV = nc.activations(atom_idx=i, layer_idx=2)
+                AV_C = np.vstack([AV_C, AV])
+
+            if typ[i] == 'N':
+                AV = nc.activations(atom_idx=i, layer_idx=2)
+                AV_N = np.vstack([AV_N, AV])
+
+            if typ[i] == 'O':
+                AV = nc.activations(atom_idx=i, layer_idx=2)
+                AV_O = np.vstack([AV_O, AV])
+'''
+            if typ[i] == 'H':
                nei = m.GetAtomWithIdx(i).GetNeighbors()
                for j in nei:
                    bond = m.GetBondBetweenAtoms(i,j.GetIdx())
@@ -194,12 +209,28 @@ for m in molecules:
             if typ[i] == 'N' and hbr[i] == 'SP3':
                 print ('SP3 Nitrogen Found! : ' + str(AE1[i]))
                 n_sp3.append(AE1[i])
-
         Nmol += 1 #increment counter
-
+'''
 
 print ("|---------Computations Complete----------|")
 
+AV_H = AV_H[1:]
+AV_C = AV_C[1:]
+AV_N = AV_N[1:]
+AV_O = AV_O[1:]
+
+print('\nHydrogens: ')
+print (AV_H)
+print('\nCarbons: ')
+print (AV_C)
+print('\nNitrogens: ')
+print (AV_N)
+print('\nOxygens: ')
+print (AV_O)
+
+AV_H.tofile()
+
+'''
 AV_T1 = AV_T1[1:]
 AV_T2 = AV_T2[1:]
 AV_T3 = AV_T3[1:]
@@ -316,3 +347,4 @@ plt.legend(bbox_to_anchor=(0.6, 0.98), loc=2, borderaxespad=0., fontsize=14)
 # PLOT
 # -----
 plt.show()
+'''
