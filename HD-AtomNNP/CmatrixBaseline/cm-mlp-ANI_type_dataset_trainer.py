@@ -60,7 +60,7 @@ def getNdat(file, N):
 
 #-------------------------------------------------
 # Training params
-wkdir = '/home/jujuman/Research/CMatrixBaseline_data/data50p/'
+wkdir = '/home/jujuman/Research/CMatrixBaseline_data/data100p/'
 tdatafn = wkdir + 'train_cm_data.dat'
 vdatafn = wkdir + 'valid_cm_data.dat'
 paramfile = wkdir + 'parameters.pkl'
@@ -84,7 +84,7 @@ Nvd = getNdat(v_file,N)
 print ('Training   data: ' + str(Ntd))
 print ('Validation data: ' + str(Nvd))
 
-Mt = int( 0.1 * Ntd )
+Mt = int( 0.05 * Ntd )
 t_cmats = np.empty([Mt,N*N+1],dtype=np.float32)
 
 print ('Scaling with: ' + str(Mt))
