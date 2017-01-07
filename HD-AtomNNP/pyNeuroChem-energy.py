@@ -14,13 +14,13 @@ saefile  = wkdir + 'sae_6-31gd.dat'
 nnfdir   = wkdir + 'networks/'
 
 # Set required files for pyNeuroChem
-wkdir    = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/smallAEV_testing/train_384-256-128-64-1_c08e/'
+wkdir    = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/train_08_9/'
 cnstfile = wkdir + 'rHCNO-4.6A_16-3.1A_a4-8.params'
 saefile  = wkdir + 'sae_6-31gd.dat'
 nnfdir   = wkdir + 'networks/'
 
 dtdir = '/home/jujuman/Research/'
-xyz,typ,Eact,tmp    = gt.readncdat(dtdir + 'gdb11_s02-1_test.dat',np.float32)
+xyz,typ,Eact,tmp    = gt.readncdat(dtdir + 'fixmolecule-C_train.dat',np.float32)
 #xyz,typ,Na = gt.readxyz(file)
 
 # Construct pyNeuroChem class

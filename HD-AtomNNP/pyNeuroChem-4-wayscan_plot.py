@@ -93,7 +93,7 @@ def produce_scan(ax,title,xlabel,cnstfile,saefile,nnfdir,dtdir,dt1,dt2,dt3,smin,
     ax.legend(bbox_to_anchor=(0.2, 0.98), loc=2, borderaxespad=0., fontsize=14)
 
 #Network 1 Files
-wkdir    = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/smallAEV_testing/train_384-256-128-64-1_c08e/'
+wkdir    = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/train_08_9/'
 cnstfile1 = wkdir + 'rHCNO-4.6A_16-3.1A_a4-8.params'
 saefile1  = wkdir + 'sae_6-31gd.dat'
 nnfdir1   = wkdir + 'networks/'
