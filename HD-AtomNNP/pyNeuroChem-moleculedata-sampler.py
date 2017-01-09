@@ -149,29 +149,40 @@ for m in molecules:
         fE.write("{:.10f}".format(E1[0]) + '\n')
         fS.write(Chem.MolToSmiles(m) + '\n')
 
-	types = np.zeros(4,int)
-	for i in range (0,m.GetNumAtoms()):
-		if typ[i] == 'H':
-			types[0] += 1
-		elif typ[i] == 'C':
-			types[1] += 1
-		elif typ[i] == 'N':
-			types[2] += 1
-		elif typ[i] == 'O':
-			types[3] += 1
-		else:
-			print ('!ERROR! Invalid type')
-			exit()
-	
-	print ('types: ' + str(types))
+        types = np.zeros(4,int)
+        for i in range (0,m.GetNumAtoms()):
+            if typ[i] == 'H':
+                types[0] += 1
+            elif typ[i] == 'C':
+                types[1] += 1
+            elif typ[i] == 'N':
+                types[2] += 1
+            elif typ[i] == 'O':
+                types[3] += 1
+            else:
+                print ('!ERROR! Invalid type')
+                exit()
 
+        print ('Types: ' + str(types))
+
+        for a in range(0,len(AV_H)):
+            AV_H[a] = np.vstack([AV_H[a], np.empty((types[0], AV_H[a].shape[1]), dtype=np.float32)])
+
+        for a in range(0,len(AV_C)):
+            AV_C[a] = np.vstack([AV_C[a], np.empty((types[0], AV_C[a].shape[1]), dtype=np.float32)])
+
+        for a in range(0,len(AV_N)):
+            AV_N[a] = np.vstack([AV_N[a], np.empty((types[0], AV_N[a].shape[1]), dtype=np.float32)])
+
+        for a in range(0,len(AV_O)):
+            AV_O[a] = np.vstack([AV_O[a], np.empty((types[0], AV_O[a].shape[1]), dtype=np.float32)])
 
         for i in range (0,m.GetNumAtoms()):
 
             if typ[i] == 'H':
                 for a in range(0,len(AV_H)):
                     AV = nc.activations(atom_idx=i, layer_idx=a)
-                    AV_H[a] = np.vstack([AV_H[a], AV])
+                    AV_H[a][NH] = AV
 
                 fH.write(str(NH) + ',' +
                          str(i) + ',' +
@@ -181,7 +192,8 @@ for m in molecules:
             if typ[i] == 'C':
                 for a in range(0,len(AV_H)):
                     AV = nc.activations(atom_idx=i, layer_idx=a)
-                    AV_C[a] = np.vstack([AV_C[a], AV])
+                    AV_C[a][NC] = AV
+
                 fC.write(str(NC) + ',' +
                          str(i) + ',' +
                          str(Nmol) + '\n')
@@ -190,7 +202,8 @@ for m in molecules:
             if typ[i] == 'N':
                 for a in range(0,len(AV_H)):
                     AV = nc.activations(atom_idx=i, layer_idx=a)
-                    AV_N[a] = np.vstack([AV_N[a], AV])
+                    AV_N[a][NN] = AV
+
                 fN.write(str(NN) + ',' +
                          str(i) + ',' +
                          str(Nmol) + '\n')
@@ -199,7 +212,8 @@ for m in molecules:
             if typ[i] == 'O':
                 for a in range(0,len(AV_H)):
                     AV = nc.activations(atom_idx=i, layer_idx=a)
-                    AV_O[a] = np.vstack([AV_O[a], AV])
+                    AV_O[a][NO] = AV
+
                 fO.write(str(NO) + ',' +
                          str(i) + ',' +
                          str(Nmol) + '\n')
