@@ -113,9 +113,9 @@ for m in molecules:
 
         print('Molecule ', str(Nmol) ,': ', Chem.MolToSmiles(m))
 
-        print('Number of Atoms: ', m.GetNumAtoms())
-        print('Number of Bonds: ', m.GetNumBonds())
-        print('Number of Conformers: ', m.GetNumConformers())
+        #print('Number of Atoms: ', m.GetNumAtoms())
+        #print('Number of Bonds: ', m.GetNumBonds())
+        #print('Number of Conformers: ', m.GetNumConformers())
         
         if m.GetNumConformers() > 1:
             print('MORE THAN ONE CONFORMER!')
@@ -138,13 +138,13 @@ for m in molecules:
 
         nc.setMolecule(coords=xyz,types=typ)
 
-        #O = nc.optimize(conv=0.00001,max_iter=20)
+        #O = nc.optimize(conv=0.00001,max_iter=500)
         #print(O)
 
         gt.writexyzfile(dir + 'xyz/mol-' + gdbname + '-' + str(Nmol) + '.xyz',xyz,typ)
 
         E1 = nc.energy()
-        print('Energy:  ' + str(E1))
+        #print('Energy:  ' + str(E1))
 
         fE.write("{:.10f}".format(E1[0]) + '\n')
         fS.write(Chem.MolToSmiles(m) + '\n')
@@ -163,19 +163,19 @@ for m in molecules:
                 print ('!ERROR! Invalid type')
                 exit()
 
-        print ('Types: ' + str(types))
+        #print ('Types: ' + str(types))
 
         for a in range(0,len(AV_H)):
             AV_H[a] = np.vstack([AV_H[a], np.empty((types[0], AV_H[a].shape[1]), dtype=np.float32)])
 
         for a in range(0,len(AV_C)):
-            AV_C[a] = np.vstack([AV_C[a], np.empty((types[0], AV_C[a].shape[1]), dtype=np.float32)])
+            AV_C[a] = np.vstack([AV_C[a], np.empty((types[1], AV_C[a].shape[1]), dtype=np.float32)])
 
         for a in range(0,len(AV_N)):
-            AV_N[a] = np.vstack([AV_N[a], np.empty((types[0], AV_N[a].shape[1]), dtype=np.float32)])
+            AV_N[a] = np.vstack([AV_N[a], np.empty((types[2], AV_N[a].shape[1]), dtype=np.float32)])
 
         for a in range(0,len(AV_O)):
-            AV_O[a] = np.vstack([AV_O[a], np.empty((types[0], AV_O[a].shape[1]), dtype=np.float32)])
+            AV_O[a] = np.vstack([AV_O[a], np.empty((types[3], AV_O[a].shape[1]), dtype=np.float32)])
 
         for i in range (0,m.GetNumAtoms()):
 
