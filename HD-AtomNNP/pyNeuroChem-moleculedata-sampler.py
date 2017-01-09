@@ -57,25 +57,30 @@ NC = 0
 NN = 0
 NO = 0
 
-AV_H = [np.empty((0,256),dtype=np.float32),
-        np.empty((0,128),dtype=np.float32),
-        np.empty((0,64) ,dtype=np.float32),
-        np.empty((0,1)  ,dtype=np.float32)]
+NHt = 24 * len(molecules)
+NCt = 10 * len(molecules)
+NNt = 10 * len(molecules)
+NOt = 10 * len(molecules)
 
-AV_C = [np.empty((0,256),dtype=np.float32),
-        np.empty((0,128),dtype=np.float32),
-        np.empty((0,64) ,dtype=np.float32),
-        np.empty((0,1)  ,dtype=np.float32)]
+AV_H = [np.empty((NHt,256),dtype=np.float32),
+        np.empty((NHt,128),dtype=np.float32),
+        np.empty((NHt,64) ,dtype=np.float32),
+        np.empty((NHt,1)  ,dtype=np.float32)]
 
-AV_N = [np.empty((0,256),dtype=np.float32),
-        np.empty((0,128),dtype=np.float32),
-        np.empty((0,64) ,dtype=np.float32),
-        np.empty((0,1)  ,dtype=np.float32)]
+AV_C = [np.empty((NCt,256),dtype=np.float32),
+        np.empty((NCt,128),dtype=np.float32),
+        np.empty((NCt,64) ,dtype=np.float32),
+        np.empty((NCt,1)  ,dtype=np.float32)]
 
-AV_O = [np.empty((0,256),dtype=np.float32),
-        np.empty((0,128),dtype=np.float32),
-        np.empty((0,64) ,dtype=np.float32),
-        np.empty((0,1)  ,dtype=np.float32)]
+AV_N = [np.empty((NNt,256),dtype=np.float32),
+        np.empty((NNt,128),dtype=np.float32),
+        np.empty((NNt,64) ,dtype=np.float32),
+        np.empty((NNt,1)  ,dtype=np.float32)]
+
+AV_O = [np.empty((NOt,256),dtype=np.float32),
+        np.empty((NOt,128),dtype=np.float32),
+        np.empty((NOt,64) ,dtype=np.float32),
+        np.empty((NOt,1)  ,dtype=np.float32)]
 
 idir = dir + 'indices/'
 adir = dir + 'activations/'
@@ -149,6 +154,7 @@ for m in molecules:
         fE.write("{:.10f}".format(E1[0]) + '\n')
         fS.write(Chem.MolToSmiles(m) + '\n')
 
+        '''
         types = np.zeros(4,int)
         for i in range (0,m.GetNumAtoms()):
             if typ[i] == 'H':
@@ -176,6 +182,7 @@ for m in molecules:
 
         for a in range(0,len(AV_O)):
             AV_O[a] = np.vstack([AV_O[a], np.empty((types[3], AV_O[a].shape[1]), dtype=np.float32)])
+        '''
 
         for i in range (0,m.GetNumAtoms()):
 
@@ -238,26 +245,26 @@ szs = np.array([AV_H[0].shape[1],
                 AV_H[3].shape[1]],
                 dtype=int)
 
-np.savez(adir + 'H-LHL-data-' + gdbname,l0=AV_H[0]
-                                       ,l1=AV_H[1]
-                                       ,l2=AV_H[2]
-                                       ,l3=AV_H[3]
+np.savez(adir + 'H-LHL-data-' + gdbname,l0=AV_H[0][0:NH,:]
+                                       ,l1=AV_H[1][0:NH,:]
+                                       ,l2=AV_H[2][0:NH,:]
+                                       ,l3=AV_H[3][0:NH,:]
                                        ,sz = szs)
 
-np.savez(adir + 'C-LHL-data-' + gdbname,l0=AV_C[0]
-                                       ,l1=AV_C[1]
-                                       ,l2=AV_C[2]
-                                       ,l3=AV_C[3]
+np.savez(adir + 'C-LHL-data-' + gdbname,l0=AV_C[0][0:NC,:]
+                                       ,l1=AV_C[1][0:NC,:]
+                                       ,l2=AV_C[2][0:NC,:]
+                                       ,l3=AV_C[3][0:NC,:]
                                        ,sz = szs)
 
-np.savez(adir + 'N-LHL-data-' + gdbname,l0=AV_N[0]
-                                       ,l1=AV_N[1]
-                                       ,l2=AV_N[2]
-                                       ,l3=AV_N[3]
+np.savez(adir + 'N-LHL-data-' + gdbname,l0=AV_N[0][0:NN,:]
+                                       ,l1=AV_N[1][0:NN,:]
+                                       ,l2=AV_N[2][0:NN,:]
+                                       ,l3=AV_N[3][0:NN,:]
                                        ,sz = szs)
 
-np.savez(adir + 'O-LHL-data-' + gdbname,l0=AV_O[0]
-                                       ,l1=AV_O[1]
-                                       ,l2=AV_O[2]
-                                       ,l3=AV_O[3]
+np.savez(adir + 'O-LHL-data-' + gdbname,l0=AV_O[0][0:NO,:]
+                                       ,l1=AV_O[1][0:NO,:]
+                                       ,l2=AV_O[2][0:NO,:]
+                                       ,l3=AV_O[3][0:NO,:]
                                        ,sz = szs)
