@@ -37,6 +37,8 @@ def readxyz (file):
         Na.append(int(i[0]))
         atm = ra.findall(i[1])
 
+        print(atm)
+
         ntyp = []
         nxyz = []
         for j in range(0, int(i[0])):
@@ -56,16 +58,15 @@ def readxyz (file):
 def writexyzfile (fn,xyz,typ):
     f = open(fn, 'w')
     f.write('\n')
-    N = typ.shape[0]
+    N = len(typ)
 
-    for i in xyz:
-        f.write(str(N) + '\n')
-        for j in range(N):
-            x = i[j*3]
-            y = i[j*3+1]
-            z = i[j*3+2]
-            f.write(typ[j] + ' ' + "{:.7f}".format(x) + ' ' + "{:.7f}".format(y) + ' ' + "{:.7f}".format(z) + '\n')
-        f.write('\n')
+    f.write(str(N) + '\n')
+    for i in range(N):
+        x = xyz[i,0]
+        y = xyz[i,1]
+        z = xyz[i,2]
+        f.write(typ[i] + ' ' + "{:.7f}".format(x) + ' ' + "{:.7f}".format(y) + ' ' + "{:.7f}".format(z) + '\n')
+    f.write('\n')
     f.close()
 
 def readncdatwforce (file,N = 0):

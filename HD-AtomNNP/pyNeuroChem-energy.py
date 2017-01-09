@@ -13,15 +13,9 @@ cnstfile = wkdir + 'rHCNO-4.6A_32-3.1A_a8-8.params'
 saefile  = wkdir + 'sae_6-31gd.dat'
 nnfdir   = wkdir + 'networks/'
 
-# Set required files for pyNeuroChem
-#wkdir    = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/train_08_9/'
-#cnstfile = wkdir + 'rHCNO-4.6A_16-3.1A_a4-8.params'
-#saefile  = wkdir + 'sae_6-31gd.dat'
-#nnfdir   = wkdir + 'networks/'
-
-dtdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_01/testdata/'
-xyz,typ,Eact,tmp    = gt.readncdat(dtdir + 'gdb11_s01-1_test.dat',np.float32)
-#xyz,typ,Na = gt.readxyz(file)
+dtdir = '/home/jujuman/Research/'
+#xyz,typ,Eact,tmp    = gt.readncdat(dtdir + 'gdb11_s01-1_test.dat',np.float32)
+xyz,typ,Na = gt.readxyz(dtdir + 'molecule-130.xyz')
 
 print (xyz)
 
@@ -36,9 +30,13 @@ nc.setConformers(confs=xyz,types=typ)
 print( 'Number of Atoms Loaded: ' + str(nc.getNumAtoms()) )
 print( 'Number of Confs Loaded: ' + str(nc.getNumConfs()) )
 
-#O = nc.optimize(conv=0.000001)
+print ('Optimizing...')
+O = nc.optimize(conv=0.000001,max_iter=250)
+print(O)
 
-#print(O)
+print(len(typ))
+for i in range(0,len(typ)):
+    print (typ[i] + ' ' + "{:.10f}".format(O[i,0]) + ' ' + "{:.10f}".format(O[i,1]) + ' ' + "{:.10f}".format(O[i,2]))
 
 # Compute Energies of Conformations
 E = nc.energy()
@@ -51,6 +49,7 @@ print(E)
 #print('\nF:')
 #print(F)
 
+'''
 AE = nc.aenergies()
 
 print('\nAE:')
@@ -89,3 +88,4 @@ font = {'family' : 'Bitstream Vera Sans',
 plt.rc('font', **font)
 
 plt.show()
+'''
