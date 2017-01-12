@@ -5,8 +5,17 @@ import random
 import numpy as np
 import re
 import graphtools as gt
+import sys
 
+# PyNeuroChem
+sys.path.append('/home/jujuman/Gits/NeuroChem/pyase_interface')
+from neurochemToASE_iface import NeuroChem2ASE
 import pyNeuroChem as pync
+
+# ASE
+from ase.io import read, write
+from ase import Atoms
+from ase.optimize import BFGS, LBFGS
 
 def formatsmilesfile(file):
     ifile = open(file, 'r')
@@ -32,13 +41,13 @@ At = ['C', 'O', 'N'] # Hydrogens added after check
 P = 1.0
 
 # Set required files for pyNeuroChem
-wkdir    = '/home/jujuman/Research/wB97X-631gd-train-highgarden/train_08-a3.1A_r4.6_AEV384_1/'
-cnstfile = wkdir + 'rHCNO-4.6A_16-3.1A_a4-8.params'
-saefile  = wkdir + '../sae_6-31gd.dat'
-nnfdir   = wkdir + 'networks/'
+anipath  = '/home/jujuman/Research/wB97X-631gd-train-highgarden/train_08-a3.1A_r4.6_AEV384_1'
+cnstfile = anipath + '/rHCNO-4.6A_16-3.1A_a4-8.params'
+saefile  = anipath + '/../sae_6-31gd.dat'
+nnfdir   = anipath + '/networks/'
 
 dir = '/home/jujuman/Research/LHL-DATA-ANI-c08e/'
-gdbname = 'gdb' + gdb
+gdbname = 'gdb' + gdb + '_opt'
 
 #------- End Parameters ---------
 
@@ -108,15 +117,14 @@ for m in molecules:
         if count is 0:
             typecheck = True
 
-    if typecheck is False and random.random() < P:
+    if typecheck is False and random.random() < P and Nmol != 47008:
 
         m = Chem.AddHs(m) # Add Hydrogens
+        print('Molecule ', str(Nmol) ,': ', Chem.MolToSmiles(m))
         AllChem.EmbedMolecule(m) # Embed in 3D Space
         AllChem.UFFOptimizeMolecule(m) # Classical Optimization
 
         #---------------------------------------------
-
-        print('Molecule ', str(Nmol) ,': ', Chem.MolToSmiles(m))
 
         #print('Number of Atoms: ', m.GetNumAtoms())
         #print('Number of Bonds: ', m.GetNumBonds())
@@ -128,6 +136,7 @@ for m in molecules:
 
         xyz = np.ndarray(shape=(m.GetNumAtoms(),3), dtype=np.float32)
         typ = []
+	tstr = ''
         hbr = []
 
         for i in range (0,m.GetNumAtoms()):
@@ -139,16 +148,28 @@ for m in molecules:
             xyz[i,1] = pos.y
             xyz[i,2] = pos.z
             typ.append(sym)
+	    tstr += sym
             hbr.append(str(hyb))
 
-        nc.setMolecule(coords=xyz,types=typ)
+	# Set molecule
+	geometry = Atoms(tstr,xyz)
 
-        #O = nc.optimize(conv=0.00001,max_iter=500)
-        #print(O)
+	# Setup ANI and calculate single point energy
+	geometry.set_calculator(NeuroChem2ASE(nc))
+	
+	# Geometry optimization with BFGS
+	start_time = time.time()
+	dyn = LBFGS(geometry)
+	dyn.run(fmax=0.0001)
+	print('[ANI Total time:', time.time() - start_time, 'seconds]')
 
+	# Get potential
+	E1 = geometry.get_potential_energy()
+
+	# Get geometry
+	xyz = geometry.get_positions()
         gt.writexyzfile(dir + 'xyz/mol-' + gdbname + '-' + str(Nmol) + '.xyz',xyz,typ)
 
-        E1 = nc.energy()
         #print('Energy:  ' + str(E1))
 
         fE.write("{:.10f}".format(E1[0]) + '\n')
