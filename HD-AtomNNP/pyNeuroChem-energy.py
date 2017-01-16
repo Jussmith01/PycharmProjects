@@ -4,6 +4,7 @@ __author__ = 'jujuman'
 import pyNeuroChem as pync
 import numpy as np
 import graphtools as gt
+import time
 
 import matplotlib.pyplot as plt
 
@@ -13,9 +14,9 @@ cnstfile = wkdir + 'rHCNO-4.6A_32-3.1A_a8-8.params'
 saefile  = wkdir + 'sae_6-31gd.dat'
 nnfdir   = wkdir + 'networks/'
 
-dtdir = '/home/jujuman/Research/'
+dtdir = '/home/jujuman/Dropbox/ChemSciencePaper.AER/Poster-GTC-May-2017/Timings/'
 #xyz,typ,Eact,tmp    = gt.readncdat(dtdir + 'gdb11_s01-1_test.dat',np.float32)
-xyz,typ,Na = gt.readxyz(dtdir + 'molecule-130.xyz')
+xyz,typ,Na = gt.readxyz(dtdir + 'water.xyz')
 
 print (xyz)
 
@@ -30,25 +31,26 @@ nc.setConformers(confs=xyz,types=typ)
 print( 'Number of Atoms Loaded: ' + str(nc.getNumAtoms()) )
 print( 'Number of Confs Loaded: ' + str(nc.getNumConfs()) )
 
-print ('Optimizing...')
-O = nc.optimize(conv=0.000001,max_iter=250)
-print(O)
+#print ('Optimizing...')
+#O = nc.optimize(conv=0.000001,max_iter=250)
+#print(O)
 
-print(len(typ))
-for i in range(0,len(typ)):
-    print (typ[i] + ' ' + "{:.10f}".format(O[i,0]) + ' ' + "{:.10f}".format(O[i,1]) + ' ' + "{:.10f}".format(O[i,2]))
+#print(len(typ))
+#for i in range(0,len(typ)):
+#    print (typ[i] + ' ' + "{:.10f}".format(O[i,0]) + ' ' + "{:.10f}".format(O[i,1]) + ' ' + "{:.10f}".format(O[i,2]))
 
 # Compute Energies of Conformations
+print('Calculating energies and forces...')
+start_time = time.time()
 E = nc.energy()
+#F = nc.force()
+print('[ANI Total time:', time.time() - start_time, 'seconds]')
 
 print('\nE:')
 print(E)
 
-#F = nc.force()
-
 #print('\nF:')
 #print(F)
-
 '''
 AE = nc.aenergies()
 

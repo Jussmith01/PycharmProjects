@@ -21,9 +21,9 @@ def formatsmilesfile(file):
 #-------- Parameters -----------
 
 R = 0.3
-fpf = 'gdb11_s10' #Filename prefix
-wdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_10/' #working directory
-smfile = '/home/jujuman/Research/ANN-Test-Data/GDB-11/smiledata/gdb11_size10.smi' # Smiles file
+fpf = 'gdb11_s09' #Filename prefix
+wdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_09/' #working directory
+smfile = '/home/jujuman/Research/RawGDB11Database/gdb11_size11.smi' # Smiles file
 At = ['C', 'O', 'N'] # Hydrogens added after check
 
 TSS = 3
@@ -50,10 +50,17 @@ NDat = 0
 for m in molecules:
     if m is None: continue
 
+    typecount = 0
+
+    #print (Chem.MolToSmiles(m))
+
     typecheck = False
     for a in m.GetAtoms():
         sym = str(a.GetSymbol())
         count = 0
+
+        if sym == 'N' or sym == 'O':
+            typecount += 1
 
         for i in At:
             if i is sym:
@@ -62,7 +69,7 @@ for m in molecules:
         if count is 0:
             typecheck = True
 
-    if typecheck is False and random.random() < P:
+    if typecheck is False and typecount >= 5 and random.random() < P:
 
         m = Chem.AddHs(m) # Add Hydrogens
         AllChem.EmbedMolecule(m) # Embed in 3D Space
@@ -146,4 +153,5 @@ for m in molecules:
     #else:
         #print('Not Using Structure with Smiles: ', Chem.MolToSmiles(m))
 
+print(Nmol)
 print(NDat)

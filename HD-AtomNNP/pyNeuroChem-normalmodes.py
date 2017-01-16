@@ -1,6 +1,6 @@
 import sys
-sys.path.append('/home/jujuman/Gits/NeuroChem/pyase_interface')
-from neurochemToASE_iface import NeuroChem2ASE
+sys.path.append('/home/jujuman/Gits/NeuroChem/src-python')
+from ase_interface import NeuroChem2ASE
 import pyNeuroChem as pync
 
 import numpy as np

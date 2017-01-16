@@ -6,6 +6,7 @@ import numpy as np
 import re
 import graphtools as gt
 import sys
+import time
 
 # PyNeuroChem
 sys.path.append('/home/jujuman/Gits/NeuroChem/pyase_interface')
@@ -136,7 +137,7 @@ for m in molecules:
 
         xyz = np.ndarray(shape=(m.GetNumAtoms(),3), dtype=np.float32)
         typ = []
-	tstr = ''
+        tstr = ''
         hbr = []
 
         for i in range (0,m.GetNumAtoms()):
@@ -148,31 +149,32 @@ for m in molecules:
             xyz[i,1] = pos.y
             xyz[i,2] = pos.z
             typ.append(sym)
-	    tstr += sym
+            tstr += sym
             hbr.append(str(hyb))
 
-	# Set molecule
-	geometry = Atoms(tstr,xyz)
+        # Set molecule
+        geometry = Atoms(tstr,xyz)
 
 	# Setup ANI and calculate single point energy
-	geometry.set_calculator(NeuroChem2ASE(nc))
+        geometry.set_calculator(NeuroChem2ASE(nc))
 	
 	# Geometry optimization with BFGS
-	start_time = time.time()
-	dyn = LBFGS(geometry)
-	dyn.run(fmax=0.0001)
-	print('[ANI Total time:', time.time() - start_time, 'seconds]')
+        start_time = time.time()
+        dyn = LBFGS(geometry,logfile='logfile.out')
+        dyn.run(fmax=0.0001,steps=500)
+        Ns = dyn.get_number_of_steps()
+        print('[ANI Total time:', time.time() - start_time, 'seconds. Steps: ', Ns,']')
 
 	# Get potential
-	E1 = geometry.get_potential_energy()
+        E1 = geometry.get_potential_energy()
 
 	# Get geometry
-	xyz = geometry.get_positions()
+        xyz = geometry.get_positions()
         gt.writexyzfile(dir + 'xyz/mol-' + gdbname + '-' + str(Nmol) + '.xyz',xyz,typ)
 
         #print('Energy:  ' + str(E1))
 
-        fE.write("{:.10f}".format(E1[0]) + '\n')
+        fE.write("{:.10f}".format(E1) + '\n')
         fS.write(Chem.MolToSmiles(m) + '\n')
 
         '''
