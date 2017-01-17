@@ -9,8 +9,8 @@ import time
 import matplotlib.pyplot as plt
 
 # Set required files for pyNeuroChem
-wkdir    = '/home/jujuman/Dropbox/ChemSciencePaper.AER/ANI-1-ntwk/'
-cnstfile = wkdir + 'rHCNO-4.6A_32-3.1A_a8-8.params'
+wkdir    = '/home/jujuman/Dropbox/ChemSciencePaper.AER/ANI-c08e-ntwk/'
+cnstfile = wkdir + 'rHCNO-4.6A_16-3.1A_a4-8.params'
 saefile  = wkdir + 'sae_6-31gd.dat'
 nnfdir   = wkdir + 'networks/'
 
