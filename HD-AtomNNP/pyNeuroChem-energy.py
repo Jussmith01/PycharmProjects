@@ -25,6 +25,7 @@ nc = pync.pyNeuroChem(cnstfile, saefile, nnfdir, 0)
 
 # Set the conformers in NeuroChem
 nc.setConformers(confs=xyz,types=typ)
+
 #nc.setMolecule(coords=xyz,types=typ)
 
 # Print some data from the NeuroChem
@@ -39,18 +40,25 @@ print( 'Number of Confs Loaded: ' + str(nc.getNumConfs()) )
 #for i in range(0,len(typ)):
 #    print (typ[i] + ' ' + "{:.10f}".format(O[i,0]) + ' ' + "{:.10f}".format(O[i,1]) + ' ' + "{:.10f}".format(O[i,2]))
 
+
 # Compute Energies of Conformations
 print('Calculating energies and forces...')
+
 start_time = time.time()
 E = nc.energy()
-#F = nc.force()
-print('[ANI Total time:', time.time() - start_time, 'seconds]')
+print('[ANI Energy time:', time.time() - start_time, 'seconds]')
+
+start_time = time.time()
+F = nc.force()
+print('[ANI Force time: ', time.time() - start_time, 'seconds]')
+
 
 print('\nE:')
 print(E)
 
-#print('\nF:')
-#print(F)
+print('\nF:')
+print(F)
+
 '''
 AE = nc.aenergies()
 
