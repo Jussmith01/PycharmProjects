@@ -75,8 +75,8 @@ def corrEplot(ax,d1,d2,shr1,shr2):
 
 # Set data fields
 #dtdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/testdata/'
-#dtdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/peptidetestdata/'
-dtdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_10/testdata/'
+dtdir = '/home/jujuman/Scratch/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_08/moltest/'
+#dtdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_10/testdata/'
 #fpref = 'gdb11_10-'
 #fpost = '_test.dat'
 #rng = [0,140]
@@ -87,16 +87,16 @@ files = listdir(dtdir)
 
 #Network 1 Files
 #wkdir1    = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dataset_size_testing/train08b_05p_4/'
-wkdir1    = '/home/jujuman/Research/wB97X-631gd-train-highgarden/train_08-a3.1A_r4.6_AEV384_1/'
+wkdir1    = '/home/jujuman/Dropbox/ChemSciencePaper.AER/ANI-c08e-ntwk/'
 
 cnstfile1 = wkdir1 + 'rHCNO-4.6A_16-3.1A_a4-8.params'
-saefile1  = wkdir1 + '../sae_6-31gd.dat'
+saefile1  = wkdir1 + 'sae_6-31gd.dat'
 nnfdir1   = wkdir1 + 'networks/'
 
-E_max = 200.0 # an energy cuttoff for error considerations in kcal/mol
+E_max = 3000.0 # an energy cuttoff for error considerations in kcal/mol
 
 # Construct pyNeuroChem classes
-nc = pync.pyNeuroChem(cnstfile1, saefile1, nnfdir1, 1)
+nc = pync.pyNeuroChem(cnstfile1, saefile1, nnfdir1, 0)
 
 Ecmp = []
 Eact = []
@@ -120,6 +120,7 @@ cnt = 0
 
 mNa = 100
 
+_timeloop = tm.time()
 for i in files:
     cnt += 1
 #for i in range(rng[0],rng[1]):
@@ -200,6 +201,9 @@ for i in files:
 
             Ecmp += Ecmp_t
             Eact += Eact_t
+
+_timeloop2 = (tm.time() - _timeloop)
+print('Computation complete. Time: ' + "{:.4f}".format(_timeloop2)  + 'ms')
 
 #plt_by_index(np.array(Eerr),-1)
 

@@ -130,7 +130,7 @@ def readncdat (file,type = np.float,N = 0):
         for i in fd.readlines():
             cnt += 1
             sd = i.strip().split(",")
-            print(sd)
+            #print(sd)
             xyz.append(list(map(float, sd[0:3*Na])))
             Eact.append(float(sd[3*Na]))
             if cnt >= N and N > 0:
