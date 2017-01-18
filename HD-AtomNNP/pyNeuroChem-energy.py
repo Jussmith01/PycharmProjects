@@ -56,8 +56,8 @@ print('[ANI Force time: ', time.time() - start_time, 'seconds]')
 print('\nE:')
 print(E)
 
-print('\nF:')
-print(F)
+#print('\nF:')
+#print(F)
 
 '''
 AE = nc.aenergies()
