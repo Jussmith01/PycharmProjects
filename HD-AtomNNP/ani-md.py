@@ -45,7 +45,7 @@ L = 16.7
 bz.set_cell(([[L,0,0],[0,L,0],[0,0,L]]))
 bz.set_pbc((True, True, True))
 
-bz.set_calculator(NeuroChem2ASE(nc))
+bz.set_calculator(ANI(nc))
 
 #start_time = time.time()
 #dyn = LBFGS(bz)

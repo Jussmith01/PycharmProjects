@@ -21,16 +21,16 @@ xyz,typ,Na = gt.readxyz(dtdir + 'water.xyz')
 print (xyz)
 
 # Construct pyNeuroChem class
-nc = pync.pyNeuroChem(cnstfile, saefile, nnfdir, 0)
+mol = pync.molecule(cnstfile, saefile, nnfdir, 0)
+con = pync.conformers(cnstfile, saefile, nnfdir, 0)
 
 # Set the conformers in NeuroChem
-nc.setConformers(confs=xyz,types=typ)
-
-#nc.setMolecule(coords=xyz,types=typ)
+mol.setMolecule(coords=xyz[0],types=typ)
+con.setConformers(confs=xyz,types=typ)
 
 # Print some data from the NeuroChem
-print( 'Number of Atoms Loaded: ' + str(nc.getNumAtoms()) )
-print( 'Number of Confs Loaded: ' + str(nc.getNumConfs()) )
+print( 'Number of Atoms Loaded: ' + str(mol.getNumAtoms()) )
+print( 'Number of Confs Loaded: ' + str(mol.getNumConfs()) )
 
 #print ('Optimizing...')
 #O = nc.optimize(conv=0.000001,max_iter=250)
@@ -44,20 +44,41 @@ print( 'Number of Confs Loaded: ' + str(nc.getNumConfs()) )
 # Compute Energies of Conformations
 print('Calculating energies and forces...')
 
-start_time = time.time()
-E = nc.energy()
-print('[ANI Energy time:', time.time() - start_time, 'seconds]')
+E1 = mol.energy()
+F1 = mol.force()
 
 start_time = time.time()
-F = nc.force()
-print('[ANI Force time: ', time.time() - start_time, 'seconds]')
+E1 = mol.energy()
+molE_t = time.time() - start_time
+print('[ANI-MOL Energy time:', molE_t, 'seconds]')
 
+start_time = time.time()
+F1 = mol.force()
+molF_t = time.time() - start_time
+print('[ANI-MOL Force time: ', molF_t, 'seconds]')
 
-print('\nE:')
-print(E)
+start_time = time.time()
+E2 = con.energy()
+conE_t = time.time() - start_time
+print('[ANI-CON Energy time:', conE_t, 'seconds]')
 
-#print('\nF:')
-#print(F)
+start_time = time.time()
+F2 = con.force()
+conF_t = time.time() - start_time
+print('[ANI-CON Force time: ', conF_t, 'seconds]')
+
+print('\nDELTA E |MOL-CON|:')
+print('Error: ', abs(E1-E2).sum())
+print('dtime: ', (conE_t - molE_t)*1000.0,'ms')
+
+print('\nDELTA F sum(|MOL-CON|):')
+print('Error: ', (abs(F1-F2)/float(F1.size)).sum())
+print('Max Delta: ', (F1-F2).max())
+print('dtime: ', (conF_t - molF_t)*1000.0,'ms')
+
+print('\nCON E+F time: ', (conF_t+conE_t)*1000.0,'ms')
+print('MOL E+F time: ', (molE_t+molF_t)*1000.0,'ms')
+print('E+F dtime: ', ((conF_t+conE_t) - (molE_t+molF_t))*1000.0,'ms')
 
 '''
 AE = nc.aenergies()
