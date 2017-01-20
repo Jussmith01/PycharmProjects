@@ -85,14 +85,14 @@ def printenergy(a=bz,b=mdcrd,d=dyn,t=temp,loop_tm=start_loop_time):  # store a r
     for i in a:
         b.write(str(i.symbol) + ' ' + str(i.x) + ' ' + str(i.y) + ' ' + str(i.z) + '\n')
 
-dyn.attach(printenergy, interval=5)
+dyn.attach(printenergy, interval=1)
 #dyn.attach(MDLogger(dyn, bz, 'bz_md_NVT_10ps_1fs.log', header=True, stress=False,
 #           peratom=False, mode="w"), interval=50)
 
 printenergy()
 
 start_time = time.time()
-dyn.run(1000000) # Do 60ps of MD
+dyn.run(1024*16) # Do 60ps of MD
 print('[ANI Total time:', time.time() - start_time, 'seconds]')
 
 mdcrd.close()
