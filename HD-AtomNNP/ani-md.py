@@ -22,35 +22,35 @@ from ase.md import MDLogger
 from ase.io import read, write
 from ase.optimize import BFGS, LBFGS
 
-import matplotlib
-import matplotlib as mpl
+#import matplotlib
+#import matplotlib as mpl
 
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
-import seaborn as sns
+#import seaborn as sns
 #%matplotlib inline
 
 # Set required files for pyNeuroChem
-anipath  = '/home/jujuman/Research/wB97X-631gd-train-highgarden/train_08-a3.1A_r4.6_AEV384_1'
+anipath  = '/home/jujuman/Dropbox/ChemSciencePaper.AER/ANI-c08e-ntwk'
 cnstfile = anipath + '/rHCNO-4.6A_16-3.1A_a4-8.params'
-saefile  = anipath + '/../sae_6-31gd.dat'
+saefile  = anipath + '/sae_6-31gd.dat'
 nnfdir   = anipath + '/networks/'
 
 # Construct pyNeuroChem class
-nc = pync.pyNeuroChem(cnstfile, saefile, nnfdir, 0)
+nc = pync.molecule(cnstfile, saefile, nnfdir, 0)
 
-bz = read('/home/jujuman/Downloads/water_1184.6098.pdb')
+bz = read('/home/jujuman/Dropbox/ChemSciencePaper.AER/Poster-GTC-May-2017/Timings/benzene.xyz')
 
-L = 16.7
-bz.set_cell(([[L,0,0],[0,L,0],[0,0,L]]))
-bz.set_pbc((True, True, True))
+#L = 16.7
+#bz.set_cell(([[L,0,0],[0,L,0],[0,0,L]]))
+#bz.set_pbc((True, True, True))
 
-bz.set_calculator(ANI(nc))
+bz.set_calculator(NeuroChem2ASE(nc))
 
-#start_time = time.time()
-#dyn = LBFGS(bz)
-#dyn.run(fmax=0.001)
-#print('[ANI Total time:', time.time() - start_time, 'seconds]')
+start_time = time.time()
+dyn = LBFGS(bz)
+dyn.run(fmax=0.001)
+print('[ANI Total time:', time.time() - start_time, 'seconds]')
 
 # Write visualization of molecule
 f = open("optmol.xyz",'w')
@@ -85,14 +85,14 @@ def printenergy(a=bz,b=mdcrd,d=dyn,t=temp,loop_tm=start_loop_time):  # store a r
     for i in a:
         b.write(str(i.symbol) + ' ' + str(i.x) + ' ' + str(i.y) + ' ' + str(i.z) + '\n')
 
-dyn.attach(printenergy, interval=1)
+dyn.attach(printenergy, interval=5)
 #dyn.attach(MDLogger(dyn, bz, 'bz_md_NVT_10ps_1fs.log', header=True, stress=False,
 #           peratom=False, mode="w"), interval=50)
 
 printenergy()
 
 start_time = time.time()
-dyn.run(200000) # Do 60ps of MD
+dyn.run(1000000) # Do 60ps of MD
 print('[ANI Total time:', time.time() - start_time, 'seconds]')
 
 mdcrd.close()
