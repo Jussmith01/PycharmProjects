@@ -39,7 +39,7 @@ nnfdir   = anipath + '/networks/'
 # Construct pyNeuroChem class
 nc = pync.molecule(cnstfile, saefile, nnfdir, 0)
 
-bz = read('/home/jujuman/Dropbox/ChemSciencePaper.AER/Poster-GTC-May-2017/Timings/benzene.xyz')
+bz = read('/home/jujuman/Downloads/benzene.xyz')
 
 #L = 16.7
 #bz.set_cell(([[L,0,0],[0,L,0],[0,0,L]]))
