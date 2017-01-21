@@ -16,7 +16,7 @@ nnfdir   = wkdir + 'networks/'
 
 dtdir = '/home/jujuman/Dropbox/ChemSciencePaper.AER/Poster-GTC-May-2017/Timings/'
 #xyz,typ,Eact,tmp    = gt.readncdat(dtdir + 'gdb11_s01-1_test.dat',np.float32)
-xyz,typ,Na = gt.readxyz(dtdir + 'water.xyz')
+xyz,typ,Na = gt.readxyz(dtdir + 'benzene.xyz')
 
 print (xyz)
 
@@ -76,6 +76,8 @@ print('Error: ', (abs(F1-F2)/float(F1.size)).sum())
 print('Max Delta: ', (F1-F2).max())
 print('dtime: ', (conF_t - molF_t)*1000.0,'ms')
 
+print('\nCON E+F time: ', (conF_t+conE_t))
+print('MOL E+F time: ', (molE_t+molF_t))
 print('\nCON E+F time: ', (conF_t+conE_t)*1000.0,'ms')
 print('MOL E+F time: ', (molE_t+molF_t)*1000.0,'ms')
 print('E+F dtime: ', ((conF_t+conE_t) - (molE_t+molF_t))*1000.0,'ms')

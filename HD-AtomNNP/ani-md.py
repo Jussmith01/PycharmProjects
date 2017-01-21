@@ -39,7 +39,7 @@ nnfdir   = anipath + '/networks/'
 # Construct pyNeuroChem class
 nc = pync.molecule(cnstfile, saefile, nnfdir, 0)
 
-bz = read('/home/jujuman/Dropbox/ChemSciencePaper.AER/Poster-GTC-May-2017/Timings/benzene.xyz')
+bz = read('/home/jujuman/Dropbox/ChemSciencePaper.AER/Poster-GTC-May-2017/Timings/min1.xyz')
 
 #L = 16.7
 #bz.set_cell(([[L,0,0],[0,L,0],[0,0,L]]))
@@ -85,14 +85,15 @@ def printenergy(a=bz,b=mdcrd,d=dyn,t=temp,loop_tm=start_loop_time):  # store a r
     for i in a:
         b.write(str(i.symbol) + ' ' + str(i.x) + ' ' + str(i.y) + ' ' + str(i.z) + '\n')
 
-dyn.attach(printenergy, interval=1)
+dyn.attach(printenergy, interval=5)
 #dyn.attach(MDLogger(dyn, bz, 'bz_md_NVT_10ps_1fs.log', header=True, stress=False,
 #           peratom=False, mode="w"), interval=50)
 
 printenergy()
+print("test")
 
 start_time = time.time()
-dyn.run(1024*16) # Do 60ps of MD
+dyn.run(4*1000*1000) # Do 1ns of MD
 print('[ANI Total time:', time.time() - start_time, 'seconds]')
 
 mdcrd.close()
