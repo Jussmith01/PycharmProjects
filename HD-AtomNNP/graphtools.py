@@ -136,14 +136,14 @@ def readncdat (file,type = np.float,N = 0):
             if cnt >= N and N > 0:
                 break
     else :
-        print ('CANNOT FIND FILE!')
-        exit()
+        raise (FileNotFoundError("File not found"))
 
     xyz = np.asarray(xyz,dtype=type)
     xyz = xyz.reshape((xyz.shape[0],len(typ),3))
 
     Eact = np.asarray(Eact,dtype=type)
-    return xyz,typ,Eact,readf
+    typ = np.asarray(typ)
+    return xyz,typ,Eact
 
 def readg09trajdat (file,type):
     xyz = []
@@ -243,8 +243,29 @@ def generatedmat(crds,Na):
         for j in range(i+1, Na):
             dmat.append(((crds[i*3] - crds[j*3])**2+(crds[i*3+1] - crds[j*3+1])**2+(crds[i*3+2] - crds[j*3+2])**2)**0.5)
 
+    return np.array(dmat)
+
+def generatedmat(crds,Na):
+    dmat = []
+
+    for i in range(0,Na):
+        for j in range(i+1, Na):
+            dmat.append(((crds[i*3] - crds[j*3])**2+(crds[i*3+1] - crds[j*3+1])**2+(crds[i*3+2] - crds[j*3+2])**2)**0.5)
+
     return dmat
 
+def generatedmats(crds,Na):
+    print(crds.shape[0])
+    dmat = np.zeros([crds.shape[0],int((Na*(Na+1))/2)],np.float)
+
+    for a in dmat:
+        count = 0
+        for i in range(0,Na):
+            for j in range(i+1, Na):
+                a[count] = ((crds[i*3] - crds[j*3])**2+(crds[i*3+1] - crds[j*3+1])**2+(crds[i*3+2] - crds[j*3+2])**2)**0.5
+                count += 1
+
+    return dmat
 
 # ----------------------------
 # Calculate Mean Squared Diff
