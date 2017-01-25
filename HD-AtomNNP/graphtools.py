@@ -136,7 +136,7 @@ def readncdat (file,type = np.float,N = 0):
             if cnt >= N and N > 0:
                 break
     else :
-        raise (FileNotFoundError("File not found"))
+        raise (FileNotFoundError("File not found: " + file))
 
     xyz = np.asarray(xyz,dtype=type)
     xyz = xyz.reshape((xyz.shape[0],len(typ),3))
