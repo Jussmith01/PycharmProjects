@@ -2,7 +2,7 @@ __author__ = 'jujuman'
 
 # Import pyNeuroChem
 import pyNeuroChem as pync
-import graphtools as gt
+import hdnntools as gt
 import numpy as np
 import matplotlib.pyplot as plt
 import time as tm
@@ -15,9 +15,9 @@ def sortbyother(Y, X):
     return np.array(Y)
 
 def produce_scan(ax,title,xlabel,cnstfile,saefile,nnfdir,dtdir,dt1,dt2,dt3,smin,smax,iscale,ishift):
-    xyz, typ, Eact, chk = gt.readncdat(dtdir + dt1,np.float32)
-    xyz2, typ2, Eact2, chk = gt.readncdat(dtdir + dt2)
-    xyz3, typ3, Eact3, chk = gt.readncdat(dtdir + dt3)
+    xyz, typ, Eact = gt.readncdat(dtdir + dt1,np.float32)
+    xyz2, typ2, Eact2 = gt.readncdat(dtdir + dt2)
+    xyz3, typ3, Eact3 = gt.readncdat(dtdir + dt3)
 
     #gt.writexyzfile("/home/jujuman/Dropbox/ChemSciencePaper.AER/TestCases/Dihedrals/4-Cyclohexyl-1-butanol/optimization/dihedral_"+dt1+".xyz",xyz,typ)
 
@@ -26,10 +26,10 @@ def produce_scan(ax,title,xlabel,cnstfile,saefile,nnfdir,dtdir,dt1,dt2,dt3,smin,
     #Eact3 = np.array(Eact3)
 
     # Construct pyNeuroChem classes
-    nc1 = pync.pyNeuroChem(cnstfile, saefile, nnfdir, 0)
+    nc1 = pync.conformers(cnstfile, saefile, nnfdir, 0)
 
     # Set the conformers in NeuroChem
-    nc1.setConformers(confs=xyz, types=typ)
+    nc1.setConformers(confs=xyz, types=list(typ))
 
     # Print some data from the NeuroChem
     print('1) Number of Atoms Loaded: ' + str(nc1.getNumAtoms()))
@@ -39,6 +39,7 @@ def produce_scan(ax,title,xlabel,cnstfile,saefile,nnfdir,dtdir,dt1,dt2,dt3,smin,
     print('Computing energies 1...')
     _t1b = tm.time()
     Ecmp1 = nc1.energy()
+    print(Ecmp1)
     print('Computation complete 1. Time: ' + "{:.4f}".format((tm.time() - _t1b) * 1000.0) + 'ms')
 
     n = smin

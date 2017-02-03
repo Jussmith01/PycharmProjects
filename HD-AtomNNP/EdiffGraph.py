@@ -4,8 +4,9 @@ import numpy as np
 import statsmodels.api as sm
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
-import os
 import matplotlib as mpl
+import os
+
 import random
 import graphtools as gt
 

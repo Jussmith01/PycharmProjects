@@ -2,7 +2,7 @@ __author__ = 'jujuman'
 
 # Import pyNeuroChem
 import pyNeuroChem as pync
-import graphtools as gt
+import hdnntools as gt
 import numpy as np
 import matplotlib.pyplot as plt
 import time as tm
@@ -14,18 +14,16 @@ def sortbyother(Y, X):
     X, Y = zip(*xy)
     return np.array(Y)
 
-# Set required files for pyNeuroChem
-wkdir1    = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/smallAEV_testing/train_384-256-128-64-1_c08e/'
-
-#Network 1 Files
-cnstfile1 = wkdir1 + 'rHCNO-4.6A_16-3.1A_a4-8.params'
-saefile1  = wkdir1 + 'sae_6-31gd.dat'
-nnfdir1   = wkdir1 + 'networks/'
+wkdir    = '/home/jujuman/Research/wB97X-631gd-train-highgarden/train_08-a3.1A_r4.6_AEV384_1/'
+cnstfile1 = wkdir + 'rHCNO-4.6A_16-3.1A_a4-8.params'
+saefile1  = wkdir + '../sae_6-31gd.dat'
+nnfdir1   = wkdir + 'networks/'
 
 dtdir = '/home/jujuman/Dropbox/ChemSciencePaper.AER/TestCases/C10H20Isomers/'
 
 #xyz,typ,Eact = gt.readncdat('../data_irc.dat')
-xyz,typ,Eact,tmp    = gt.readncdat(dtdir + 'isomer_structures_DFT.dat')
+xyz,typ,Eact    = gt.readncdat(dtdir + 'isomer_structures_DFT.dat',type=np.float32)
+#xyz,typ,Eact    = gt.readncdat('/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_01/testdata/gdb11_s01-2_test.dat',type=np.float32)
 #xyz2,typ2,Eact2,tmp = gt.readncdat(dtdir + 'isomer_structures_DFTB.dat')
 #xyz3,typ3,Eact3,tmp = gt.readncdat(dtdir + 'isomer_structures_PM6.dat')
 
@@ -33,18 +31,25 @@ xyz,typ,Eact,tmp    = gt.readncdat(dtdir + 'isomer_structures_DFT.dat')
 #xyz2 = [xyz2[0],xyz2[1]]
 #xyz3 = [xyz3[0],xyz3[1]]
 
-xyz = np.asarray(xyz,dtype=np.float32)
-xyz = xyz.reshape((xyz.shape[0],len(typ),3))
+#xyz = np.asarray(xyz,dtype=np.float32)
+#xyz = xyz.reshape((xyz.shape[0],len(typ),3))
+
+
 
 Eact = np.array(Eact)
 #Eact2 = np.array(Eact2)
 #Eact3 = np.array(Eact3)
 
 # Construct pyNeuroChem classes
-nc1 = pync.pyNeuroChem(cnstfile1,saefile1,nnfdir1,0)
+nc1 = pync.conformers(cnstfile1,saefile1,nnfdir1,0)
+
+#arr = np.array([[  1.02809180e-19,  -1.31341652e-03,   1.20899871e-01],
+#                [  2.58643578e-18,   8.36382151e-01,  -5.00915885e-01],
+#                [ -4.21809173e-18,  -8.15537333e-01,  -4.84655559e-01]], dtype=np.float32)
 
 # Set the conformers in NeuroChem
-nc1.setConformers(confs=xyz,types=typ)
+nc1.setConformers(confs=xyz,types=list(typ))
+print(xyz[0])
 
 # Print some data from the NeuroChem
 print( '1) Number of Atoms Loaded: ' + str(nc1.getNumAtoms()) )
@@ -56,8 +61,6 @@ _t1b = tm.time()
 Ecmp1 = nc1.energy()
 print('Computation complete 1. Time: ' + "{:.4f}".format((tm.time() - _t1b) * 1000.0)  + 'ms')
 
-
-print(Ecmp1)
 
 '''
 # Construct pyNeuroChem classes

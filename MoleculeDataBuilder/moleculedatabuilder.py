@@ -21,7 +21,7 @@ def formatsmilesfile(file):
 #-------- Parameters -----------
 
 R = 0.3
-fpf = 'gdb11_s09' #Filename prefix
+fpf = 'gdb11_s01' #Filename prefix
 wdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_09/' #working directory
 smfile = '/home/jujuman/Research/RawGDB11Database/gdb11_size11.smi' # Smiles file
 At = ['C', 'O', 'N'] # Hydrogens added after check

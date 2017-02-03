@@ -12,16 +12,16 @@ from ase.optimize import BFGS, LBFGS
 from ase.vibrations import Vibrations
 
 # Set required files for pyNeuroChem
-anipath  = '/home/jujuman/Research/wB97X-631gd-train-highgarden/train_08-a3.1A_r4.6_AEV384_1'
+anipath  = '/home/jujuman/Dropbox/ChemSciencePaper.AER/ANI-c08e-ntwk'
 cnstfile = anipath + '/rHCNO-4.6A_16-3.1A_a4-8.params'
-saefile  = anipath + '/../sae_6-31gd.dat'
+saefile  = anipath + '/sae_6-31gd.dat'
 nnfdir   = anipath + '/networks/'
 
 # Construct pyNeuroChem class
-nc = pync.pyNeuroChem(cnstfile, saefile, nnfdir, 0)
+nc = pync.molecule(cnstfile, saefile, nnfdir, 0)
 
 #Read geometry from xyz file
-geometry = read('/home/jujuman/Gits/ASE_ANI/examples/data/bz.xyz')
+geometry = read('/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_begdb/begdb-h2oclusters/xyz/4197_water6CB2.xyz')
 
 # Setup ANI and calculate single point energy
 geometry.set_calculator(NeuroChem2ASE(nc))
@@ -32,11 +32,23 @@ print('Total energy', e, 'eV')
 print('Forces:')
 print(geometry.get_forces())
 
+f = open("pre-normoptmol.xyz",'w')
+f.write('\n' + str(len(geometry)) + '\n')
+for i in geometry:
+    f.write(str(i.symbol) + ' ' + str(i.x) + ' ' + str(i.y) + ' ' + str(i.z) + '\n')
+f.close()
+
 # Geometry optimization with BFGS
 start_time = time.time()
 dyn = LBFGS(geometry)
-dyn.run(fmax=0.0001)
+dyn.run(fmax=0.00001)
 print('[ANI Total time:', time.time() - start_time, 'seconds]')
+
+f = open("post-normoptmol.xyz",'w')
+f.write('\n' + str(len(geometry)) + '\n')
+for i in geometry:
+    f.write(str(i.symbol) + ' ' + str(i.x) + ' ' + str(i.y) + ' ' + str(i.z) + '\n')
+f.close()
 
 # Calc minimized energies
 e = geometry.get_potential_energy()

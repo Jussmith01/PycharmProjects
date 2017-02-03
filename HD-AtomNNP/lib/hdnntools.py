@@ -4,6 +4,8 @@ import numpy as np
 #import statsmodels.api as sm
 import re
 import os.path
+import time as tm
+import pandas as pd
 
 hatokcal = 627.509469
 
@@ -105,45 +107,49 @@ def readncdatwforce (file,N = 0):
 
     return xyz,frc,typ,Eact,readf
 
-def readncdat (file,type = np.float,N = 0):
-    xyz = []
-    typ = []
-    Eact = []
-
-    readf = False
+def readncdat (file,type = np.float):
 
     if os.path.isfile(file):
-        readf = True
 
         fd = open(file, 'r')
 
         fd.readline()
-        fd.readline()
+        Nconf = int(fd.readline())
 
         types=fd.readline().split(",")
-
         Na = int(types[0])
-        typ = types[1:Na+1]
+        spc = np.asarray(types[1:Na+1])
 
-        cnt = 0
+        if Nconf > 0:
+            data = np.asarray(pd.read_csv(fd, dtype=type,header=None),dtype=type)
+        else:
+            data = np.empty((0,Na*3+1))
 
-        for i in fd.readlines():
-            cnt += 1
-            sd = i.strip().split(",")
-            #print(sd)
-            xyz.append(list(map(float, sd[0:3*Na])))
-            Eact.append(float(sd[3*Na]))
-            if cnt >= N and N > 0:
-                break
+        # Pandas sucks!! Have to copy memory else weird stuff happens
+        xyz    = data[:Nconf,0:3*Na].reshape(Nconf,Na,3).copy()
+        energy = data[:Nconf,3*Na].flatten()
+
+        return xyz,spc,energy
     else :
-        print ('CANNOT FIND FILE!')
-        exit()
+        raise (FileNotFoundError("File not found: " + file))
 
-    xyz = np.asarray(xyz,dtype=type)
-    xyz = xyz.reshape((xyz.shape[0],len(typ),3))
+def writencdat (file,xyz,spec,energy,comment=''):
+    f = open(file,'w')
+    f.write(comment+'\n')
+    f.write(str(xyz.shape[0])+'\n')
+    f.write(str(len(spec)) + ',')
+    for i in spec:
+        f.write(i + ',')
+    f.write('\n')
 
-    Eact = np.asarray(Eact,dtype=type)
-    return xyz,typ,Eact,readf
+    for m,e in zip(xyz,energy):
+        for a in m:
+            for c in a:
+                f.write("{:.7f}".format(c) + ',')
+        f.write("{:.7f}".format(e) + ',\n')
+    f.close()
+
+
 
 def readg09trajdat (file,type):
     xyz = []
@@ -243,8 +249,29 @@ def generatedmat(crds,Na):
         for j in range(i+1, Na):
             dmat.append(((crds[i*3] - crds[j*3])**2+(crds[i*3+1] - crds[j*3+1])**2+(crds[i*3+2] - crds[j*3+2])**2)**0.5)
 
+    return np.array(dmat)
+
+def generatedmat(crds,Na):
+    dmat = []
+
+    for i in range(0,Na):
+        for j in range(i+1, Na):
+            dmat.append(((crds[i*3] - crds[j*3])**2+(crds[i*3+1] - crds[j*3+1])**2+(crds[i*3+2] - crds[j*3+2])**2)**0.5)
+
     return dmat
 
+def generatedmats(crds,Na):
+    print(crds.shape[0])
+    dmat = np.zeros([crds.shape[0],int((Na*(Na+1))/2)],np.float)
+
+    for a in dmat:
+        count = 0
+        for i in range(0,Na):
+            for j in range(i+1, Na):
+                a[count] = ((crds[i*3] - crds[j*3])**2+(crds[i*3+1] - crds[j*3+1])**2+(crds[i*3+2] - crds[j*3+2])**2)**0.5
+                count += 1
+
+    return dmat
 
 # ----------------------------
 # Calculate Mean Squared Diff
