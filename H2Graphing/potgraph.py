@@ -11,7 +11,7 @@ cmap = mpl.cm.brg
 # ------------
 user = os.environ['USER']
 
-dir = '/home/jujuman/Python/PycharmProjects/'
+dir = '/home/jujuman/Python/PycharmProjects/HD-AtomNNP/'
 file = 'temp.dat'
 
 data1 = gt.getfltsfromfile(dir + file, ' ', [0])
