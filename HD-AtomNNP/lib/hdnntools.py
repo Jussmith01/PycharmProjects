@@ -121,11 +121,20 @@ def readncdat (file,type = np.float):
         spc = np.asarray(types[1:Na+1])
 
         if Nconf > 0:
-            data = np.asarray(pd.read_csv(fd, dtype=type,header=None),dtype=type)
+            #data = np.asarray(pd.read_csv(fd, dtype=type,header=None),dtype=type)
+            data = np.loadtxt(fd, delimiter=',',usecols=range(Na*3+1),dtype=type)
         else:
             data = np.empty((0,Na*3+1))
 
         # Pandas sucks!! Have to copy memory else weird stuff happens
+        #print(data.shape)
+        #print('NS: ', Nconf,' ',Na,' ',3)
+
+        if Nconf != data.shape[0]:
+            print('Error: shapes dont match for file: ',file)
+            print(Nconf, '!=', data.shape[0])
+            exit(1)
+
         xyz    = data[:Nconf,0:3*Na].reshape(Nconf,Na,3).copy()
         energy = data[:Nconf,3*Na].flatten()
 

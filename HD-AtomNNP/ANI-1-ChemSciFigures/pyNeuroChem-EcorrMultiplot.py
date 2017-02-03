@@ -46,16 +46,16 @@ def pyNCcomputeTestSet(cnstfile1,saefile1,nnfdir1,dtdir,dtdftpref,dtpm6dir,dtpm6
         rv = bool(np.random.binomial(1,P))
         if (os.path.isfile(dtdir + dtdftpref + str(i) + '_test.dat') and rv):
 
-            xyz,typ,Eact_t,chk    = gt.readncdat(dtdir + dtdftpref + str(i) + '_test.dat')
-            xyz1,typ1,Eotr_t,chk  = gt.readncdat(dtpm6dir + dtpm6pref + str(i) + '_test.dat')
+            xyz,typ,Eact_t    = gt.readncdat(dtdir + dtdftpref + str(i) + '_test.dat', np.float32)
+            xyz1,typ1,Eotr_t  = gt.readncdat(dtpm6dir + dtpm6pref + str(i) + '_test.dat', np.float32)
 
             if len(Eact_t) == len(Eotr_t):
 
                 #print ('|----- File ' + str(i) + ' -----|')
                 #print ('Name: ' + dtdir + dtdftpref + str(i) + '_test.dat')
 
-                Eact += shiftlsttomin( Eact_t )
-                Eotr += shiftlsttomin( Eotr_t )
+                Eact.append(shiftlsttomin( Eact_t ))
+                Eotr.append(shiftlsttomin( Eotr_t ))
 
                 #Eact +=  Eact_t
                 #Eotr +=  Eotr_t
@@ -64,24 +64,28 @@ def pyNCcomputeTestSet(cnstfile1,saefile1,nnfdir1,dtdir,dtdftpref,dtpm6dir,dtpm6
                 Ndat += len( Eact_t )
 
                 # Set the conformers in NeuroChem
-                nc.setConformers(confs=xyz,types=typ)
+                nc.setConformers(confs=xyz,types=list(typ))
 
                 # Compute Forces of Conformations
                 print(' ' + str(Nmol) + ') Computing ' + str(len( Eact_t )) + ' energies...')
                 _t1b = tm.time()
-                Ecmp_t = nc.computeEnergies()
+                Ecmp_t = nc.energy()
                 _t2b = (tm.time() - _t1b) * 1000.0
                 t += _t2b
                 #print('Computation complete. Time: ' + "{:.4f}".format(_t2b)  + 'ms')
-                Ecmp += shiftlsttomin(  Ecmp_t )
+                Ecmp.append( shiftlsttomin(  Ecmp_t ) )
                 #Ecmp +=  Ecmp_t99
             else:
                 print (str(len(Eact_t)) + '!=' + str(len(Eotr_t)) + ' File: ' + dtdir + dtdftpref + str(i) + '_test.dat')
         else:
             print('File not found: ' + dtdir + dtdftpref + str(i) + '_test.dat')
-    Eact = np.array(Eact,dtype=float)
-    Eotr = np.array(Eotr,dtype=float)
-    Ecmp = np.array(Ecmp,dtype=float)
+    #Eact = np.array(Eact,dtype=float)
+    #Eotr = np.array(Eotr,dtype=float)
+    #Ecmp = np.array(Ecmp,dtype=float)
+
+    Eact = np.concatenate(Eact)
+    Eotr = np.concatenate(Eotr)
+    Ecmp = np.concatenate(Ecmp)
 
     return Eact,Ecmp,Eotr,Ndat,Nmol,t
 
