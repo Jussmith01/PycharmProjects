@@ -74,8 +74,8 @@ def corrEplot(ax,d1,d2,shr1,shr2):
 
 
 # Set data fields
-#dtdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/testdata/'
-dtdir = '/home/jujuman/Scratch/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_08/moltest/'
+dtdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/testdata/'
+#dtdir = '/home/jujuman/Scratch/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_08/moltest/'
 #dtdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_10/testdata/'
 #fpref = 'gdb11_10-'
 #fpost = '_test.dat'
@@ -96,7 +96,7 @@ nnfdir1   = wkdir1 + 'networks/'
 E_max = 3000.0 # an energy cuttoff for error considerations in kcal/mol
 
 # Construct pyNeuroChem classes
-nc = pync.pyNeuroChem(cnstfile1, saefile1, nnfdir1, 0)
+nc = pync.conformers(cnstfile1, saefile1, nnfdir1, 0)
 
 Ecmp = []
 Eact = []
@@ -125,12 +125,12 @@ for i in files:
     cnt += 1
 #for i in range(rng[0],rng[1]):
     #xyz,typ,Eact_t,readf    = gt.readncdat(dtdir + fpref + str(i) + fpost)
-    xyz,typ,Eact_W,readf    = gt.readncdat(dtdir + i)
+    xyz,typ,Eact_W  = gt.readncdat(dtdir + i)
 
-    xyz = np.asarray(xyz,dtype=np.float32)
-    xyz = xyz.reshape((xyz.shape[0],len(typ),3))
+    #xyz = np.asarray(xyz,dtype=np.float32)
+    #xyz = xyz.reshape((xyz.shape[0],len(typ),3))
 
-    if readf and xyz.shape[0] > 0:
+    if xyz.shape[0] > 0:
 
         #print('FILE: ' + dtdir + fpref + str(i) + fpost)
         print('FILE: ' + str(cnt) + ' of ' + str(Nf) + ' ' + i)
@@ -156,6 +156,8 @@ for i in files:
 
             #copy array subset
             Eact_t = Eact_W[i1:i2]
+
+            print (xyz.shape)
 
             # Set the conformers in NeuroChem
             nc.setConformers(confs=xyz[i1:i2],types=typ)

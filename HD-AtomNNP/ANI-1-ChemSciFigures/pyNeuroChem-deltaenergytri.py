@@ -2,7 +2,7 @@ __author__ = 'jujuman'
 
 # Import pyNeuroChem
 import pyNeuroChem as pync
-import graphtools as gt
+import hdnntools as gt
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1 import Grid
@@ -145,22 +145,22 @@ font = {'family': 'Bitstream Vera Sans',
 plt.rc('font', **font)
 
 # Set required files for pyNeuroChem
-wkdir = '/home/jujuman/Research/wB97X-631gd-train-highgarden/train_08-a3.1A_r4.6_AEV384_1/'
+wkdir = '/home/jujuman/Dropbox/ChemSciencePaper.AER/ANI-1-ntwk/'
 
 # Network  Files
-cnstfile = wkdir + 'rHCNO-4.6A_16-3.1A_a4-8.params'
-saefile  = wkdir + '../sae_6-31gd.dat'
+cnstfile = wkdir + 'rHCNO-4.6A_32-3.1A_a8-8.params'
+saefile  = wkdir + 'sae_6-31gd.dat'
 nnfdir   = wkdir + 'networks/'
 
 # Construct pyNeuroChem classes
-nc = pync.pyNeuroChem(cnstfile,saefile,nnfdir,0)
+nc = pync.conformers(cnstfile,saefile,nnfdir,0)
 
 # Read nc DATA
-xyz,typ,Eact,tmp = gt.readncdat('/home/jujuman/Dropbox/ChemSciencePaper.AER/TestCases/Retinol/data/retinolconformer_DFT.dat',np.float32)
-xyz1,typ1,Eact1,tmp = gt.readncdat('/home/jujuman/Dropbox/ChemSciencePaper.AER/TestCases/Retinol/data/retinolconformer_DFTB.dat')
+xyz,typ,Eact = gt.readncdat('/home/jujuman/Dropbox/ChemSciencePaper.AER/TestCases/Retinol/data/retinolconformer_DFT.dat',np.float32)
+xyz1,typ1,Eact1 = gt.readncdat('/home/jujuman/Dropbox/ChemSciencePaper.AER/TestCases/Retinol/data/retinolconformer_DFTB.dat')
 
 # Set the conformers in NeuroChem
-nc.setConformers(confs=xyz,types=typ)
+nc.setConformers(confs=xyz,types=list(typ))
 
 # Print some data from the NeuroChem
 print( 'Number of Atoms Loaded: ' + str(nc.getNumAtoms()) )
@@ -174,7 +174,6 @@ print('Computation complete. Time: ' + "{:.4f}".format((tm.time() - _t1b) * 1000
 
 Ecmp = gt.hatokcal * Ecmp
 Eact = gt.hatokcal * Eact
-
 Eact1 = gt.hatokcal * Eact1
 
 IDX = np.arange(0,Eact.shape[0],1,dtype=float)
@@ -197,11 +196,11 @@ x, y, z, d = gt.calculateelementdiff2D(Eact1)
 #axes.flat[3].set_xlim([Eact.min()-0.5, Ecmp.max()+0.5])
 #axes.flat[3].set_ylim([Eact.min()-0.5, Ecmp.max()+0.5])
 
-print (st.linregress(Eact,Ecmp))
+#print (st.linregress(Eact,Ecmp))
 print (Eact)
-print (Ecmp)
+#print (Ecmp)
 
-print (np.abs(Eact) - np.abs(Ecmp))
+#print (np.abs(Eact) - np.abs(Ecmp))
 
 min1 = z.min()
 max1 = z.max()
@@ -216,6 +215,8 @@ z = np.abs(z - z2)
 
 min2 = z.min()
 max2 = z.max()
+
+print ('Ecmp: ', Ecmp)
 
 im4 = graphEdiffDelta2D(axes.flat[4], 'DFT vs ANI-1\n$|\Delta \Delta E|$', Eact, Ecmp, nc.getNumAtoms(), min2, max2)
 im5 = graphEdiffDelta2D(axes.flat[5], 'DFT vs DFTB\n$|\Delta \Delta E|$', Eact, Eact1, nc.getNumAtoms(), min2, max2)

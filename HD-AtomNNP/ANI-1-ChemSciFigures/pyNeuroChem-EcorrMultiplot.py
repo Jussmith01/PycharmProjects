@@ -2,7 +2,7 @@ __author__ = 'jujuman'
 
 # Import pyNeuroChem
 import pyNeuroChem as pync
-import graphtools as gt
+import hdnntools as gt
 import numpy as np
 import matplotlib.pyplot as plt
 import time as tm
@@ -33,7 +33,7 @@ def sortbyother(Y, X):
 
 def pyNCcomputeTestSet(cnstfile1,saefile1,nnfdir1,dtdir,dtdftpref,dtpm6dir,dtpm6pref,N,P=1.0):
     # Construct pyNeuroChem classes
-    nc = pync.pyNeuroChem(cnstfile1,saefile1,nnfdir1,0)
+    nc = pync.conformers(cnstfile1,saefile1,nnfdir1,0)
 
     Eact = []
     Ecmp = []

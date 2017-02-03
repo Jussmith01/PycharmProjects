@@ -2,7 +2,7 @@ import sys
 
 # Import pyNeuroChem
 sys.path.append('/home/jujuman/Gits/NeuroChem/src-python')
-from ase_interface import NeuroChem2ASE
+from ase_interface import ANI
 import pyNeuroChem as pync
 
 import numpy as np
@@ -44,20 +44,20 @@ nnfdir   = anipath + '/networks/'
 # Construct pyNeuroChem class
 nc = pync.molecule(cnstfile, saefile, nnfdir, 0)
 
-bz = read('/home/jujuman/Dropbox/ChemSciencePaper.AER/Poster-GTC-May-2017/Timings/benzene.xyz')
+bz = read('/home/jujuman/Dropbox/ChemSciencePaper.AER/JustinsDocuments/Poster-GTC-May-2017/Timings/5hkr.pdb')
 #bz = read('/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_begdb/begdb-h2oclusters/xyz/4197_water6CB2.xyz')
 
 #L = 25.0
 #bz.set_cell(([[L,0,0],[0,L,0],[0,0,L]]))
 #bz.set_pbc((True, True, True))
 
-bz.set_calculator(NeuroChem2ASE(nc))
+bz.set_calculator(ANI(nc))
 nc.set_flag('setup')
 
-start_time = time.time()
-dyn = LBFGS(bz)
-dyn.run(fmax=0.0001)
-print('[ANI Total time:', time.time() - start_time, 'seconds]')
+#start_time = time.time()
+#dyn = LBFGS(bz)
+#dyn.run(fmax=0.0001)
+#print('[ANI Total time:', time.time() - start_time, 'seconds]')
 
 # Write visualization of molecule
 f = open("optmol.xyz",'w')
@@ -96,16 +96,17 @@ def printenergy(a=bz,b=mdcrd,d=dyn,t=temp,disCH=distCH,disCC=distCC,stime=start_
     for i in a:
         b.write(str(i.symbol) + ' ' + str(i.x) + ' ' + str(i.y) + ' ' + str(i.z) + '\n')
 
-dyn.attach(printenergy, interval=1000)
+dyn.attach(printenergy, interval=10)
 #dyn.attach(MDLogger(dyn, bz, 'bz_md_NVT_10ps_1fs.log', header=True, stress=False,
 #           peratom=False, mode="w"), interval=50)
 
 #printenergy()
 
 start_time = time.time()
-dyn.run(2**24) # Do 1ns of MD
+dyn.run(2**20) # Do 1ns of MD
 print('[ANI Total time:', time.time() - start_time, 'seconds]')
 
+'''
 C = 2.99792E+8
 t = 0.25E-15
 M = 1.0E+10
@@ -136,3 +137,4 @@ plt.show()
 
 mdcrd.close()
 temp.close()
+'''
