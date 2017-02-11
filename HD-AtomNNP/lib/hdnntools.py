@@ -4,6 +4,7 @@ import numpy as np
 #import statsmodels.api as sm
 import re
 import os.path
+import math
 import time as tm
 import pandas as pd
 
@@ -123,6 +124,9 @@ def readncdat (file,type = np.float):
         if Nconf > 0:
             #data = np.asarray(pd.read_csv(fd, dtype=type,header=None),dtype=type)
             data = np.loadtxt(fd, delimiter=',',usecols=range(Na*3+1),dtype=type)
+
+            if Nconf is 1:
+                data = data.reshape(1,Na*3+1)
         else:
             data = np.empty((0,Na*3+1))
 
@@ -132,13 +136,14 @@ def readncdat (file,type = np.float):
 
         if Nconf != data.shape[0]:
             print('Error: shapes dont match for file: ',file)
-            print(Nconf, '!=', data.shape[0])
+            print('Sizes: ',Nconf, '!=', data.shape[0])
+            print('Data: ', data)
             exit(1)
 
         xyz    = data[:Nconf,0:3*Na].reshape(Nconf,Na,3).copy()
         energy = data[:Nconf,3*Na].flatten()
 
-        return xyz,spc,energy
+        return [xyz,spc,energy]
     else :
         raise (FileNotFoundError("File not found: " + file))
 
@@ -401,3 +406,63 @@ def makedatalinear(datain):
             data[i*3+j] = datain[i, j]
 
     return data
+
+def to_precision(x,p):
+    """
+    returns a string representation of x formatted with a precision of p
+
+    Based on the webkit javascript implementation taken from here:
+    https://code.google.com/p/webkit-mirror/source/browse/JavaScriptCore/kjs/number_object.cpp
+    """
+
+    x = float(x)
+
+    if x == 0.:
+        return "0." + "0"*(p-1)
+
+    out = []
+
+    if x < 0:
+        out.append("-")
+        x = -x
+
+    e = int(math.log10(x))
+    tens = math.pow(10, e - p + 1)
+    n = math.floor(x/tens)
+
+    if n < math.pow(10, p - 1):
+        e = e -1
+        tens = math.pow(10, e - p+1)
+        n = math.floor(x / tens)
+
+    if abs((n + 1.) * tens - x) <= abs(n * tens -x):
+        n = n + 1
+
+    if n >= math.pow(10,p):
+        n = n / 10.
+        e = e + 1
+
+    m = "%.*g" % (p, n)
+
+    if e < -2 or e >= p:
+        out.append(m[0])
+        if p > 1:
+            out.append(".")
+            out.extend(m[1:p])
+        out.append('e')
+        if e > 0:
+            out.append("+")
+        out.append(str(e))
+    elif e == (p -1):
+        out.append(m)
+    elif e >= 0:
+        out.append(m[:e+1])
+        if e+1 < len(m):
+            out.append(".")
+            out.extend(m[e+1:])
+    else:
+        out.append("0.")
+        out.extend(["0"]*-(e+1))
+        out.append(m)
+
+    return "".join(out)

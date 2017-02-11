@@ -44,15 +44,21 @@ def compute_sae(spec):
             exit(1)
     return sae
 
-def generate_angular_data(xyz,spc,Na):
+def generate_angular_data(xyz,spc,Na,fraction=1.0):
+
+    Nm = xyz.shape[0]
+    Ns = int(Nm * fraction)
+
     Nd = int(((Na-1)*((Na-1)-1))/2)
-    data = np.empty([xyz.shape[0]*Na,Nd,3],np.float)
-    spec = np.empty([xyz.shape[0]*Na,Nd,3],np.int)
+    data = np.empty([Ns*Na,Nd,3],np.float)
+    spec = np.empty([Ns*Na,Nd,3],np.int)
 
     #print(data.shape)
+    randindices = np.random.permutation(Nm)[:int(Ns)]
 
-    for idx,m in enumerate(xyz):
-        #print("Data(",idx,",",Na,"): ")
+    for idx,mi in enumerate(range(0,int(Ns))):
+        m = xyz[randindices[mi]]
+        #print("Data(",idx,",",Na,",",mi,"): ")
         for i in range(m.shape[0]):
             #print("    -(",i,")")
             count = 0
@@ -82,7 +88,13 @@ def generate_angular_data(xyz,spc,Na):
 
 #dtdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_begdb/begdb-h2oclusters/h2o_cluster/inputs/data/'
 
-pref = ['01','02','03','04','05','06','07','08']
+pref = ['01',
+        '02',
+        '03',
+        '04',
+        '05',
+        '06',
+        '07',]
 #pref = ['01']
 
 for p in pref:
@@ -96,16 +108,16 @@ for p in pref:
     spec = np.empty((0,3),dtype=np.float)
     enrg = np.empty((0),dtype=np.float)
 
-    for i in files:
-        if 'gdb11' in i:
+    for en,i in enumerate(files):
+        if 'gdb11' in i and '_test.dat' in i:
             # Read NC data
-            print("Reading file: ", i)
+            print("Reading file (", en, " of ", len(files) ,"): ", i)
             xyz,spc,t_enrg = gt.readncdat(dtdir + i)
 
             sae = compute_sae(spc)
             t_enrg = t_enrg - sae
 
-            t_data,t_spec = generate_angular_data(xyz,spc,len(spc))
+            t_data,t_spec = generate_angular_data(xyz,spc,len(spc),0.1)
 
             t_data = t_data.reshape((t_data.shape[0]*t_data.shape[1],3))
             t_spec = t_spec.reshape((t_spec.shape[0]*t_spec.shape[1],3))

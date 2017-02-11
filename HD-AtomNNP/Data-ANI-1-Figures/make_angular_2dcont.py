@@ -42,62 +42,64 @@ def nparray_compare(t,center,atom1,atom2):
     else:
         return False
 
+def make_polar_plot(axes,data,spec,an,color='black',fraction=1.0):
+    n_atoms = spec.shape[0]
+    randindices = np.random.permutation(n_atoms)[:int(n_atoms * fraction)]
+
+    plot_data = []
+    for i in randindices:
+        a = data[i]
+        t = spec[i]
+        # print(a, ' : ', t)
+        if nparray_compare(t, an[0], an[1], an[2]):
+            plot_data.append(a)
+
+    # print ('Plot data: ',pld)
+
+    pld = np.vstack(plot_data)
+
+    # pH - 4.00
+    da = 0.5 * (pld[:, 0] + pld[:, 1])
+    an = pld[:, 2]
+
+    #x = da * np.cos(an)
+    #y = da * np.sin(an)
+
+    #xmin, xmax = -3.5, 3.5
+    #ymin, ymax = -3.5, 3.5
+
+    #xx, yy, f = kde_estimate(x, xmin, xmax, y, ymin, ymax)
+
+    # axes.set_xlim(xmin, xmax)
+    # axes.set_ylim(xmin, xmax)
+
+    # Contourf plot
+    #cfset = axes.contourf(xx, yy, f, 50, cmap='Reds')
+    axes.scatter(an, da, marker='.', color=color, linewidths=1)
+    # set_polar_grid(axes)
+
 print('Loading data...')
-p = '04'
-data = np.load('data/angular/GDB-' + p + '_data.npz')['arr_0']
-spec = np.load('data/angular/GDB-' + p + '_spec.npz')['arr_0']
-
-an1 = 6
-an2 = 6
-an3 = 6
-
-print(spec.shape)
-
-n_atoms = spec.shape[0]
-fraction = 0.05
-randindices = np.random.permutation(n_atoms)[:int(n_atoms*fraction)]
-
-#print('randint: ',randindices)
-
-plot_data = []
-for i in randindices:
-    a = data[i]
-    t = spec[i]
-    #print(a, ' : ', t)
-    if nparray_compare(t,an1,an2,an3):
-        plot_data.append(a)
-
-pld = np.vstack(plot_data)
-
-#print ('Plot data: ',pld)
+P = ['04','05','06','07','08']
+an = [6,6,6]
 
 # Creating subplots and axes dynamically
-axes = plt.subplot(111)
-#fig.set_size_inches(10.0, 5.0, forward=True)
+axes = plt.subplot(111, projection='polar')
 
-# pH - 4.00
-da = 0.5 * (pld[:,0] + pld[:,1])
-#an = 2.0 * pld[:,2]
+for p in P:
+    print('loading ',p,'...')
 
-x = da * np.cos(pld[:,2])
-y = da * np.sin(pld[:,2])
+    data = np.load('data/angular/GDB-' + p + '_data.npz')['arr_0']
+    spec = np.load('data/angular/GDB-' + p + '_spec.npz')['arr_0']
 
-xmin, xmax = -3.5,3.5
-ymin, ymax = -3.5,3.5
+    data2 = np.load('data/minimized/angular/GDB-' + p + '_data.npz')['arr_0']
+    spec2 = np.load('data/minimized/angular/GDB-' + p + '_spec.npz')['arr_0']
 
-xx, yy, f = kde_estimate(x, xmin, xmax, y, ymin, ymax)
+    make_polar_plot(axes,data,spec,an,'blue',1.0)
+    make_polar_plot(axes,data2,spec2,an,'red',1.0)
 
-#axes.set_xlim(xmin, xmax)
-#axes.set_ylim(xmin, xmax)
-
-# Contourf plot
-cfset = axes.contourf(xx, yy, f, 50, cmap='Reds')
-axes.scatter(x,da,marker='.',color='blue',linewidths=1)
-#set_polar_grid(axes)
-
-plt.title(hdt.convertatomicnumber(an2)+"-"+
-          hdt.convertatomicnumber(an1)+"-"+
-          hdt.convertatomicnumber(an3)+
-          " polar plot of angle and average distance",y=1.08)
+plt.title(hdt.convertatomicnumber(an[1])+"-"+
+          hdt.convertatomicnumber(an[0])+"-"+
+          hdt.convertatomicnumber(an[2])+
+          " 2d angle and average distance representation",y=1.00)
 
 plt.show()
