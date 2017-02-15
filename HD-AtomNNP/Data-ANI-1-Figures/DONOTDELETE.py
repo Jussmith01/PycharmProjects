@@ -150,10 +150,11 @@ store.close()
 
 
 # opening file
-store = pd.HDFStore(path, complib='zlib', complevel=9)
+store = pd.HDFStore(path, complib='blosc', complevel=0)
 print(store)
 # HDFStore iterates over the names of its contents:
 
+'''
 for x in store.get_node(""):
     print("Name:", x._v_name)
 
@@ -164,7 +165,7 @@ for x in store.get_node(""):
     print (np.asarray(xyz))
     print (np.asarray(energy).flatten())
     print (np.asarray(species).flatten())
-'''
+
     for i in x._v_children:
         print(i)
 

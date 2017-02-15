@@ -1,10 +1,6 @@
 import sys
 import time
 
-# RDKit
-from rdkit import Chem
-from rdkit.Chem import AllChem
-
 # Numpy
 import numpy as np
 
@@ -24,7 +20,6 @@ from ase import units
 from ase.optimize.fire import FIRE as QuasiNewton
 
 from ase.md.nvtberendsen import NVTBerendsen
-from ase.md.nptberendsen import NPTBerendsen
 from ase.md import MDLogger
 
 #from ase.neb import NEBtools
@@ -49,7 +44,7 @@ nnfdir   = anipath + '/networks/'
 nc = pync.molecule(cnstfile, saefile, nnfdir, 0)
 
 #bz = read('C_100.xyz')
-bz = read('../../decane_heat_test.xyz')
+bz = read('/home/jujuman/Dropbox/ChemSciencePaper.AER/JustinsDocuments/Poster-GTC-May-2017/Timings/2naz_neutralized_manual2.pdb')
 
 #L = 22.
 #bz.set_cell(([[L,0,0],[0,L,0],[0,0,L]]))
@@ -58,9 +53,9 @@ bz = read('../../decane_heat_test.xyz')
 bz.set_calculator(ANI(False))
 bz.calc.setnc(nc)
 
-start_time = time.time()
-dyn = LBFGS(bz)
-dyn.run(fmax=0.0001)
+#start_time = time.time()
+#dyn = LBFGS(bz)
+#dyn.run(fmax=0.001)
 #dyn = BFGS(bz)
 #dyn.run(fmax=0.1)
 #print('[ANI Total time:', time.time() - start_time, 'seconds]')
@@ -116,15 +111,12 @@ dyn.attach(printenergy, interval=50)
 
 printenergy()
 
-for i in range(0,5000,1):
+for i in range(0,300,2):
     print("Heating to",float(i), "K...")
     dyn.set_temperature(float(i) * units.kB)
-    dyn.run(500) # Do 5ps of MD
+    dyn.run(200) # Do 5ps of MD
 
-for i in range(5000,0,-1):
-    print("Cooling to",float(i), "K...")
-    dyn.set_temperature(float(i) * units.kB)
-    dyn.run(500) # Do 5ps of MD
+dyn.run(10000000) # Do 5ps of MD
 
 mdcrd.close()
 temp.close()
