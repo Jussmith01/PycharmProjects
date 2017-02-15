@@ -8,7 +8,7 @@ import time as tm
 
 path = "ethane_CC_disso_data.h5"
 
-dtdirs = ["/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_dissociation/scans_cc_bonds_dft/double/data/",
+dtdirs = ["/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_dissociation/scans_cc_bonds_dft/single/data/",
           #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_01/testdata/",
           #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_02/testdata/",
           #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_03/testdata/",
@@ -19,7 +19,8 @@ dtdirs = ["/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_dissociation/scans_c
           #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_08/testdata/",
          ]
 
-namelist = ["_train.dat","_valid.dat","_test.dat"]
+#namelist = ["_train.dat","_valid.dat","_test.dat"]
+namelist = ["_test.dat"]
 
 if os.path.exists(path):
     os.remove(path)
@@ -110,15 +111,6 @@ for d in dtdirs:
         etuples.extend([(molecule,conform) for conform in range(Nconfs[i])])
     mienergy = pd.MultiIndex.from_tuples(etuples,names=["molecule","conformer"])
     del etuples
-    #pd.MultiIndex.from_product(
-    #[np.arange(xyz.shape[0]), np.arange(xyz.shape[1])],
-    #names=["conform"])
-
-    #print (xyz.shape)
-
-    #clabel = [string + str(num) for num,string in itertools.product(range(xyz.shape[1]),["x", "y", "z"])]
-
-    print(files)
 
     def mkconf(i): return itertools.product(range(Nconfs[i]), range(Natoms[i]))
     def mkmol(k): return itertools.starmap(lambda i, j: (molnum[k], i, j), mkconf(k))

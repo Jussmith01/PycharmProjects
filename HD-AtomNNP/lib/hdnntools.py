@@ -62,14 +62,16 @@ def writexyzfile (fn,xyz,typ):
     f = open(fn, 'w')
     f.write('\n')
     N = len(typ)
-
-    f.write(str(N) + '\n')
-    for i in range(N):
-        x = xyz[i,0]
-        y = xyz[i,1]
-        z = xyz[i,2]
-        f.write(typ[i] + ' ' + "{:.7f}".format(x) + ' ' + "{:.7f}".format(y) + ' ' + "{:.7f}".format(z) + '\n')
-    f.write('\n')
+    print('N ATOMS: ',typ)
+    for m in xyz:
+        f.write(str(N)+'\n')
+        #print(m)
+        for i in range(N):
+            x = m[i,0]
+            y = m[i,1]
+            z = m[i,2]
+            f.write(typ[i] + ' ' + "{:.7f}".format(x) + ' ' + "{:.7f}".format(y) + ' ' + "{:.7f}".format(z) + '\n')
+        f.write('\n')
     f.close()
 
 def readncdatwforce (file,N = 0):

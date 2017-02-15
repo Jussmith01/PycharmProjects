@@ -39,11 +39,11 @@ def find_normal_modes(file_string):
         for n in numbers:
             freqs_constants.append(float(n))
 
-    for i,j in enumerate(freqs_constants):
-        if j < 400.0:
-            force_constants[i] = 0.1
+    #for i,j in enumerate(freqs_constants):
+    #    if j < 800.0:
+    #        force_constants[i] = 0.5
 
-    print(force_constants)
+    #print(force_constants)
 
     # To get the normal modes, we recognize that the rows we want from the output
     # are the only ones that begin with an integer and end with a double
@@ -86,11 +86,12 @@ def find_normal_modes(file_string):
     return normal_mods, freqs_constants
 
 wkdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_dissociation/scans_cc_bonds_dft/double/'
+#wkdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_dissociation/scans_hooh_dft/'
 
 fpf = 'ethene_CC_disso' #Filename prefix
 
 TSS = 10
-LOT='WB97X/6-31g*' # High level of theory
+LOT='UWB97X/6-31g*' # High level of theory
 rdm='uniform' #Random dist
 type='nmrandom'
 Temp='1500.0'
