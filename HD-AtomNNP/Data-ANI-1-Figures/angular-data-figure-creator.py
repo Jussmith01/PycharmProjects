@@ -94,12 +94,13 @@ pref = ['01',
         '04',
         '05',
         '06',
-        '07',]
+        '07',
+        '08',]
 #pref = ['01']
 
 for p in pref:
-    dtdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_' + p + '/testdata/'
-    #dtdir = '/home/jujuman/Python/PycharmProjects/HD-AtomNNP/Data-ANI-1-Figures/data/minimized/GDB-' + p + '/'
+    #dtdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_' + p + '/testdata/'
+    dtdir = '/home/jujuman/Python/PycharmProjects/HD-AtomNNP/Data-ANI-1-Figures/data/minimized/GDB-' + p + '/'
 
     files = listdir(dtdir)
     _timeloop = tm.time()
@@ -109,7 +110,8 @@ for p in pref:
     enrg = np.empty((0),dtype=np.float)
 
     for en,i in enumerate(files):
-        if 'gdb11' in i and '_test.dat' in i:
+        #if 'gdb11' in i and '_test.dat' in i:
+        if 'gdb11' in i:
             # Read NC data
             print("Reading file (", en, " of ", len(files) ,"): ", i)
             xyz,spc,t_enrg = gt.readncdat(dtdir + i)
@@ -117,7 +119,7 @@ for p in pref:
             sae = compute_sae(spc)
             t_enrg = t_enrg - sae
 
-            t_data,t_spec = generate_angular_data(xyz,spc,len(spc),0.1)
+            t_data,t_spec = generate_angular_data(xyz,spc,len(spc),1.0)
 
             t_data = t_data.reshape((t_data.shape[0]*t_data.shape[1],3))
             t_spec = t_spec.reshape((t_spec.shape[0]*t_spec.shape[1],3))

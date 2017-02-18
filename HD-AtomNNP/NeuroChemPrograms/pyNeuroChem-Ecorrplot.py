@@ -115,17 +115,15 @@ rmse2 = gt.calculaterootmeansqrerror(Eact,Ecmp1)
 mx = Eact.max()
 mn = Eact.min()
 
+#<<<<<<< HEAD
 #plt.scatter(IDX, Eact, marker='o' , color='black',  linewidth=3)
 
+#=======
+#print ( "Spearman corr. DFTB: " + "{:.3f}".format(st.spearmanr(Eotr,Eact)[0]) )
+#>>>>>>> 1ec96245cdd1c6d1647ffeed1a6bec3a4b7e4bb4
 print ( "Spearman corr. TGM 08: " + "{:.3f}".format(st.spearmanr(Ecmp1,Eact)[0]) )
-#print ( "Spearman corr. TGM 07: " + "{:.3f}".format(st.spearmanr(Ecmp2,Eact)[0]) )
-#print ( "Spearman corr. TGM 06: " + "{:.3f}".format(st.spearmanr(Ecmp3,Eact)[0]) )
-#print ( "Spearman corr. TGM 05: " + "{:.3f}".format(st.spearmanr(Ecmp4,Eact)[0]) )
 
 slope2, intercept2, r_value2, p_value2, std_err2 = st.linregress(Eact,Ecmp1)
-#slope3, intercept3, r_value3, p_value3, std_err3 = st.linregress(Eact,Ecmp2)
-#slope4, intercept4, r_value4, p_value4, std_err4 = st.linregress(Eact,Ecmp3)
-#slope5, intercept5, r_value5, p_value5, std_err5 = st.linregress(Eact,Ecmp4)
 
 fig = plt.figure()
 

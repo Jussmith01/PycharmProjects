@@ -46,6 +46,7 @@ nc = pync.molecule(cnstfile, saefile, nnfdir, 0)
 #bz = read('C_100.xyz')
 bz = read('/home/jujuman/Dropbox/ChemSciencePaper.AER/JustinsDocuments/Poster-GTC-May-2017/Timings/2naz_neutralized_manual2.pdb')
 
+
 #L = 22.
 #bz.set_cell(([[L,0,0],[0,L,0],[0,0,L]]))
 #bz.set_pbc((True, True, True))
@@ -61,14 +62,14 @@ bz.calc.setnc(nc)
 #print('[ANI Total time:', time.time() - start_time, 'seconds]')
 
 # Write visualization of molecule
-f = open("optmol.xyz",'w')
+f = open("optmol_begin.xyz",'w')
 f.write('\n' + str(len(bz)) + '\n')
 for i in bz:
     f.write(str(i.symbol) + ' ' + str(i.x) + ' ' + str(i.y) + ' ' + str(i.z) + '\n')
 f.close()
 
 # Temperature
-T = 3000.0
+T = 100.0
 
 # We want to run MD with constant energy using the Langevin algorithm
 # with a time step of 5 fs, the temperature T and the friction
@@ -114,9 +115,31 @@ printenergy()
 for i in range(0,300,2):
     print("Heating to",float(i), "K...")
     dyn.set_temperature(float(i) * units.kB)
-    dyn.run(200) # Do 5ps of MD
+    start_time = time.time()
+    dyn.run(4000) # Do 5ps of MD
+    print('[ANI Total time:', time.time() - start_time, 'seconds]')
+
+dyn.run(40000)  # Do 5ps of MD
+
+#for i in range(0,5000,1):
+#    print("Heating to",float(i), "K...")
+#    dyn.set_temperature(float(i) * units.kB)
+#    dyn.run(500) # Do 5ps of MD
 
 dyn.run(10000000) # Do 5ps of MD
+
+dyn = LBFGS(bz)
+dyn.run(fmax=0.0001)
+#dyn = BFGS(bz)
+#dyn.run(fmax=0.1)
+#print('[ANI Total time:', time.time() - start_time, 'seconds]')
+
+# Write visualization of molecule
+f = open("optmol_final.xyz",'w')
+f.write('\n' + str(len(bz)) + '\n')
+for i in bz:
+    f.write(str(i.symbol) + ' ' + str(i.x) + ' ' + str(i.y) + ' ' + str(i.z) + '\n')
+f.close()
 
 mdcrd.close()
 temp.close()
