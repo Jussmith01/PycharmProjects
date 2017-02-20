@@ -11,12 +11,12 @@ path = "/home/jujuman/Research/test_data2.h5"
 dtdirs = [#"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_dissociation/scans_cc_bonds_dft/single/data/",
           "/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_01/testdata/",
           "/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_02/testdata/",
-          #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_03/testdata/",
-          #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_04/testdata/",
-          #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_05/testdata/",
-          #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_06/testdata/",
-          #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_07/testdata/",
-          #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_08/testdata/",
+          "/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_03/testdata/",
+          "/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_04/testdata/",
+          "/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_05/testdata/",
+          "/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_06/testdata/",
+          "/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_07/testdata/",
+          "/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_08/testdata/",
          ]
 
 namelist = ["_train.dat","_valid.dat","_test.dat"]
@@ -29,7 +29,6 @@ if os.path.exists(path):
 store = pd.HDFStore(path,complib='blosc',complevel=8)
 
 totaltime = 0.0
-
 for d in dtdirs:
 
     tmp = listdir(d)
@@ -65,20 +64,25 @@ for d in dtdirs:
         xyz, typ, E = zip(*allarr)
 
         xyz = np.concatenate(xyz).reshape((nc,3 * nat))
+        xyz = np.array(xyz,dtype=np.float32)
+
         E = np.concatenate(E).reshape(nc,1)
 
         print("Build xyz data frames...")
         cols = [["x" + str(z), "y" + str(z), "z" + str(z)] for z in list(range(nat))]
         cols = [item for sublist in cols for item in sublist]
         cols = [('coordinates',l) for l in cols]
-        cols.append(('energy','E'))
+        #cols.append(('energy','E'))
         cols = pd.MultiIndex.from_tuples(cols)  # Notice these are un-named
 
         # Combine data
-        data = np.append(xyz,E,1)
+        #data = np.append(xyz,E,1)
 
-        df_xyz = pd.DataFrame(data, columns=cols)
+        df_xyz = pd.DataFrame(xyz, columns=cols)
+        df_xyz['energy'] = E
         df_xyz.index.name = 'conformer'
+
+        #print(df_xyz.dtypes)
 
         print("Store xyzs...")
         store_loc = gn + "/mol" + str(n)
@@ -92,7 +96,7 @@ for d in dtdirs:
 store.close()
 
 
-
+'''
 # opening file
 store = pd.HDFStore(path, complib='blosc', complevel=8)
 print(store)
@@ -114,7 +118,7 @@ for x in store.get_node(""):
         print(eng)
         print(species)
 
-'''
+
     for i in x._v_children:
         print(i)
 
@@ -127,6 +131,7 @@ for x in store.get_node(""):
         maxlen = min(len(z), 10)
         print("Shape:", z.shape)
         print("Value:\n", z[:maxlen])
-'''
+
 store.close()
+'''
 
