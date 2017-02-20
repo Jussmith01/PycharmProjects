@@ -3,7 +3,7 @@ __author__ = 'jujuman'
 # Import pyNeuroChem
 import pyNeuroChem as pync
 import numpy as np
-import graphtools as gt
+import hdnntools as gt
 import time
 
 import matplotlib.pyplot as plt
