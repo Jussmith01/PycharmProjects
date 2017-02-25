@@ -1,9 +1,8 @@
 import numpy as np
 import pandas as pd
-from pyNeuroChem import cachegenerator as cg
 
 # Extract and stores a molecules conformer data and eneriges
-class ANIDataExtractor:
+class anidataextractor:
     def __init__(self, store, subdir, dfname):
         store_loc = subdir + "/" + dfname
         self.extract_species_attrb(store,store_loc)
@@ -18,37 +17,47 @@ class ANIDataExtractor:
         self.species = store.get_storer(store_loc).attrs.species
         self.Na      = self.species.shape[0]
 
-# Create a list of ANIDataExtractors
-def aniloadhdf5(file):
-    # opening file
-    store = pd.HDFStore(file, complib='blosc', complevel=8)
-    # HDFStore iterates over the names of its contents:
-    data = []
-    for x in store.get_node(""):
-        print("Name:", x._v_name)
-        for i in x._v_children:
-            data.append(ANIDataExtractor(store, x._v_name, i))
+# Load the entire data set
+class anidataloader:
+    def __init__(self, store_file, complib = 'blosc', complevel = 8):
+        # opening file
+        self.store = pd.HDFStore(store_file, complib=complib, complevel=complevel)
 
-    store.close()
-    return data
+    def splitload(self, N):
+        self.crd_list = []
+        self.eng_list = []
+        self.spc_list = []
+        for x in self.store.get_node(""):
+            print("Name:", x._v_name)
+            for i in x._v_children:
+                ae = anidataextractor(self.store, x._v_name, i)
+                self.crd_list.append(np.array_split(ae.coords, N))
+                self.eng_list.append(np.array_split(ae.energy, N))
+                self.spc_list.append(ae.species)
 
-# Create a list of ANIDataExtractors
-def anigeneratecache(file):
-    # opening file
-    store = pd.HDFStore(file, complib='blosc', complevel=8)
-    # HDFStore iterates over the names of its contents:
-    cache = cg('_train', '/home/jujuman/Dropbox/ChemSciencePaper.AER/ANI-c08e-ntwk/sae_6-31gd.dat')
+    def getdata(self,idx=0,dl=[0]):
 
-    for x in store.get_node(""):
-        print("Name:", x._v_name)
-        for i in x._v_children:
-            data = ANIDataExtractor(store, x._v_name, i)
-            cache.insertdata(data.coords,data.energy,list(data.species))
+        if max(dl) >= len(self.crd_list):
+            raise (IndexError('Index given is outside of the array range.'))
 
-    cache.makemetadata()
-    store.close()
+        return [np.concatenate([self.crd_list[idx][j] for j in dl]),
+                np.concatenate([self.eng_list[idx][j] for j in dl]),
+                self.spc_list[idx]]
 
+    def totalload(self):
+        self.crd_list = []
+        self.eng_list = []
+        self.spc_list = []
+        for x in self.store.get_node(""):
+            print("Name:", x._v_name)
+            for i in x._v_children:
+                ae = anidataextractor(self.store, x._v_name, i)
+                self.crd_list.append([ae.coords])
+                self.eng_list.append([ae.energy])
+                self.spc_list.append(ae.species)
 
-path = "/home/jujuman/Research/test_data2.h5"
+    def size(self):
+        return len(self.spc_list)
 
-anigeneratecache(path)
+    def cleanup(self):
+        self.store.close()

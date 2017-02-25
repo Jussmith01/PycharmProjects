@@ -58,6 +58,36 @@ def readxyz (file):
 
     return xyz,typ[0],Na
 
+def readxyz2 (file):
+    xyz = []
+    typ = []
+    Na  = []
+
+    fd = open(file, 'r').read()
+
+    #rb = re.compile('\s*?\n?\s*?(\d+?)\s*?\n((?:\s*?[A-Z][a-z]?.+(?:\n|))+)')
+    rb = re.compile('((?:[A-Z][a-z]? +?[-+]?\d+?\.\S+? +?[-+]?\d+?\.\S+? +?[-+]?\d+?\.\S+?\s*?(?:\n|$))+)')
+    ra = re.compile('([A-Z][a-z]?) +?([-+]?\d+?\.\S+?) +?([-+]?\d+?\.\S+?) +?([-+]?\d+?\.\S+?)\s*?(?:\n|$)')
+
+    s = rb.findall(fd)
+    Nc = len(s)
+    for i in s:
+
+        c = ra.findall(i)
+        Na = len(c)
+        for j in c:
+            typ.append(j[0])
+            xyz.append(j[1])
+            xyz.append(j[2])
+            xyz.append(j[3])
+
+    xyz = np.asarray(xyz,dtype=np.float32)
+    xyz = xyz.reshape((Nc,Na,3))
+
+    return xyz,typ[0:Na],Na
+
+
+
 def writexyzfile (fn,xyz,typ):
     f = open(fn, 'w')
     f.write('\n')
@@ -124,17 +154,12 @@ def readncdat (file,type = np.float):
         spc = np.asarray(types[1:Na+1])
 
         if Nconf > 0:
-            #data = np.asarray(pd.read_csv(fd, dtype=type,header=None),dtype=type)
             data = np.loadtxt(fd, delimiter=',',usecols=range(Na*3+1),dtype=type)
 
             if Nconf is 1:
                 data = data.reshape(1,Na*3+1)
         else:
             data = np.empty((0,Na*3+1))
-
-        # Pandas sucks!! Have to copy memory else weird stuff happens
-        #print(data.shape)
-        #print('NS: ', Nconf,' ',Na,' ',3)
 
         if Nconf != data.shape[0]:
             print('Error: shapes dont match for file: ',file)
@@ -468,3 +493,51 @@ def to_precision(x,p):
         out.append(m)
 
     return "".join(out)
+
+def write_rcdb_input (xyz,typ,Nc,wkdir,fpf,TSS,LOT,Temp,rdm='uniform',type='nmrandom',SCF='Tight',freq='1',opt='1'):
+
+    f = open(wkdir + 'inputs/' + fpf + '-' + str(Nc).zfill(4) + '.ipt', 'w')
+
+    Na = len(typ)
+
+    # ---------- Write Input Variables ------------
+    dfname = fpf + '-' + str(Nc) + '_train.dat'
+    vdfname = fpf + '-' + str(Nc) + '_valid.dat'
+    edfname = fpf + '-' + str(Nc) + '_test.dat'
+
+    V = 6
+    if Na is 2:
+        V = 5
+
+    DOF = (3 * Na - V)
+
+    f.write('TSS=' + str(int(TSS * DOF)) + ' \n')
+    f.write('VSS=' + str(int((TSS * DOF) / 10.0)) + ' \n')
+    f.write('ESS=' + str(int((TSS * DOF) / 10.0)) + ' \n')
+    f.write('LOT=' + LOT + ' \n')
+    f.write('rdm=' + rdm + '\n')
+    f.write('type=' + type + '\n')
+    f.write('Temp=' + Temp + '\n')
+    f.write('mem=' + '1024' + '\n')
+    f.write('SCF=' + SCF + '\n')
+    f.write('dfname=' + dfname + ' \n')
+    f.write('vdfname=' + vdfname + ' \n')
+    f.write('edfname=' + edfname + ' \n')
+    f.write('optimize='+ opt + ' \n')
+    f.write('frequency='+ freq + ' \n')
+
+    f.write('\n\n')
+    f.write('$coordinates\n')
+    for x, t in zip(xyz,typ):
+        f.write(' ' + t + ' ' + t + ' ' + "{:.7f}".format(x[0]) + ' ' + "{:.7f}".format(x[1]) + ' ' + "{:.7f}".format(x[2]) + '\n')
+    f.write('&\n\n')
+
+    f.write('$connectivity\n')
+    f.write(' NONE\n')
+    f.write('&\n\n')
+
+    f.write('$normalmodes\n')
+    f.write('  NONE\n')
+    f.write('&\n\n')
+
+    f.close()

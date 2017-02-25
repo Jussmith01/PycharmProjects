@@ -58,7 +58,6 @@ plt.xlabel('Theoretical dE (Hartree)')
 plt.ylabel('Calculated dE (Hartree)')
 plt.legend(bbox_to_anchor=(0.3, 0.975), loc=2, borderaxespad=0.)
 
-
 # -----
 # PLOT
 # -----

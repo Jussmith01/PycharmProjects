@@ -41,40 +41,38 @@ saefile  = anipath + '/sae_6-31gd.dat'
 nnfdir   = anipath + '/networks/'
 
 # Construct pyNeuroChem class
-nc = pync.molecule(cnstfile, saefile, nnfdir, 0)
+nc = pync.molecule(cnstfile, saefile, nnfdir, 0, True)
 
 #bz = read('C_100.xyz')
-bz = read('/home/jujuman/Dropbox/ChemSciencePaper.AER/JustinsDocuments/Poster-GTC-May-2017/Timings/2naz_neutralized_manual2.pdb')
+bz = read('/home/jujuman/Dropbox/ChemSciencePaper.AER/JustinsDocuments/Poster-GTC-May-2017/Timings/m1.pdb')
 
-
-#L = 22.
-#bz.set_cell(([[L,0,0],[0,L,0],[0,0,L]]))
-#bz.set_pbc((True, True, True))
+bz.set_cell(([[42.302,0,0],[0,30.419,0],[0,0,27.589]]))
+bz.set_pbc((True, True, True))
 
 bz.set_calculator(ANI(False))
 bz.calc.setnc(nc)
 
 #start_time = time.time()
 #dyn = LBFGS(bz)
-#dyn.run(fmax=0.001)
+#dyn.run(fmax=0.1)
 #dyn = BFGS(bz)
 #dyn.run(fmax=0.1)
 #print('[ANI Total time:', time.time() - start_time, 'seconds]')
 
 # Write visualization of molecule
-f = open("optmol_begin.xyz",'w')
-f.write('\n' + str(len(bz)) + '\n')
-for i in bz:
-    f.write(str(i.symbol) + ' ' + str(i.x) + ' ' + str(i.y) + ' ' + str(i.z) + '\n')
-f.close()
+#f = open("optmol_begin.xyz",'w')
+#f.write('\n' + str(len(bz)) + '\n')
+#for i in bz:
+#    f.write(str(i.symbol) + ' ' + str(i.x) + ' ' + str(i.y) + ' ' + str(i.z) + '\n')
+#f.close()
 
 # Temperature
-T = 100.0
+T = 300.0
 
 # We want to run MD with constant energy using the Langevin algorithm
 # with a time step of 5 fs, the temperature T and the friction
 # coefficient to 0.02 atomic units.
-dyn = Langevin(bz, 0.25 * units.fs, T * units.kB, 0.5)
+dyn = Langevin(bz, 0.25 * units.fs, T * units.kB, 0.01)
 #dyn = NPTBerendsen(bz, 0.2 * units.fs, temperature=500.,taut=0.1*1000*units.fs, pressure = 1.01325, taup=1.0*1000*units.fs, compressibility=4.57e-5 )
 #dyn = NVTBerendsen(bz, 0.5 * units.fs, 200., taut=3.0*1000*units.fs)
 
@@ -103,7 +101,7 @@ def printenergy(a=bz,b=mdcrd,d=dyn,t=temp):  # store a reference to atoms in the
     for j,i in zip(a,c):
         b.write(str(j.symbol) + ' ' + str(i[0]) + ' ' + str(i[1]) + ' ' + str(i[2]) + '\n')
 
-dyn.attach(printenergy, interval=50)
+dyn.attach(printenergy, interval=10)
 #dyn.attach(MDLogger(dyn, bz, 'bz_md_NVT_10ps_1fs.log', header=True, stress=False,
 #           peratom=False, mode="w"), interval=50)
 
@@ -112,34 +110,37 @@ dyn.attach(printenergy, interval=50)
 
 printenergy()
 
-for i in range(0,300,2):
-    print("Heating to",float(i), "K...")
-    dyn.set_temperature(float(i) * units.kB)
-    start_time = time.time()
-    dyn.run(4000) # Do 5ps of MD
-    print('[ANI Total time:', time.time() - start_time, 'seconds]')
+#for i in range(0,300,2):
+#    print("Heating to",float(i), "K...")
+#    dyn.set_temperature(float(i) * units.kB)
+#    start_time = time.time()
+#    dyn.run(4000) # Do 5ps of MD
+#    print('[ANI Total time:', time.time() - start_time, 'seconds]')
 
-dyn.run(40000)  # Do 5ps of MD
+start_time2 = time.time()
+dyn.run(400000)  # Do 5ps of MD
+end_time2 = time.time()
+print('Total Time:', end_time2 - start_time2)
 
 #for i in range(0,5000,1):
 #    print("Heating to",float(i), "K...")
 #    dyn.set_temperature(float(i) * units.kB)
 #    dyn.run(500) # Do 5ps of MD
 
-dyn.run(10000000) # Do 5ps of MD
+#dyn.run(10000000) # Do 5ps of MD
 
-dyn = LBFGS(bz)
-dyn.run(fmax=0.0001)
+#dyn = LBFGS(bz)
+#dyn.run(fmax=0.0001)
 #dyn = BFGS(bz)
 #dyn.run(fmax=0.1)
 #print('[ANI Total time:', time.time() - start_time, 'seconds]')
 
 # Write visualization of molecule
-f = open("optmol_final.xyz",'w')
-f.write('\n' + str(len(bz)) + '\n')
-for i in bz:
-    f.write(str(i.symbol) + ' ' + str(i.x) + ' ' + str(i.y) + ' ' + str(i.z) + '\n')
-f.close()
+#f = open("optmol_final.xyz",'w')
+#f.write('\n' + str(len(bz)) + '\n')
+#for i in bz:
+#    f.write(str(i.symbol) + ' ' + str(i.x) + ' ' + str(i.y) + ' ' + str(i.z) + '\n')
+#f.close()
 
 mdcrd.close()
 temp.close()
