@@ -39,7 +39,7 @@ def compute_sae(spec):
             exit(1)
     return sae
 
-path = "/home/jujuman/Toshiba460GB/Research/ANI-1-DATA-PAPER-FILES/data/data-ani-1.h5"
+path = "/home/jujuman/Scratch/ANI-1-DATA-PAPER-FILES/data/data-ani-1.h5"
 #path = '/home/jujuman/Python/PycharmProjects/HD-AtomNNP/Data-ANI-1-Figures/ethane_CC_disso_data.h5'
 # opening file
 store = pd.HDFStore(path, complib='blosc',complevel=0)

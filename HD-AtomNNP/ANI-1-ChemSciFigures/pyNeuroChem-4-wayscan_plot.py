@@ -104,7 +104,6 @@ cnstfile1 = wkdir + 'rHCNO-4.6A_32-3.1A_a8-8.params'
 saefile1  = wkdir + 'sae_6-31gd.dat'
 nnfdir1   = wkdir + 'networks/'
 
-
 dtdir1 = '/home/jujuman/Dropbox/ChemSciencePaper.AER/TestCases/Bonds/Fentanyl/'
 dtdir2 = '/home/jujuman/Dropbox/ChemSciencePaper.AER/TestCases/Bonds/Fentanyl/'
 dtdir3 = '/home/jujuman/Dropbox/ChemSciencePaper.AER/TestCases/Dihedrals/4-Cyclohexyl-1-butanol/'

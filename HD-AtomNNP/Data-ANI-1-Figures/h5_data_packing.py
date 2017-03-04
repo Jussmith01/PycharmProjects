@@ -5,10 +5,11 @@ import os
 import pandas as pd
 import itertools
 import time as tm
+import pyanitools as pyt
 
-path = "/home/jujuman/Research/ANI-DATASET/ani-1_data_test.h5"
+path = "/home/jujuman/Research/ANI-DATASET/rxn_db_mig.h5"
 
-dtdirs = [#"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_dissociation/scans_cc_bonds_dft/single/data/",
+dtdirs = ["/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_rxns/scans_double_bond_migration/data/",
           #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_aminoacids/testdata/",
           #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_dipeptides/testdata/",
           #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_dipeptides/testdata2/",
@@ -16,9 +17,9 @@ dtdirs = [#"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_dissociation/scans_
           #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_begdb/testdata/",
           #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_dissociation/scans_cc_bonds_dft/double/data/",
           #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_dissociation/scans_cc_bonds_dft/single/data/",
-          "/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_01/testdata/",
-          "/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_02/testdata/",
-          "/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_03/testdata/",
+          #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_01/testdata/",
+          #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_02/testdata/",
+          #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_03/testdata/",
           #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_04/testdata/",
           #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_05/testdata/",
           #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_06/testdata/",
@@ -27,13 +28,14 @@ dtdirs = [#"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_dissociation/scans_
          ]
 
 #namelist = ["_train.dat","_valid.dat","_test.dat"]
-namelist = ["_train.dat"]
+namelist = ["_test.dat"]
 
 if os.path.exists(path):
     os.remove(path)
 #open an HDF5 for compressed storage.
 #Note that if the path exists, it will open whatever is there.
-store = pd.HDFStore(path,complib='blosc',complevel=8)
+#store = pd.HDFStore(path,complib='blosc',complevel=8)
+dpack = pyt.datapacker(path)
 
 totaltime = 0.0
 for d in dtdirs:
@@ -70,74 +72,19 @@ for d in dtdirs:
 
         xyz, typ, E = zip(*allarr)
 
+        # Prepare coordinate arrays
         xyz = np.concatenate(xyz).reshape((nc,3 * nat))
         xyz = np.array(xyz,dtype=np.float32)
 
+        # Prepare energy arrays
         E = np.concatenate(E).reshape(nc,1)
 
-        print("Build xyz data frames...")
-        cols = [["x" + str(z), "y" + str(z), "z" + str(z)] for z in list(range(nat))]
-        cols = [item for sublist in cols for item in sublist]
-        cols = [('coordinates',l) for l in cols]
-        #cols.append(('energy','E'))
-        cols = pd.MultiIndex.from_tuples(cols)  # Notice these are un-named
-
-        # Combine data
-        #data = np.append(xyz,E,1)
-
-        df_xyz = pd.DataFrame(xyz, columns=cols)
-        df_xyz['energy'] = E
-        df_xyz.index.name = 'conformer'
-
-        #print(df_xyz.dtypes)
-
-        print("Store xyzs...")
-        store_loc = gn + "/mol" + str(n)
-        store.put(store_loc, df_xyz, complib='blosc', complevel=0, format='table')
-        store.get_storer(store_loc).attrs.species = typ[0]
+        # Prepare and store the data
+        dpack.store_data(gn + "/mol" + str(n),xyz,E,typ[0])
 
         fcounter = fcounter + 1
 
     print('Total load function time: ' + "{:.4f}".format(totaltime) + 's')
 
-store.close()
-
-'''
-# opening file
-store = pd.HDFStore(path, complib='blosc', complevel=8)
-print(store)
-# HDFStore iterates over the names of its contents:
-
-
-for x in store.get_node(""):
-    print("Name:", x._v_name)
-    for i in x._v_children:
-        store_loc = x._v_name + "/" + i
-        data = store.select(store_loc)
-
-        #xyz = np.asarray(xyz)
-        xyz = np.asarray(data['coordinates'])
-        print(xyz.shape)
-        eng = np.asarray(data['energy']).flatten()
-        species = store.get_storer(store_loc).attrs.species
-        print(xyz)
-        print(eng)
-        print(species)
-
-
-    for i in x._v_children:
-        print(i)
-
-        # getting an item from the hdf5 file:
-        z = store.select(x._v_name + "/" + i,'molecule > 0')
-
-        #print(np.asarray(z))
-
-        # print converting to numpy array because numpy has pretty printing
-        maxlen = min(len(z), 10)
-        print("Shape:", z.shape)
-        print("Value:\n", z[:maxlen])
-
-store.close()
-'''
+dpack.cleanup()
 

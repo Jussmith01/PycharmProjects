@@ -73,7 +73,7 @@ for m in molecules:
 
         m = Chem.AddHs(m) # Add Hydrogens
         AllChem.EmbedMolecule(m) # Embed in 3D Space
-        AllChem.UFFOptimizeMolecule(m) # Classical Optimization
+        AllChem.MMFFOptimizeMolecule(m,maxIters=1000) # Classical Optimization
 
         f = open(wdir + fpf + '-' + str(Nmol) + '.ipt' , 'w')
 

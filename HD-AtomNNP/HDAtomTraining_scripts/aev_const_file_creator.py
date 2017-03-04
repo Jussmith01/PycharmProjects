@@ -220,20 +220,20 @@ def show2dcontradialgraph (ShfR,eta,Rc,func,title):
 #         Set Parameters
 #--------------------------------
 #File nam
-pf = 'rHCNO-4.6A_16-3.1A_a4-8.params' # Output filename
+pf = 'rHCNOS-5.0A_16-3.1A_a4-8.params' # Output filename
 
-Nrr = 8
-Na = 4
+Nrr = 16
+Na = 5
 Nar = 4
 Nzt = 8
 
 TM = 1
-Rcr = 4.6
+Rcr = 5.0
 Rca = 3.1
 #Atyp = '[H,C,O,N]'
-Atyp = '[H,C,N,O]'
+Atyp = '[H,C,N,O,S]'
 EtaR = np.array([8.0])
-EtaA = np.array([6.0])
+EtaA = np.array([4.0])
 Zeta = np.array([8.0])
 
 # ****************************************************
@@ -274,7 +274,7 @@ plt.show()
 
 #Uncomment for pretty contour plots of the radial environments using a sum and then max function
 #show2dcontradialgraph(ShfR,EtaR,Rc,add,'Sum Radial Output')
-show2dcontradialgraph(ShfR,EtaR,Rcr,max,'Maximum radial function output')
+#show2dcontradialgraph(ShfR,EtaR,Rcr,max,'Maximum radial function output')
 
 ShfZ = np.zeros(Nzt)
 
@@ -332,7 +332,7 @@ plt.show()
 
 #Uncomment for pretty contour plots of the angular environments using a sum and then max function
 #show2dcontangulargraph(ShfA,ShfZ,EtaA[0],Zeta[0],Rca,add,'Sum Angular Output')
-show2dcontangulargraph(ShfA,ShfZ,EtaA[0],Zeta[0],Rca,max,'Maximum angular output')
+#show2dcontangulargraph(ShfA,ShfZ,EtaA[0],Zeta[0],Rca,max,'Maximum angular output')
 
 Nt = Nat + Nrt
 print('Total Environmental Vector Size: ',int(Nt))

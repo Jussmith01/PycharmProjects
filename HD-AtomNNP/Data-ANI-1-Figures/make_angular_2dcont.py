@@ -43,6 +43,61 @@ def nparray_compare(t,center,atom1,atom2):
     else:
         return False
 
+def make_polar_cont(axes,data,spec,an1,an2,fraction=1.0,saturation=1.0):
+    n_atoms = spec.shape[0]
+    randindices = np.random.permutation(n_atoms)[:int(n_atoms * fraction)]
+
+    plot_data1 = []
+    plot_data2 = []
+    for i in randindices:
+        a = data[i]
+        t = spec[i]
+        # print(a, ' : ', t)
+        if nparray_compare(t, an1[0], an1[1], an1[2]):
+            plot_data1.append(a)
+        elif nparray_compare(t, an2[0], an2[1], an2[2]):
+            plot_data2.append(a)
+    # print ('Plot data: ',pld)
+
+    pld1 = np.vstack(plot_data1)
+    pld2 = np.vstack(plot_data2)
+
+    # Angle 1 data
+    da1 = 0.5 * (pld1[:, 0] + pld1[:, 1])
+    an1 = pld1[:, 2]
+
+    # Angle 2 data
+    da2 = 0.5 * (pld2[:, 0] + pld2[:, 1])
+    an2 = 2.0 * 3.14159 - pld2[:, 2]
+
+    # Normalize data
+    if da1.max() > da2.max():
+
+
+
+    print(da1)
+    print(da2)
+
+    print(an1)
+    print(an2)
+
+
+    # Combine data
+    da = np.concatenate([da1,da2])
+    an = np.concatenate([an1,an2])
+
+    # Kernel desity estimate
+    xx, yy, f = kde_estimate(an, 0, 2.0 * 3.14159, da, 0.0, da.max(), 200j)
+
+    # Saturate the plot
+    maxi = f.max()
+    f[f > saturation*maxi] = saturation*maxi
+
+    # Contourf plot
+    cfset = axes.contourf(xx, yy, f, 100, cmap='Blues',)
+    plt.colorbar(cfset)
+
+
 def make_polar_plot(axes,data,spec,an,color='black',fraction=1.0):
     n_atoms = spec.shape[0]
     randindices = np.random.permutation(n_atoms)[:int(n_atoms * fraction)]
@@ -61,47 +116,37 @@ def make_polar_plot(axes,data,spec,an,color='black',fraction=1.0):
 
     # pH - 4.00
     da = 0.5 * (pld[:, 0] + pld[:, 1])
-    an = 2.0 * pld[:, 2]
+    an = pld[:, 2]
 
-    #x = da * np.cos(an)
-    #y = da * np.sin(an)
-
-    #xmin, xmax = -3.5, 3.5
-    #ymin, ymax = -3.5, 3.5
-
-    #xx, yy, f = kde_estimate(an, 0, 2*3.14159, da, 0.0, da.max(), 200j)
-
-    # axes.set_xlim(xmin, xmax)
-    # axes.set_ylim(xmin, xmax)
-
-    # Contourf plot
-    #cfset = axes.contourf(xx, yy, f, 100, cmap='jet')
-    #plt.colorbar(cfset)
     axes.scatter(an, da, marker='.', color=color, linewidths=1)
-    # set_polar_grid(axes)
 
 print('Loading data...')
-P = ['04','05','06','07']
-an = [6,6,6]
+P = ['05']
+an1 = [6,6,6]
+an2 = [8,6,7]
 
 # Creating subplots and axes dynamically
 axes = plt.subplot(111, projection='polar')
 
+dir = '/home/jujuman/Scratch/ANI-1-DATA-PAPER-FILES/'
+
 for p in P:
     print('loading ',p,'...')
 
-    data = np.load('data/angular/GDB-' + p + '_data.npz')['arr_0']
-    spec = np.load('data/angular/GDB-' + p + '_spec.npz')['arr_0']
+    data = np.load(dir + 'data/angular/GDB-' + p + '_data.npz')['arr_0']
+    spec = np.load(dir + 'data/angular/GDB-' + p + '_spec.npz')['arr_0']
 
-    data2 = np.load('data/minimized/angular/GDB-' + p + '_data.npz')['arr_0']
-    spec2 = np.load('data/minimized/angular/GDB-' + p + '_spec.npz')['arr_0']
+    data2 = np.load(dir + 'data/minimized/angular/GDB-' + p + '_data.npz')['arr_0']
+    spec2 = np.load(dir + 'data/minimized/angular/GDB-' + p + '_spec.npz')['arr_0']
 
-    make_polar_plot(axes,data,spec,an,'blue',0.2)
-    make_polar_plot(axes,data2,spec2,an,'red',1.0)
+    make_polar_cont(axes,data,spec,an1,an2,0.1,0.05)
+    #make_polar_plot(axes, data, spec, an, 'blue', 0.2)
 
-plt.title(hdt.convertatomicnumber(an[1])+"-"+
-          hdt.convertatomicnumber(an[0])+"-"+
-          hdt.convertatomicnumber(an[2])+
+    make_polar_plot(axes,data2,spec2,an1,'red',1.0)
+
+plt.title(hdt.convertatomicnumber(an1[1])+"-"+
+          hdt.convertatomicnumber(an1[0])+"-"+
+          hdt.convertatomicnumber(an1[2])+
           " 2d angle and average distance representation",y=1.00)
 
 plt.show()

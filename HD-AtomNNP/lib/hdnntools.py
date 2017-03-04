@@ -9,6 +9,7 @@ import time as tm
 import pandas as pd
 
 hatokcal = 627.509469
+evtokcal = 27.2107
 
 convert = hatokcal  # Ha to Kcal/mol
 
@@ -22,6 +23,8 @@ def convertatomicnumber(X):
         return 'N'
     elif X == 8:
         return 'O'
+    elif X == 16:
+        return 'S'
 
 def readxyz (file):
     xyz = []
