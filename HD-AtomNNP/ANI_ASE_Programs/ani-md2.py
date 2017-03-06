@@ -41,7 +41,7 @@ saefile  = anipath + '/sae_6-31gd.dat'
 nnfdir   = anipath + '/networks/'
 
 # Construct pyNeuroChem class
-nc = pync.molecule(cnstfile, saefile, nnfdir, 0, True)
+nc = pync.molecule(cnstfile, saefile, nnfdir, 0)
 
 #bz = read('C_100.xyz')
 bz = read('/home/jujuman/Dropbox/ChemSciencePaper.AER/JustinsDocuments/Poster-GTC-May-2017/Timings/m1.pdb')
@@ -118,7 +118,7 @@ printenergy()
 #    print('[ANI Total time:', time.time() - start_time, 'seconds]')
 
 start_time2 = time.time()
-dyn.run(400000)  # Do 5ps of MD
+dyn.run(4000)  # Do 5ps of MD
 end_time2 = time.time()
 print('Total Time:', end_time2 - start_time2)
 

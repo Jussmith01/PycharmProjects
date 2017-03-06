@@ -20,7 +20,7 @@ nc =  [pync.conformers(cnstfile, saefile, wkdir + 'cv_c08e_ntw_' + str(l) + '/ne
 adl = pyt.anidataloader(path)
 
 # Load data
-adl.load_node("/gdb11_s01/")
+adl.load_node("/gdb11_s02/")
 
 # Loop
 for i in range(adl.size()):
@@ -42,10 +42,15 @@ for i in range(adl.size()):
         comp.setConformers(confs=xyz_t, types=list(spc_t))
         energies[j] = comp.energy()
 
-    print(s)
-    for eA in energies:
-        print(list(e))
-        print(list(eA))
-        print(hdt.hatokcal*(np.abs(eA-e).sum()/Nm))
+    print('Mol(', i, '): Na =', Na, ' Nm =', Nm, ' Symb =',s)
+    print('  Error(kcal/mol):')
+    for j,eA in enumerate(energies):
+        print('   E(ntwk ',j,')=',hdt.hatokcal*(np.abs(eA-e).sum()/Nm))
+
+    stddevs = np.zeros((e.shape[0]), dtype=np.float64)
+    for i in range(e.shape[0]):
+        stddevs[i] = np.std(hdt.hatokcal * energies[:,i].flatten())
+
+    print('  StdDev Info: Mean =', stddevs.mean(), ' Min =', stddevs.min(), ' Max =', stddevs.max())
 
 adl.cleanup()
