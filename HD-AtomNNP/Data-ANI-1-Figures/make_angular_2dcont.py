@@ -71,15 +71,15 @@ def make_polar_cont(axes,data,spec,an1,an2,fraction=1.0,saturation=1.0):
     an2 = 2.0 * 3.14159 - pld2[:, 2]
 
     # Normalize data
-    if da1.max() > da2.max():
+    #if da1.max() > da2.max():
 
 
 
-    print(da1)
-    print(da2)
+    #print(da1)
+    #print(da2)
 
-    print(an1)
-    print(an2)
+    #print(an1)
+    #print(an2)
 
 
     # Combine data

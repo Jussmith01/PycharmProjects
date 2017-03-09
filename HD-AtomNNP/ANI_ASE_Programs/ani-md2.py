@@ -35,7 +35,7 @@ from ase.optimize import BFGS, LBFGS
 #%matplotlib inline
 
 # Set required files for pyNeuroChem
-anipath  = '/home/jujuman/Dropbox/ChemSciencePaper.AER/ANI-c08e-ntwk'
+anipath  = '/home/jujuman/Dropbox/ChemSciencePaper.AER/ANI-c08e-ccdissotest1-ntwk'
 cnstfile = anipath + '/rHCNO-4.6A_16-3.1A_a4-8.params'
 saefile  = anipath + '/sae_6-31gd.dat'
 nnfdir   = anipath + '/networks/'
@@ -44,10 +44,11 @@ nnfdir   = anipath + '/networks/'
 nc = pync.molecule(cnstfile, saefile, nnfdir, 0)
 
 #bz = read('C_100.xyz')
-bz = read('/home/jujuman/Dropbox/ChemSciencePaper.AER/JustinsDocuments/Poster-GTC-May-2017/Timings/m1.pdb')
+bz = read('/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_testdata/specialtest/test.xyz')
 
-bz.set_cell(([[42.302,0,0],[0,30.419,0],[0,0,27.589]]))
-bz.set_pbc((True, True, True))
+#L = 16.0
+#bz.set_cell(([[L,0,0],[0,L,0],[0,0,L]]))
+#bz.set_pbc((True, True, True))
 
 bz.set_calculator(ANI(False))
 bz.calc.setnc(nc)
@@ -73,8 +74,11 @@ T = 300.0
 # with a time step of 5 fs, the temperature T and the friction
 # coefficient to 0.02 atomic units.
 dyn = Langevin(bz, 0.25 * units.fs, T * units.kB, 0.01)
-#dyn = NPTBerendsen(bz, 0.2 * units.fs, temperature=500.,taut=0.1*1000*units.fs, pressure = 1.01325, taup=1.0*1000*units.fs, compressibility=4.57e-5 )
-#dyn = NVTBerendsen(bz, 0.5 * units.fs, 200., taut=3.0*1000*units.fs)
+#dyn = NVTBerendsen(bz, 0.25 * units.fs, temperature=300.,taut=0.1*1000*units.fs, pressure = 1.01325, taup=1.0*1000*units.fs, compressibility=4.57e-5 )
+#dyn = NVTBerendsen(bz, 0.25 * units.fs, 300., taut=3.0*1000*units.fs)
+
+#from ase.md.verlet import VelocityVerlet
+#dyn = VelocityVerlet(bz,0.25 * units.fs)
 
 mdcrd = open("mdcrd.xyz",'w')
 temp = open("temp.dat",'w')
@@ -88,20 +92,20 @@ temp = open("temp.dat",'w')
 #    print(c.x)
 #    print(str(c.x) + ' ' + str(c.y) + ' ' + str(c.z) + '\n')
 
-
+dyn.get_time()
 def printenergy(a=bz,b=mdcrd,d=dyn,t=temp):  # store a reference to atoms in the
     """Function to print the potential, kinetic and total energy."""
     epot = a.get_potential_energy() / len(a)
     ekin = a.get_kinetic_energy() / len(a)
     print('Step %i - Energy per atom: Epot = %.3feV  Ekin = %.3feV (T=%3.0fK)  '
           'Etot = %.3feV' % (d.get_number_of_steps(),epot, ekin, ekin / (1.5 * units.kB), epot + ekin))
-    t.write(str(d.get_number_of_steps()) + ' ' + str(ekin / (1.5 * units.kB)) + ' ' + str(epot) + ' ' +  str(ekin) + ' ' + str(epot + ekin) + '\n')
+    t.write(str(d.get_number_of_steps()) + ' ' + str(d.get_time()) + ' ' + str(ekin / (1.5 * units.kB)) + ' ' + str(epot) + ' ' +  str(ekin) + ' ' + str(epot + ekin) + '\n')
     b.write('\n' + str(len(a)) + '\n')
     c=a.get_positions(wrap=True)
     for j,i in zip(a,c):
         b.write(str(j.symbol) + ' ' + str(i[0]) + ' ' + str(i[1]) + ' ' + str(i[2]) + '\n')
 
-dyn.attach(printenergy, interval=10)
+dyn.attach(printenergy, interval=50)
 #dyn.attach(MDLogger(dyn, bz, 'bz_md_NVT_10ps_1fs.log', header=True, stress=False,
 #           peratom=False, mode="w"), interval=50)
 
@@ -110,24 +114,11 @@ dyn.attach(printenergy, interval=10)
 
 printenergy()
 
-#for i in range(0,300,2):
-#    print("Heating to",float(i), "K...")
-#    dyn.set_temperature(float(i) * units.kB)
-#    start_time = time.time()
-#    dyn.run(4000) # Do 5ps of MD
-#    print('[ANI Total time:', time.time() - start_time, 'seconds]')
-
+dyn.set_temperature(300.0 * units.kB)
 start_time2 = time.time()
-dyn.run(4000)  # Do 5ps of MD
+dyn.run(20000000)  # Do 5ps of MD
 end_time2 = time.time()
-print('Total Time:', end_time2 - start_time2)
-
-#for i in range(0,5000,1):
-#    print("Heating to",float(i), "K...")
-#    dyn.set_temperature(float(i) * units.kB)
-#    dyn.run(500) # Do 5ps of MD
-
-#dyn.run(10000000) # Do 5ps of MD
+print('Post-heat Total Time:', end_time2 - start_time2)
 
 #dyn = LBFGS(bz)
 #dyn.run(fmax=0.0001)
