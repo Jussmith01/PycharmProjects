@@ -125,8 +125,8 @@ def make_polar_plot(axes,data,spec,Z1,Z2,color1='black',color2='black',fraction=
     da2 = 0.5 * (pld2[:, 0] + pld2[:, 1])
     an2 = 2.0 * 3.14159 - pld2[:, 2]
 
-    label1 = hdt.convertatomicnumber(an1[1]) + "-"
-    label2 = hdt.convertatomicnumber(an1[1])
+    label1 = hdt.convertatomicnumber(an1[1])
+    label2 = hdt.convertatomicnumber(an2[1])
 
     #label1 = hdt.convertatomicnumber(an1[1]) + "-" + hdt.convertatomicnumber(an1[0]) + "-" + hdt.convertatomicnumber(an1[2])
     #label2 = hdt.convertatomicnumber(an2[1]) + "-" + hdt.convertatomicnumber(an2[0]) + "-" + hdt.convertatomicnumber(an2[2])
@@ -142,7 +142,8 @@ an2 = [1,6,7]
 # Creating subplots and axes dynamically
 axes = plt.subplot(111, projection='polar')
 
-dir = '/home/jujuman/Python/PycharmProjects/HD-AtomNNP/Data-ANI-1-Figures/'
+#dir = '/home/jujuman/Python/PycharmProjects/HD-AtomNNP/Data-ANI-1-Figures/'
+dir = '/home/jujuman/Scratch/ANI-1-DATA-PAPER-FILES/'
 
 for p in P:
     print('loading ',p,'...')

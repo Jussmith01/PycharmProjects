@@ -4,8 +4,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pyNeuroChem as pync
 
-dir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_rxns/scans_double_bond_migration/'
+#dir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_rxns/scans_double_bond_migration/'
 #dir = '/home/jujuman/Dropbox/IRC_DBondMig/rxn1/'
+dir = '/home/jujuman/Dropbox/IRC_DBondMig/rxn2/'
 
 filef = dir + 'IRC_fwd.log'
 fileb = dir + 'IRC_bck.log'
@@ -67,8 +68,8 @@ rmse1 = hdn.calculaterootmeansqrerror(ani1,eng)
 rmse2 = hdn.calculaterootmeansqrerror(ani2,eng)
 rmse3 = hdn.calculaterootmeansqrerror(ani3,eng)
 
-xv = xyz[:,3,:]-xyz[0,3,:]
-x = np.linalg.norm(xv, axis=1)
+#xv = xyz[:,3,:]-xyz[0,3,:]
+#x = np.linalg.norm(xv, axis=1)
 
 eng = eng - eng.min()
 ani1 = ani1 - ani1.min()
@@ -76,10 +77,10 @@ ani2 = ani2 - ani2.min()
 ani3 = ani3 - ani3.min()
 
 
-plt.plot(x,eng, 'r-',  color='black', label='DFT',linewidth=3)
-plt.plot(x,ani1,'r-.', color='blue', label= 'ANI-c08e           Er: ' + "{:.2f}".format(rmse1) + ' kcal/mol',linewidth=4)
-plt.plot(x,ani2,'r--', color='red', label=  'ANI-c08eRXt RT Er: ' + "{:.2f}".format(rmse2) + ' kcal/mol',linewidth=4)
-plt.plot(x,ani3,'r--', color='green', label='ANI-c08eRXt NT Er: ' + "{:.2f}".format(rmse3) + ' kcal/mol',linewidth=4)
+plt.plot(eng, 'r-',  color='black', label='DFT',linewidth=3)
+plt.plot(ani1,'r-.', color='blue', label= 'ANI-c08e           Er: ' + "{:.2f}".format(rmse1) + ' kcal/mol',linewidth=4)
+plt.plot(ani2,'r--', color='red', label=  'ANI-c08eRXt RT Er: ' + "{:.2f}".format(rmse2) + ' kcal/mol',linewidth=4)
+plt.plot(ani3,'r--', color='green', label='ANI-c08eRXt NT Er: ' + "{:.2f}".format(rmse3) + ' kcal/mol',linewidth=4)
 
 plt.title("Reaction barrier for double bond migration\n(RT = retrained; NT = newly trained)")
 #plt.xlabel('Conformation Pair (Count 49)')
