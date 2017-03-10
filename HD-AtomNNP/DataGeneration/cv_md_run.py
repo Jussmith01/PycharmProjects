@@ -46,7 +46,7 @@ saefile = wkdir + 'sae_6-31gd.dat'
 
 At = ['C', 'O', 'N'] # Hydrogens added after check
 
-T = 1000.0
+T = 4000.0
 dt = 0.25
 
 stdir = '/home/jujuman/Research/CrossValidation/MD_CV/'
@@ -71,8 +71,8 @@ nc = ncl[1]
 print('FINISHED')
 
 #mol = read('/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_testdata/specialtest/test.xyz')
-#mol = read('/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_begdb/begdb-h2oclusters/xyz/4179_water2Cs.xyz')
-mol = read('/home/jujuman/Research/CrossValidation/MD_CV/molecule-2.xyz')
+mol = read('/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_begdb/begdb-h2oclusters/xyz/4179_water2Cs.xyz')
+#mol = read('/home/jujuman/Research/CrossValidation/MD_CV/molecule-2.xyz')
 print(mol)
 #L = 16.0
 #bz.set_cell(([[L,0,0],[0,L,0],[0,0,L]]))
@@ -113,7 +113,7 @@ xo = open(stdir + 'data/md-peptide-cvnms.xyz', 'w')
 f = open(stdir + 'md-peptide-cv.dat','w')
 l_sigma = []
 
-for i in range(10000):
+for i in range(550):
     dyn.run(100)  # Do 5ps of MD
 
     xyz = np.array(mol.get_positions(), dtype=np.float32).reshape(len(spc), 3)
@@ -169,7 +169,7 @@ for i in range(10000):
                     z = at[2]
                     xo.write(spc[k] + ' ' + "{:.7f}".format(x) + ' ' + "{:.7f}".format(y) + ' ' + "{:.7f}".format(z) + '\n')
 
-    if sigma > 0.05:
+    elif sigma > 0.05:
         xo.write(str(len(spc)) + '\n')
         xo.write('      stddev: ' + str(sigma) + ' step: ' + str(i) + '\n')
         for k, at in enumerate(xyz):

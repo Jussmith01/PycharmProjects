@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import pyNeuroChem as pync
 
 dir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_rxns/scans_double_bond_migration/'
-dir = '/home/jujuman/Dropbox/IRC_DBondMig/original_rxn/'
+#dir = '/home/jujuman/Dropbox/IRC_DBondMig/rxn1/'
 
 filef = dir + 'IRC_fwd.log'
 fileb = dir + 'IRC_bck.log'
