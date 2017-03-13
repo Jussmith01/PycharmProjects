@@ -74,7 +74,9 @@ def read_irc (file):
         Nc += 1
 
     en = np.asarray(en, dtype=np.float32)
-    cd = np.asarray(cd, dtype=np.float32).reshape(Nc, Na, 3)[:-1]
+    print(en)
+    cd = np.asarray(cd[:-1], dtype=np.float32).reshape(Nc-1, Na, 3)
+    print(cd)
 
     return [en, cd, ty[0:Na]]
 

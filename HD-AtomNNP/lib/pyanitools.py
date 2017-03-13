@@ -15,7 +15,7 @@ class anidataextractor:
 
     def extract_species_attrb(self,store,store_loc):
         self.species = store.get_storer(store_loc).attrs.species
-        self.Na      = self.species.shape[0]
+        self.Na      = np.array(self.species).shape[0]
 
 # Load an ANI data set stored as a pandas dataframe/HDF5 file format
 class anidataloader:
@@ -46,6 +46,7 @@ class anidataloader:
     # Arg 1: idx - file index
     # Arg 2: dl  - list of partition indicies
     #------------------------------------------
+    '''
     def getdata(self,idx=0,dl=[0]):
 
         if max(dl) >= len(self.crd_list):
@@ -54,6 +55,17 @@ class anidataloader:
         return [np.concatenate([self.crd_list[idx][j] for j in dl]),
                 np.concatenate([self.eng_list[idx][j] for j in dl]),
                 self.spc_list[idx]]
+    '''
+
+    def getdata(self,dl=[0]):
+
+        if max(dl) >= len(self.crd_list):
+            raise (IndexError('Index given is outside of the array range.'))
+
+        for i in range(self.size()):
+            yield [np.concatenate([self.crd_list[i][j] for j in dl]),
+                   np.concatenate([self.eng_list[i][j] for j in dl]),
+                   self.spc_list[i]]
 
     #-----------------------------------------
     #-------- Returns entire data set --------
@@ -89,14 +101,20 @@ class anidataloader:
         self.spc_list = []
         x = self.store.get_node(node)
         child = [str(i) for i in x._v_children]
-        print(child)
+        #print(child)
         child = sorted(child, key=lambda x: int(x.split('mol')[1].split('.')[0]))
         for i in child:
-            print(x._v_name)
+            #print(x._v_name)
             ae = anidataextractor(self.store, x._v_name, i)
             self.crd_list.append([ae.coords])
             self.eng_list.append([ae.energy])
             self.spc_list.append(ae.species)
+
+    #--------------------------------------------
+    #---------- Returns the Node list -----------
+    #--------------------------------------------
+    def get_node_list(self):
+        return [x._v_name for x in self.store.get_node("")]
 
     #--------------------------------------------
     #----- The number of data files loaded ------
