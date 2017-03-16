@@ -94,7 +94,7 @@ def make_polar_cont(axes,data,spec,an1,an2,fraction=1.0,saturation=1.0):
     f[f > saturation*maxi] = saturation*maxi
 
     # Contourf plot
-    cfset = axes.contourf(xx, yy, f, 100, cmap='Blues',)
+    cfset = axes.contourf(xx, yy, f, 100, cmap='Greys',)
     #plt.colorbar(cfset)
 
 
@@ -135,15 +135,15 @@ def make_polar_plot(axes,data,spec,Z1,Z2,color1='black',color2='black',fraction=
     axes.scatter(an2, da2, marker='.', label=label2, color=color2, linewidths=1)
 
 print('Loading data...')
-P = ['05']
+P = ['04']
 an1 = [1,6,8]
 an2 = [1,6,7]
 
 # Creating subplots and axes dynamically
 axes = plt.subplot(111, projection='polar')
 
-#dir = '/home/jujuman/Python/PycharmProjects/HD-AtomNNP/Data-ANI-1-Figures/'
-dir = '/home/jujuman/Scratch/ANI-1-DATA-PAPER-FILES/'
+dir = '/home/jujuman/Python/PycharmProjects/HD-AtomNNP/Data-ANI-1-Figures/'
+#dir = '/home/jujuman/Scratch/ANI-1-DATA-PAPER-FILES/'
 
 for p in P:
     print('loading ',p,'...')

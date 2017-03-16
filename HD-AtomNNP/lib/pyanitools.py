@@ -27,88 +27,41 @@ class anidataloader:
         # opening file
         self.store = pd.HDFStore(store_file, complib=complib, complevel=complevel)
 
-    #----------------------------------------
-    #----- Load and split the dataset -------
-    #----------------------------------------
-    def splitload(self, N):
-        self.crd_list = []
-        self.eng_list = []
-        self.spc_list = []
-        for x in self.store.get_node(""):
-            for i in x._v_children:
-                ae = anidataextractor(self.store, x._v_name, i)
-                self.crd_list.append(np.array_split(ae.coords, N))
-                self.eng_list.append(np.array_split(ae.energy, N))
-                self.spc_list.append(ae.species)
-
-    #------------------------------------------
-    #------------ Get loaded data -------------
-    # Arg 1: idx - file index
-    # Arg 2: dl  - list of partition indicies
-    #------------------------------------------
-    '''
-    def getdata(self,idx=0,dl=[0]):
-
-        if max(dl) >= len(self.crd_list):
-            raise (IndexError('Index given is outside of the array range.'))
-
-        return [np.concatenate([self.crd_list[idx][j] for j in dl]),
-                np.concatenate([self.eng_list[idx][j] for j in dl]),
-                self.spc_list[idx]]
-    '''
-
-    def getdata(self,dl=[0]):
-
-        if max(dl) >= len(self.crd_list):
-            raise (IndexError('Index given is outside of the array range.'))
-
-        for i in range(self.size()):
-            yield [np.concatenate([self.crd_list[i][j] for j in dl]),
-                   np.concatenate([self.eng_list[i][j] for j in dl]),
-                   self.spc_list[i]]
-
-    #-----------------------------------------
-    #-------- Returns entire data set --------
-    #-----------------------------------------
-    def getalldata(self):
-        return [np.concatenate([self.crd_list]),
-                np.concatenate([self.eng_list]),
-                self.spc_list]
-
-    #-----------------------------------------
-    #----- Loads data set without split ------
-    #-----------------------------------------
-    def totalload(self):
-        self.crd_list = []
-        self.eng_list = []
-        self.spc_list = []
+    # -----------------------------------------
+    # ----- Loads data set without split ------
+    # -----------------------------------------
+    def getnextdata(self):
         for x in self.store.get_node(""):
             child = [str(i) for i in x._v_children]
             child = sorted(child, key=lambda x: int(x.split('mol')[1].split('.')[0]))
             for i in child:
-                print(x._v_name)
+                #print(x._v_name)
                 ae = anidataextractor(self.store, x._v_name, i)
-                self.crd_list.append([ae.coords])
-                self.eng_list.append([ae.energy])
-                self.spc_list.append(ae.species)
+
+                yield {'coordinates': np.array(ae.coords,order='C',dtype=np.float32),
+                       'energies':    np.array(ae.energy,order='C',dtype=np.float64),
+                       'species':     ae.species,
+                       'parent': x._v_name,
+                       'child': i}
 
     # -----------------------------------------
     # ----- Loads data set without split ------
     # -----------------------------------------
-    def load_node(self, node):
-        self.crd_list = []
-        self.eng_list = []
-        self.spc_list = []
+    def getnodenextdata(self, node):
         x = self.store.get_node(node)
+
+        print(x)
         child = [str(i) for i in x._v_children]
-        #print(child)
         child = sorted(child, key=lambda x: int(x.split('mol')[1].split('.')[0]))
         for i in child:
-            #print(x._v_name)
+            # print(x._v_name)
             ae = anidataextractor(self.store, x._v_name, i)
-            self.crd_list.append([ae.coords])
-            self.eng_list.append([ae.energy])
-            self.spc_list.append(ae.species)
+
+            yield {'coordinates': np.array(ae.coords, order='C', dtype=np.float32),
+                   'energies': np.array(ae.energy, order='C', dtype=np.float64),
+                   'species': ae.species,
+                   'parent': x._v_name,
+                   'child': i}
 
     #--------------------------------------------
     #---------- Returns the Node list -----------

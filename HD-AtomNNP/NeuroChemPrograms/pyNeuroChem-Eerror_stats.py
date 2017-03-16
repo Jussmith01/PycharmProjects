@@ -2,7 +2,8 @@ __author__ = 'jujuman'
 
 # Import pyNeuroChem
 import pyNeuroChem as pync
-import graphtools as gt
+import hdnntools as gt
+import pyanitools as pyt
 import numpy as np
 import matplotlib.pyplot as plt
 import time as tm
@@ -72,31 +73,32 @@ def corrEplot(ax,d1,d2,shr1,shr2):
     ax.set_ylabel('$E_{cmp}$',fontdict=font)
     ax.set_xlabel('$E_{ref}$',fontdict=font)
 
-
 # Set data fields
-dtdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/testdata/'
-#dtdir = '/home/jujuman/Scratch/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_08/moltest/'
-#dtdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_10/testdata/'
-#fpref = 'gdb11_10-'
-#fpost = '_test.dat'
-#rng = [0,140]
+#h5file = '/home/jujuman/Research/ANI-DATASET/ani_data_c10test.h5'
+h5file = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/cache01/testset/c01-testset.h5'
 
-files = listdir(dtdir)
-#print (files)
-# Set required files for pyNeuroChem
+# Declare loader
+adl = pyt.anidataloader(h5file)
+
+nl = adl.get_node_list()
+print(nl)
+
+node = "gdb11_s01"
 
 #Network 1 Files
-#wkdir1    = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dataset_size_testing/train08b_05p_4/'
-wkdir1    = '/home/jujuman/Dropbox/ChemSciencePaper.AER/ANI-c08e-ntwk/'
+wkdir = '/home/jujuman/Dropbox/ChemSciencePaper.AER/ANI-c08e-ntwk/'
+wkdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/train_08_9/'
+wkdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/train_01/'
 
-cnstfile1 = wkdir1 + 'rHCNO-4.6A_16-3.1A_a4-8.params'
-saefile1  = wkdir1 + 'sae_6-31gd.dat'
-nnfdir1   = wkdir1 + 'networks/'
+
+cnstfile = wkdir + 'rHCNO-4.6A_16-3.1A_a4-8.params'
+saefile  = wkdir + 'sae_6-31gd.dat'
+nnfdir   = wkdir + 'networks/'
 
 E_max = 3000.0 # an energy cuttoff for error considerations in kcal/mol
 
 # Construct pyNeuroChem classes
-nc = pync.conformers(cnstfile1, saefile1, nnfdir1, 0)
+nc = pync.conformers(cnstfile, saefile, nnfdir, 1)
 
 Ecmp = []
 Eact = []
@@ -115,25 +117,23 @@ Wfile = ''
 Lerror = 100.0
 Bfile = ''
 
-Nf = len(files)
+#Nf = len(files)
 cnt = 0
 
 mNa = 100
 
 _timeloop = tm.time()
-for i in files:
-    cnt += 1
-#for i in range(rng[0],rng[1]):
-    #xyz,typ,Eact_t,readf    = gt.readncdat(dtdir + fpref + str(i) + fpost)
-    xyz,typ,Eact_W  = gt.readncdat(dtdir + i)
 
-    #xyz = np.asarray(xyz,dtype=np.float32)
-    #xyz = xyz.reshape((xyz.shape[0],len(typ),3))
+for data in adl.getnodenextdata(node):
+    # Extract the data
+    xyz = data['coordinates']
+    Eact_W = data['energies']
+    spc = data['species']
 
     if xyz.shape[0] > 0:
 
         #print('FILE: ' + dtdir + fpref + str(i) + fpost)
-        print('FILE: ' + str(cnt) + ' of ' + str(Nf) + ' ' + i)
+        print('FILE: ' + str(cnt))
 
         Nm = xyz.shape[0]
         Na = xyz.shape[1]
@@ -157,10 +157,10 @@ for i in files:
             #copy array subset
             Eact_t = Eact_W[i1:i2]
 
-            print (xyz.shape)
+            print (Eact_W)
 
             # Set the conformers in NeuroChem
-            nc.setConformers(confs=xyz[i1:i2],types=typ)
+            nc.setConformers(confs=xyz[i1:i2],types=list(spc))
 
             # Print some data from the NeuroChem
             #print( '1) Number of Atoms Loaded: ' + str(nc.getNumAtoms()) )
@@ -173,8 +173,10 @@ for i in files:
             _t2b = (tm.time() - _t1b) * 1000.0
             #print('Computation complete. Time: ' + "{:.4f}".format(_t2b)  + 'ms')
 
-            Ecmp_t = Ecmp_t - Ecmp_t.min()
-            Eact_t = Eact_t - Eact_t.min()
+            #print(Eact_t-Ecmp_t)
+
+            #Ecmp_t = Ecmp_t - Ecmp_t.min()
+            #Eact_t = Eact_t - Eact_t.min()
 
             Ecmp_t = setmaxE(Eact_t, Ecmp_t, E_max)
             Eact_t = setmaxE(Eact_t, Eact_t, E_max)
@@ -186,14 +188,14 @@ for i in files:
             Me = max (deltas)
             if Me > Herror:
                 Herror = Me
-                Wfile = i
+                Wfile = ''#data['parent'] + '/' + data['child']
 
             Le = min (deltas)
             if Le < Lerror:
                 Lerror = Le
-                Bfile = i
+                Bfile = ''#data['parent'] + '/' + data['child']
 
-            print (gt.hatokcal * gt.calculaterootmeansqrerror(np.array(Eact_t, dtype=float),Ecmp_t))
+            #print (gt.hatokcal * gt.calculaterootmeansqrerror(np.array(Eact_t, dtype=float),Ecmp_t))
 
             tNa = nc.getNumAtoms()
             err.append(gt.hatokcal * gt.calculaterootmeansqrerror(np.array(Eact_t, dtype=float),Ecmp_t) / float(tNa))
@@ -203,9 +205,12 @@ for i in files:
 
             Ecmp += Ecmp_t
             Eact += Eact_t
+            cnt = cnt + 1
 
 _timeloop2 = (tm.time() - _timeloop)
 print('Computation complete. Time: ' + "{:.4f}".format(_timeloop2)  + 'ms')
+
+adl.cleanup()
 
 #plt_by_index(np.array(Eerr),-1)
 
@@ -235,11 +240,11 @@ mn = Eact.min()
 
 print('Max: ' + str(mx) + ' Min: ' + str(mn))
 
-print ("{:.7f}".format(mae1))
-print ("{:.7f}".format(100.0*(mae1/(mx - mn))))
-print ("{:.7f}".format(rmse1))
-print ("{:.7f}".format(100.0*(rmse1/(mx - mn))))
-print ("{:.7f}".format(MAPE(Eact,Ecmp)))
+print ('MAE: ',"{:.7f}".format(mae1))
+print ('MAE%: ',"{:.7f}".format(100.0*(mae1/(mx - mn))))
+print ('RMSE: ',"{:.7f}".format(rmse1))
+print ('RMSE%: ',"{:.7f}".format(100.0*(rmse1/(mx - mn))))
+print ('MAPE: ',"{:.7f}".format(MAPE(Eact,Ecmp)))
 print ('Per atom RMSE (kcal/mol) = ' + "{:.7f}".format( ((sze / float(Ndps)) * err).sum() ))
 print ("{:.7f}".format(slope1))
 print ("{:.7f}".format(intercept1))
@@ -257,11 +262,11 @@ print (str(Ndps))
 #corrEplot(axes.flat[2],Eact,Ecmp,Eact.min(),Eact.max())
 #corrEplot(axes.flat[3],Eact,Ecmp,Eact.min(),Eact.max())
 
-#plt.plot (Eact, Eact, color='black',  label='DFT', linewidth=1)
-#plt.scatter (Eact, Ecmp, marker=r'x', color='red',  label='TGM RMSE: ' + "{:.3f}".format(rmse1),  linewidth=1)
+plt.plot (Eact, Eact, color='black',  label='DFT', linewidth=1)
+plt.scatter (Eact, Ecmp, marker=r'x', color='red',  label='TGM RMSE: ' + "{:.3f}".format(rmse1),  linewidth=1)
 
-#plt.ylabel('$E_{cmp}$ (kcal/mol)')
-#plt.xlabel('$E_{ref}$ (kcal/mol)')
+plt.ylabel('$E_{cmp}$ (kcal/mol)')
+plt.xlabel('$E_{ref}$ (kcal/mol)')
 
 #plt.title("Asolute E - GDB-10 test data correlation")
 #plt.legend(bbox_to_anchor=(0.01, 0.99), loc=2, borderaxespad=0.,fontsize=14)
