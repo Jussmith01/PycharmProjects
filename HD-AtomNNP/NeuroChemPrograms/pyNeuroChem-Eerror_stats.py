@@ -74,8 +74,8 @@ def corrEplot(ax,d1,d2,shr1,shr2):
     ax.set_xlabel('$E_{ref}$',fontdict=font)
 
 # Set data fields
-#h5file = '/home/jujuman/Research/ANI-DATASET/ani_data_c10test.h5'
-h5file = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/cache01/testset/c01-testset.h5'
+h5file = '/home/jujuman/Research/ANI-DATASET/ani_data_c10test.h5'
+#h5file = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/cache09f/testset/c08f-testset.h5'
 
 # Declare loader
 adl = pyt.anidataloader(h5file)
@@ -83,19 +83,19 @@ adl = pyt.anidataloader(h5file)
 nl = adl.get_node_list()
 print(nl)
 
-node = "gdb11_s01"
+node = "gdb11_s10"
 
 #Network 1 Files
 wkdir = '/home/jujuman/Dropbox/ChemSciencePaper.AER/ANI-c08e-ntwk/'
-wkdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/train_08_9/'
-wkdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/train_01/'
+#wkdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/train_08_9/'
+#wkdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/train_01/'
 
 
 cnstfile = wkdir + 'rHCNO-4.6A_16-3.1A_a4-8.params'
 saefile  = wkdir + 'sae_6-31gd.dat'
 nnfdir   = wkdir + 'networks/'
 
-E_max = 3000.0 # an energy cuttoff for error considerations in kcal/mol
+E_max = 300.0 # an energy cuttoff for error considerations in kcal/mol
 
 # Construct pyNeuroChem classes
 nc = pync.conformers(cnstfile, saefile, nnfdir, 1)
@@ -157,7 +157,7 @@ for data in adl.getnodenextdata(node):
             #copy array subset
             Eact_t = Eact_W[i1:i2]
 
-            print (Eact_W)
+            #print (Eact_W)
 
             # Set the conformers in NeuroChem
             nc.setConformers(confs=xyz[i1:i2],types=list(spc))

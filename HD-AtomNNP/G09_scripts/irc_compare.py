@@ -6,7 +6,7 @@ import pyNeuroChem as pync
 
 #dir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_rxns/scans_double_bond_migration/'
 #dir = '/home/jujuman/Dropbox/IRC_DBondMig/rxn1/'
-dir = '/home/jujuman/Dropbox/IRC_DBondMig/original_rxn/'
+dir = '/home/jujuman/Dropbox/IRC_DBondMig/rxn5/'
 
 filef = dir + 'IRC_fwd.log'
 fileb = dir + 'IRC_bck.log'
@@ -92,9 +92,9 @@ axarr[0, 1].plot(x,ani1,'r-.', color='blue', label= 'ANI Original Er: ' + "{:.2f
 axarr[1, 0].plot(x,ani3,'r--', color='red', label='ANI New Er: ' + "{:.2f}".format(rmse3),linewidth=3)
 
 #--------------Parameters------------------
-wkdir = '/home/jujuman/Research/CrossValidation/'
-cnstfile = wkdir + 'rHCNO-4.6A_16-3.1A_a4-8.params'
-saefile = wkdir + 'sae_6-31gd.dat'
+wkdir = '/home/jujuman/Research/CrossValidation/c08e-Org-Cache/'
+cnstfile = wkdir + '../rHCNO-4.6A_16-3.1A_a4-8.params'
+saefile = wkdir + '../sae_6-31gd.dat'
 #-------------------------------------------
 
 colors = ['blue',
