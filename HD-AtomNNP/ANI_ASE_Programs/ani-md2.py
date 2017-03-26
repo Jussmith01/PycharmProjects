@@ -44,7 +44,8 @@ nnfdir   = anipath + '/networks/'
 nc = pync.molecule(cnstfile, saefile, nnfdir, 0)
 
 #bz = read('C_100.xyz')
-bz = read('/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_testdata/specialtest/test.xyz')
+#bz = read('/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_testdata/specialtest/test.xyz')
+bz = read('/home/jujuman/Research/CrossValidation/GDB-09-High-sdev/bmol-11.xyz')
 
 #L = 16.0
 #bz.set_cell(([[L,0,0],[0,L,0],[0,0,L]]))
@@ -114,7 +115,7 @@ dyn.attach(printenergy, interval=50)
 
 printenergy()
 
-dyn.set_temperature(300.0 * units.kB)
+dyn.set_temperature(1000.0 * units.kB)
 start_time2 = time.time()
 dyn.run(20000000)  # Do 5ps of MD
 end_time2 = time.time()
