@@ -10,6 +10,7 @@ import pandas as pd
 
 hatokcal = 627.509469
 evtokcal = 27.2107
+AtoBohr = 1.88973
 
 convert = hatokcal  # Ha to Kcal/mol
 
@@ -25,6 +26,75 @@ def convertatomicnumber(X):
         return 'O'
     elif X == 16:
         return 'S'
+
+def get_spc_idx(X1, X2):
+    if X1 == 'H' and X2 == 'H':
+        return 0 # HH
+    elif (X1 == 'H' and X2 == 'C') or (X1 == 'C' and X2 == 'H'):
+        return 1 # HC
+    elif (X1 == 'H' and X2 == 'N') or (X1 == 'N' and X2 == 'H'):
+        return 2 # HN
+    elif (X1 == 'H' and X2 == 'O') or (X1 == 'O' and X2 == 'H'):
+        return 3 # HO
+    elif X1 == 'C' and X2 == 'C':
+        return 4 # CC
+    elif (X1 == 'C' and X2 == 'N') or (X1 == 'N' and X2 == 'C'):
+        return 5 # CN
+    elif (X1 == 'C' and X2 == 'O') or (X1 == 'O' and X2 == 'C'):
+        return 6 # CO
+    elif X1 == 'O' and X2 == 'O':
+        return 7 # OO
+    elif (X1 == 'O' and X2 == 'N') or (X1 == 'N' and X2 == 'O'):
+        return 8 # ON
+    elif X1 == 'N' and X2 == 'N':
+        return 9 # NN
+
+
+class ncdata():
+    def __init__(self, mat, spc, Na):
+        self.mat = mat
+        self.spc = spc
+
+        self.num_data  = mat.shape[0]
+        self.num_atoms = Na
+
+def buckingham_pot(x, *p):
+    cp = (0.1645, 0.74,# HH
+          0.1573, 1.09,# HC
+          0.1489, 1.01,# HN
+          0.1779, 0.96,# HO
+          0.2339, 1.34,# CC
+          0.2342, 1.29,# CN
+          0.2838, 1.20,# CO
+          0.0556, 1.34,# OO
+          0.1143, 1.31,# ON
+          0.1592, 1.25,)# NN
+
+    s = []
+    print('Params: ', p)
+    for i in x:
+        E = np.zeros(i.num_data)
+
+        for e, R in enumerate(i.mat):
+            didx = 0
+            for A1 in range(i.num_atoms):
+                for A2 in range(A1+1, i.num_atoms):
+                    #print(get_spc_idx(i.spc[A1], i.spc[A2]), X[didx])
+                    sidx = get_spc_idx(i.spc[A1], i.spc[A2])
+                    #E[e] = E[e] + -p[2*sidx] * (np.exp(-X[didx]/p0[2*sidx+1]) - np.power(p0[2*sidx+1]/X[didx], 6)) + p[2*sidx+1]
+
+                    De = cp[2*sidx]
+                    r0 = cp[2*sidx+1]
+                    a = p[2*sidx]
+                    S = p[2*sidx+1]
+
+                    E[e] = E[e] + De * (1.0 - np.exp(-a * AtoBohr * (R[didx] - r0)))**2 + S
+
+                    didx = didx + 1
+        #print(E)
+        s.append(E)
+
+    return np.concatenate(s)
 
 def readxyz (file):
     xyz = []
@@ -316,6 +386,33 @@ def generatedmats(crds,Na):
                 count += 1
 
     return dmat
+
+def generatedmatsd3(crds):
+    Na = crds.shape[1]
+    dmat = np.zeros([crds.shape[0],int((Na*(Na-1))/2)],np.float)
+
+    for s,a in enumerate(dmat):
+        count = 0
+        for i in range(0,Na):
+            for j in range(i+1, Na):
+                a[count] = np.linalg.norm(crds[s,i]-crds[s,j])
+                count += 1
+
+    return dmat
+
+def compute_sae(file, spc):
+    f = open(file,'r').read()
+
+    p = re.compile('([A-Z][a-z]?)=(.+?)(?=\n|$)')
+    m = dict(re.findall(p,f))
+
+    sae = 0.0
+    for s in spc:
+        sae = sae + float(m[s])
+
+    return sae
+
+
 
 # ----------------------------
 # Calculate Mean Squared Diff

@@ -8,7 +8,8 @@ import time as tm
 import pyanitools as pyt
 
 #path = "/home/jujuman/Research/ANI-DATASET/rxn_db_mig.h5"
-path = "/home/jujuman/Research/ANI-DATASET/ani_data_c01test.h5"
+#path = "/home/jujuman/Research/ANI-DATASET/ani_data_c01test.h5"
+path = "/home/jujuman/Research/ANI-DATASET/ani_data_mp_param.h5"
 
 dtdirs = [#"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_rxns/scans_double_bond_migration/data/",
           #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_aminoacids/testdata/",
@@ -18,19 +19,19 @@ dtdirs = [#"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_rxns/scans_double_b
           #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_begdb/testdata/",
           #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_dissociation/scans_cc_bonds_dft/double/data/",
           #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_dissociation/scans_cc_bonds_dft/single/data/",
-          #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_01/testdata/",
-          #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_02/testdata/",
-          #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_03/testdata/",
+          "/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_01/testdata/",
+          "/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_02/testdata/",
+          "/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_03/testdata/",
           #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_04/testdata/",
           #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_05/testdata/",
           #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_06/testdata/",
           #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_07/testdata/",
           #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_08/testdata/",
-          "/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_01/testdata2/",
+          #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_01/testdata/",
          ]
 
-#namelist = ["_train.dat","_valid.dat","_test.dat"]
-namelist = ["_train.dat"]
+namelist = ["_train.dat","_valid.dat","_test.dat"]
+#namelist = ["_test.dat"]
 
 if os.path.exists(path):
     os.remove(path)
