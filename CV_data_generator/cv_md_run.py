@@ -163,7 +163,7 @@ for i in range(10000):
         for j in range(N):
             gen_crd[j] = gen.get_random_structure()
 
-        np.vstack([xyz.reshape(1,xyz.shape[0],xyz.shape[1]),gen_crd])
+        np.vstack([xyz.reshape(1, xyz.shape[0], xyz.shape[1]), gen_crd])
         #hdt.writexyzfile(stdir + 'data/md-peptide-cv-' + str(i) + '.xyz', gen_crd, spc)
 
         Na = len(spc)

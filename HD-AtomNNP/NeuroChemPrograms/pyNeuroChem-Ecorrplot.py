@@ -51,7 +51,7 @@ def pyNCcomputeTestSet(cnstfile1,saefile1,nnfdir1,dtdir,P=1.0):
         rv = bool(np.random.binomial(1,P))
         if rv:
 
-            xyz,species,energy = gt.readncdat(dtdir + i, np.float32)
+            xyz, species, energy = gt.readncdat(dtdir + i, np.float32)
 
             shiftlsttomin(energy)
             Eact.extend(energy)
