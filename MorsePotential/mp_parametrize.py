@@ -40,37 +40,37 @@ yv_data = np.concatenate(yv_data)
 print('Training Data Shape: ', yt_data.shape)
 print('Testing  Data Shape: ', yv_data.shape)
 
-p0 = (1.1, -0.1,# HH
-      1.1, -0.1,# HC
-      1.1, -0.1,# HN
-      1.1, -0.1,# HO
-      1.1, -0.1,# CC
-      1.1, -0.1,# CN
-      1.1, -0.1,# CO
-      1.1, -0.1,# OO
-      1.1, -0.1,# ON
-      1.1, -0.1,)# NN
+p0 = (1.75, -0.1,# HH
+      1.75, -0.1,# HC
+      1.75, -0.1,# HN
+      1.75, -0.1,# HO
+      1.75, -0.1,# CC
+      1.75, -0.1,# CN
+      1.75, -0.1,# CO
+      1.75, -0.1,# OO
+      1.75, -0.1,# ON
+      1.75, -0.1,)# NN
 
-bounds = ([0.75, -2.0,
-           0.75, -2.0,
-           0.75, -2.0,
-           0.75, -2.0,
-           0.75, -2.0,
-           0.75, -2.0,
-           0.75, -2.0,
-           0.75, -2.0,
-           0.75, -2.0,
-           0.75, -2.0,],
-          [2.0, 2.0,
-           2.0, 2.0,
-           2.0, 2.0,
-           2.0, 2.0,
-           2.0, 2.0,
-           2.0, 2.0,
-           2.0, 2.0,
-           2.0, 2.0,
-           2.0, 2.0,
-           2.0, 2.0,])
+bounds = ([1.5, -2.0,
+           1.5, -2.0,
+           1.5, -2.0,
+           1.5, -2.0,
+           1.5, -2.0,
+           1.5, -2.0,
+           1.5, -2.0,
+           1.5, -2.0,
+           1.5, -2.0,
+           1.5, -2.0,],
+          [1.9, 2.0,
+           1.9, 2.0,
+           1.9, 2.0,
+           1.9, 2.0,
+           1.9, 2.0,
+           1.9, 2.0,
+           1.9, 2.0,
+           1.9, 2.0,
+           1.9, 2.0,
+           1.9, 2.0,])
 
 
 popt, pcov = curve_fit(hdt.buckingham_pot, xt_data, yt_data, p0=p0, bounds=bounds)# NN
@@ -82,7 +82,7 @@ fEc = hdt.buckingham_pot(xv_data, *popt)
 irmse = hdt.calculaterootmeansqrerror(iEc, yv_data)
 frmse = hdt.calculaterootmeansqrerror(fEc, yv_data)
 
-np.savez('mp_ani_params_gdb06.npz', param=popt)
+np.savez('mp_ani_params_test.npz', param=popt)
 
 print('Final RMSE:', hdt.hatokcal * frmse, ' Initial RMSE:', hdt.hatokcal * irmse)
 

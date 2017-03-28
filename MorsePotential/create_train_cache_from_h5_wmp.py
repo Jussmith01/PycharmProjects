@@ -31,7 +31,7 @@ cachev = cg('_valid', saef, storecac)
 dpack = pyt.datapacker(path)
 
 # Load morse parameters
-popt = np.load('mp_ani_params_gdb06.npz')['param']
+popt = np.load('mp_ani_params_test.npz')['param']
 
 # Loop over data in set
 for data in adl.getnextdata():
@@ -43,9 +43,9 @@ for data in adl.getnextdata():
     spc = data['species']
 
     # Compute Morse Potential
-    #sdat = [hdn.ncdata(np.array(hdn.generatedmatsd3(xyz)), np.array(spc), xyz.shape[1])]
-    #sEc = hdn.buckingham_pot(sdat, *popt)
-    #eng = eng - sEc
+    sdat = [hdn.ncdata(np.array(hdn.generatedmatsd3(xyz)), np.array(spc), xyz.shape[1])]
+    sEc = hdn.buckingham_pot(sdat, *popt)
+    eng = eng - sEc
 
     # split data
     xyz = np.array_split(xyz, 10)
