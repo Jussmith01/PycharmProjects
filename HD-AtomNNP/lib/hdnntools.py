@@ -96,6 +96,51 @@ def buckingham_pot(x, *p):
 
     return np.concatenate(s)
 
+# ------------------------------------------
+#          Radial Function Cos
+# ------------------------------------------
+def cutoffcos(X,Rc):
+    Xt = X
+
+    if Xt > Rc:
+        Xt = Rc
+
+    return 0.5 * (np.cos((np.pi * Xt)/Rc) + 1.0)
+
+def src_pot(x):
+    cp = (0.1645, 0.50,# HH
+          0.1573, 0.50,# HC
+          0.1489, 0.50,# HN
+          0.1779, 0.50,# HO
+          15.0, 0.96,# CC
+          0.2342, 0.50,# CN
+          0.2838, 0.50,# CO
+          0.0556, 0.50,# OO
+          0.1143, 0.50,# ON
+          0.1592, 0.50,)# NN
+
+    s = []
+    for i in x:
+        E = np.zeros(i.num_data)
+
+        for e, R in enumerate(i.mat):
+            didx = 0
+            for A1 in range(i.num_atoms):
+                for A2 in range(A1+1, i.num_atoms):
+                    #print(get_spc_idx(i.spc[A1], i.spc[A2]), X[didx])
+                    sidx = get_spc_idx(i.spc[A1], i.spc[A2])
+                    #E[e] = E[e] + -p[2*sidx] * (np.exp(-X[didx]/p0[2*sidx+1]) - np.power(p0[2*sidx+1]/X[didx], 6)) + p[2*sidx+1]
+
+                    H = cp[2*sidx]
+                    Rc = cp[2*sidx+1]
+
+                    E[e] = E[e] + H * cutoffcos(R[didx],Rc)
+                    didx = didx + 1
+        #print(E)
+        s.append(E)
+
+    return np.concatenate(s)
+
 def readxyz (file):
     xyz = []
     typ = []
@@ -163,18 +208,17 @@ def readxyz2 (file):
 
 def writexyzfile (fn,xyz,typ):
     f = open(fn, 'w')
-    f.write('\n')
     N = len(typ)
     print('N ATOMS: ',typ)
     for m in xyz:
-        f.write(str(N)+'\n')
+        f.write(str(N)+'\n comment \n')
         #print(m)
         for i in range(N):
             x = m[i,0]
             y = m[i,1]
             z = m[i,2]
             f.write(typ[i] + ' ' + "{:.7f}".format(x) + ' ' + "{:.7f}".format(y) + ' ' + "{:.7f}".format(z) + '\n')
-        f.write('\n')
+        #f.write('\n')
     f.close()
 
 def readncdatwforce (file,N = 0):

@@ -103,12 +103,13 @@ def printenergy(a=bz,b=mdcrd,d=dyn,t=temp):  # store a reference to atoms in the
           'Etot = %.3feV' % (d.get_number_of_steps(),epot, ekin, T, epot + ekin))
     t.write(str(d.get_number_of_steps()) + ' ' + str(d.get_time()) + ' ' + str(ekin / (1.5 * units.kB)) + ' ' + str(epot) + ' ' +  str(ekin) + ' ' + str(epot + ekin) + '\n')
 
-    b.write(str(len(a)) + '\n       Temp: ' + str(T) + ' Step: ' + str(d.get_number_of_steps()) + '\n')
-    c=a.get_positions(wrap=True)
-    for j,i in zip(a,c):
-        b.write(str(j.symbol) + ' ' + str(i[0]) + ' ' + str(i[1]) + ' ' + str(i[2]) + '\n')
+    if d.get_number_of_steps() > 15000:
+        b.write(str(len(a)) + '\n       Temp: ' + str(T) + ' Step: ' + str(d.get_number_of_steps()) + '\n')
+        c=a.get_positions(wrap=True)
+        for j,i in zip(a,c):
+            b.write(str(j.symbol) + ' ' + str(i[0]) + ' ' + str(i[1]) + ' ' + str(i[2]) + '\n')
 
-dyn.attach(printenergy, interval=4)
+dyn.attach(printenergy, interval=24)
 #dyn.attach(MDLogger(dyn, bz, 'bz_md_NVT_10ps_1fs.log', header=True, stress=False,
 #           peratom=False, mode="w"), interval=50)
 

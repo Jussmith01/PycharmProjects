@@ -256,16 +256,16 @@ ShfR = np.zeros(Nrr)
 
 #Now instead of multiple etaR we use multiple shifts with a single large EtaR
 for i in range(0,Nrr):
-    stepsize = (Rcr-0.5) / float(Nrr)
-    step = i * stepsize + 0.50
+    stepsize = (Rcr-1.2) / float(Nrr)
+    step = i * stepsize + 1.2
     color = i/float(Nrr)
-    computeradialdataset(0.5, Rcr, 1000, EtaR[0], Rcr,step, plt, cmap(color), '$R_s$ = '+ "{:.2f}".format(step))
+    computeradialdataset(0.0, Rcr, 1000, EtaR[0], Rcr,step, plt, cmap(color), '$R_s$ = '+ "{:.2f}".format(step))
     ShfR[i] = step
 
 plt.title('Radial environment functions (REF) \n' + r"${\eta}$ = " + "{:.2f}".format(EtaR[0]))
 plt.ylabel('REF Output')
 plt.xlabel('Angstroms')
-plt.legend(bbox_to_anchor=(0.6, 0.98), loc=2, borderaxespad=0.)
+plt.legend(bbox_to_anchor=(0.8, 0.98), loc=2, borderaxespad=0.)
 font = {'family': 'Bitstream Vera Sans',
         'weight': 'normal',
         'size': fontsize}
@@ -314,10 +314,10 @@ plt.show()
 ShfA = np.zeros(Nar)
 
 for i in range(0,Nar):
-    stepsize = (Rca-0.5) / float(Nar)
-    step = (i * stepsize + 0.5)
+    stepsize = (Rca-1.2) / float(Nar)
+    step = (i * stepsize + 1.2)
     color = i/float(Nrr)
-    computeangularradialdataset(0.5, Rca, 1000, EtaA[0], Rca,step, plt, cmap(color), r"${R_s}$ = " + "{:.2f}".format(step))
+    computeangularradialdataset(0.0, Rca, 1000, EtaA[0], Rca,step, plt, cmap(color), r"${R_s}$ = " + "{:.2f}".format(step))
     ShfA[i] = step
 
 plt.title('Angular (Only Radial) Environment Functions (AREF)')
