@@ -2,10 +2,10 @@ import numpy as np
 import pyanitools as pyt
 from pyNeuroChem import cachegenerator as cg
 
-saef   = "/home/jujuman/Dropbox/ChemSciencePaper.AER/ANI-c08e-ntwk/sae_6-a31gd.dat"
-h5file = "/home/jujuman/Research/ANI-DATASET/ani_data_c08e_gdb09aug.h5"
+saef   = "/home/jujuman/Dropbox/ChemSciencePaper.AER/ANI-c08e-ntwk/sae_6-31gd.dat"
+h5file = "/home/jujuman/Research/ANI-DATASET/ani_data_c08e_gdb09divaug.h5"
 
-store_dir = "/home/jujuman/Research/CrossValidation/GDB-01-test/cache-c01-"
+store_dir = "/home/jujuman/Research/CrossValidation/GDB-09-Retrain-DIV/cache-c08e-"
 
 adl = pyt.anidataloader(h5file)
 
@@ -47,6 +47,8 @@ for data in adl.getnextdata():
 
         xyz_v = np.array(np.concatenate([xyz[j] for j in valid_idx[i]]), order='C', dtype=np.float32)
         erg_v = np.array(np.concatenate([erg[j] for j in valid_idx[i]]), order='C', dtype=np.float64)
+
+        print(spc)
 
         t.insertdata(xyz_t, erg_t, list(spc))
         v.insertdata(xyz_v, erg_v, list(spc))

@@ -43,7 +43,7 @@ def formatsmilesfile(file):
 #def make_atoms
 
 #--------------Parameters------------------
-smfile = '/home/jujuman/Research/RawGDB11Database/gdb11_size09.smi' # Smiles file
+smfile = '/home/jujuman/Research/RawGDB11Database/gdb11_size03.smi' # Smiles file
 
 wkdir = '/home/jujuman/Research/CrossValidation/GDB-09-Retrain/'
 cnstfile = wkdir + 'rHCNO-4.6A_16-3.1A_a4-8.params'
@@ -65,7 +65,7 @@ total_mol = 0
 total_bad = 0
 
 #mols = [molecules[i] for i in range(217855,217865)]
-f = open('/home/jujuman/Research/CrossValidation/GDB-09-High-sdev/gdb-09-1.0sdev_fix.dat','w')
+f = open('/home/jujuman/Research/CrossValidation/GDB-09-High-sdev/gdb-09-1.0sdev_fix_noopt.dat','w')
 for k,m in enumerate(molecules):
     if m is None: continue
 
@@ -87,6 +87,7 @@ for k,m in enumerate(molecules):
 
     if typecheck is False:
         total_mol = total_mol + 1
+        #print('total_mol: ',total_mol)
         m = Chem.AddHs(m) # Add Hydrogens
         embed = AllChem.EmbedMolecule(m, useRandomCoords=True)
         if embed is 0: # Embed in 3D Space was successful
@@ -109,15 +110,18 @@ for k,m in enumerate(molecules):
             mol.set_calculator(ANI(False))
             mol.calc.setnc(nc[0])
 
+            xyzi = np.array(mol.get_positions(),dtype=np.float32).reshape(xyz.shape[0],3)
+
             dyn = LBFGS(mol,logfile='logfile.txt')
             dyn.run(fmax=0.001,steps=10000)
             conv = True if dyn.get_number_of_steps() == 10000 else False
+            stps = dyn.get_number_of_steps()
+            #stps = 0
 
             xyz = np.array(mol.get_positions(),dtype=np.float32).reshape(xyz.shape[0],3)
 
             #if conv:
             #    print('Failed to converge!!!')
-
             energies = np.zeros((Nnc),dtype=np.float64)
 
             N = 0
@@ -127,9 +131,10 @@ for k,m in enumerate(molecules):
                 N = N + 1
 
             if np.std(hdt.hatokcal*energies) > 1.0:
+                hdt.writexyzfile('/home/jujuman/Research/CrossValidation/GDB-09-High-sdev/bmol-'+str(total_mol)+'.xyz',xyz.reshape(1,xyz.shape[0],xyz.shape[1]),spc)
                 total_bad = total_bad + 1
                 perc = int(100.0 * total_bad/float(total_mol))
-                output = '  ' + str(k) + ' ' + str(total_bad) + '/' + str(total_mol) + ' ' + str(perc) + '% (' + str(Na) + ') : stps=' + str(dyn.get_number_of_steps()) + ' : ' + str(energies) + ' : std(kcal/mol)=' + str(np.std(hdt.hatokcal*energies)) + ' : ' + Chem.MolToSmiles(m)
+                output = '  ' + str(k) + ' ' + str(total_bad) + '/' + str(total_mol) + ' ' + str(perc) + '% (' + str(Na) + ') : stps=' + str(stps) + ' : ' + str(energies) + ' : std(kcal/mol)=' + str(np.std(hdt.hatokcal*energies)) + ' : ' + Chem.MolToSmiles(m)
                 f.write(output+'\n')
                 print(output)
 

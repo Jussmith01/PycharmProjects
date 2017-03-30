@@ -40,7 +40,7 @@ from ase.optimize import BFGS, LBFGS
 
 
 #--------------Parameters------------------
-wkdir = '/home/jujuman/Research/CrossValidation/'
+wkdir = '/home/jujuman/Research/CrossValidation/GDB-09-Retrain/'
 cnstfile = wkdir + 'rHCNO-4.6A_16-3.1A_a4-8.params'
 saefile = wkdir + 'sae_6-31gd.dat'
 
@@ -72,7 +72,9 @@ print('FINISHED')
 
 #mol = read('/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_testdata/specialtest/test.xyz')
 #mol = read('/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_begdb/begdb-h2oclusters/xyz/4179_water2Cs.xyz')
-mol = read('/home/jujuman/Research/CrossValidation/MD_CV/benzene.xyz')
+#mol = read('/home/jujuman/Research/CrossValidation/MD_CV/benzene.xyz')
+mol = read('/home/jujuman/Research/CrossValidation/GDB-09-High-sdev/bmol-11.xyz')
+
 print(mol)
 #L = 16.0
 #bz.set_cell(([[L,0,0],[0,L,0],[0,0,L]]))
@@ -108,7 +110,7 @@ def printenergy(a=mol,b=mdcrd,d=dyn,t=temp):  # store a reference to atoms in th
         b.write(str(j.symbol) + ' ' + str(i[0]) + ' ' + str(i[1]) + ' ' + str(i[2]) + '\n')
 
 dyn.attach(printenergy, interval=50)
-dyn.set_temperature(300.0 * units.kB)
+dyn.set_temperature(1500.0 * units.kB)
 start_time2 = time.time()
 
 # get the chemical symbols
@@ -119,7 +121,7 @@ f = open(stdir + 'md-peptide-cv.dat','w')
 l_sigma = []
 
 for i in range(10000):
-    dyn.run(1)  # Do 5ps of MD
+    dyn.run(100)  # Do 5ps of MD
 
     xyz = np.array(mol.get_positions(), dtype=np.float32).reshape(len(spc), 3)
     energies = np.zeros((5), dtype=np.float64)
@@ -146,7 +148,7 @@ for i in range(10000):
     output = '  ' + str(i) + ' (' + str(len(spc)) + ',', "{:.4f}".format(ekin / (1.5 * units.kB)),'K) : stps=' + str(dyn.get_number_of_steps()) + ' : std(kcal/mol)=' + "{:.4f}".format(sigma)
     print(output)
 
-    if sigma > 0.1:
+    if sigma > 0.5:
         vib = Vibrations(mol)
         vib.run()
         vib.summary()
@@ -161,7 +163,7 @@ for i in range(10000):
         for j in range(N):
             gen_crd[j] = gen.get_random_structure()
 
-        np.vstack([xyz.reshape(1,xyz.shape[0],xyz.shape[1]),gen_crd])
+        np.vstack([xyz.reshape(1, xyz.shape[0], xyz.shape[1]), gen_crd])
         #hdt.writexyzfile(stdir + 'data/md-peptide-cv-' + str(i) + '.xyz', gen_crd, spc)
 
         Na = len(spc)
@@ -174,7 +176,7 @@ for i in range(10000):
                     z = at[2]
                     xo.write(spc[k] + ' ' + "{:.7f}".format(x) + ' ' + "{:.7f}".format(y) + ' ' + "{:.7f}".format(z) + '\n')
 
-    elif sigma > 0.05:
+    elif sigma > 0.1:
         xo.write(str(len(spc)) + '\n')
         xo.write('      stddev: ' + str(sigma) + ' step: ' + str(i) + '\n')
         for k, at in enumerate(xyz):
