@@ -2,10 +2,10 @@ import numpy as np
 import pyanitools as pyt
 from pyNeuroChem import cachegenerator as cg
 
-saef   = "/home/jujuman/Dropbox/ChemSciencePaper.AER/ANI-c08e-ntwk/sae_6-31gd.dat"
+saef   = "/home/jujuman/Dropbox/ChemSciencePaper.AER/ANI-c08e-ntwk/sae_6-a31gd.dat"
 h5file = "/home/jujuman/Research/ANI-DATASET/ani_data_c08e_gdb09aug.h5"
 
-store_dir = "/home/jujuman/Research/CrossValidation/GDB-09-Retrain/cache-c08e-"
+store_dir = "/home/jujuman/Research/CrossValidation/GDB-01-test/cache-c01-"
 
 adl = pyt.anidataloader(h5file)
 
