@@ -27,7 +27,6 @@ dtdirs = [#"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_rxns/scans_double_b
           #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_06/testdata/",
           #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_07/testdata/",
           #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_08/testdata/",
-          #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_01/testdata/",
          ]
 
 namelist = ["_train.dat","_valid.dat","_test.dat"]
