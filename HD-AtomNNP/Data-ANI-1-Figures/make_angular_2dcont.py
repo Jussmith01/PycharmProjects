@@ -70,18 +70,6 @@ def make_polar_cont(axes,data,spec,an1,an2,fraction=1.0,saturation=1.0):
     da2 = 0.5 * (pld2[:, 0] + pld2[:, 1])
     an2 = 2.0 * 3.14159 - pld2[:, 2]
 
-    # Normalize data
-    #if da1.max() > da2.max():
-
-
-
-    #print(da1)
-    #print(da2)
-
-    #print(an1)
-    #print(an2)
-
-
     # Combine data
     da = np.concatenate([da1,da2])
     an = np.concatenate([an1,an2])
@@ -136,8 +124,8 @@ def make_polar_plot(axes,data,spec,Z1,Z2,color1='black',color2='black',fraction=
 
 print('Loading data...')
 P = ['04']
-an1 = [1,6,8]
-an2 = [1,6,7]
+an1 = [7, 6, 8]
+an2 = [7, 7, 7]
 
 # Creating subplots and axes dynamically
 axes = plt.subplot(111, projection='polar')
@@ -146,7 +134,7 @@ dir = '/home/jujuman/Python/PycharmProjects/HD-AtomNNP/Data-ANI-1-Figures/'
 #dir = '/home/jujuman/Scratch/ANI-1-DATA-PAPER-FILES/'
 
 for p in P:
-    print('loading ',p,'...')
+    print('loading ', p, '...')
 
     data = np.load(dir + 'data/angular/GDB-' + p + '_data.npz')['arr_0']
     spec = np.load(dir + 'data/angular/GDB-' + p + '_spec.npz')['arr_0']
@@ -154,13 +142,13 @@ for p in P:
     data2 = np.load(dir + 'data/minimized/angular/GDB-' + p + '_data.npz')['arr_0']
     spec2 = np.load(dir + 'data/minimized/angular/GDB-' + p + '_spec.npz')['arr_0']
 
-    make_polar_cont(axes,data,spec,an1,an2,0.1,0.05)
+    make_polar_cont(axes, data, spec, an1, an2, 0.1, 0.05)
     #make_polar_plot(axes, data, spec, an, 'blue', 0.2)
 
-    make_polar_plot(axes,data2,spec2,an1,an2,'red','green',1.0)
+    make_polar_plot(axes, data2, spec2, an1, an2, 'red', 'green', 1.0)
 
 
 plt.legend(bbox_to_anchor=(0.9, 0.975), loc=2, borderaxespad=0.)
-plt.title("Polar angle and average distance representation",y=1.10)
+plt.title("Polar angle and average distance representation", y=1.10)
 
 plt.show()
