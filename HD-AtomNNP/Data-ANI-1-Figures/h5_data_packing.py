@@ -9,7 +9,7 @@ import pyanitools as pyt
 
 #path = "/home/jujuman/Research/ANI-DATASET/rxn_db_mig.h5"
 #path = "/home/jujuman/Research/ANI-DATASET/ani_data_c01test.h5"
-path = "/home/jujuman/Research/ANITrainingWorkshop/data/ani-gdb01.h5"
+path = "/home/jujuman/Research/ANI-DATASET/Roman-DATA/ani-gdb01_test.h5"
 
 dtdirs = [#"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_rxns/scans_double_bond_migration/data/",
           #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_aminoacids/testdata/",
@@ -29,7 +29,7 @@ dtdirs = [#"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_rxns/scans_double_b
           #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_08/testdata/",
          ]
 
-namelist = ["_train.dat","_valid.dat","_test.dat"]
+namelist = ["_train.dat", "_valid.dat", "_test.dat"]
 #namelist = ["_test.dat"]
 
 if os.path.exists(path):
@@ -82,7 +82,7 @@ for d in dtdirs:
         E = np.concatenate(E).reshape(nc,1)
 
         # Prepare and store the data
-        dpack.store_data(gn + "/mol" + str(n), xyz, E, typ[0])
+        dpack.store_data(gn + "/mol" + str(n), coordinates=xyz, energies=E, species=typ[0])
 
         fcounter = fcounter + 1
 
