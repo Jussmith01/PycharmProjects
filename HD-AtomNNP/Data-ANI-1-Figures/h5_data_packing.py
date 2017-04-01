@@ -9,7 +9,7 @@ import pyanitools as pyt
 
 #path = "/home/jujuman/Research/ANI-DATASET/rxn_db_mig.h5"
 #path = "/home/jujuman/Research/ANI-DATASET/ani_data_c01test.h5"
-path = "/home/jujuman/Research/ANI-DATASET/ani_data_mp_param.h5"
+path = "/home/jujuman/Research/ANI-DATASET/Roman-DATA/ani-gdb01_test.h5"
 
 dtdirs = [#"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_rxns/scans_double_bond_migration/data/",
           #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_aminoacids/testdata/",
@@ -29,7 +29,7 @@ dtdirs = [#"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_rxns/scans_double_b
           #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_08/testdata/",
          ]
 
-namelist = ["_train.dat","_valid.dat","_test.dat"]
+namelist = ["_train.dat", "_valid.dat", "_test.dat"]
 #namelist = ["_test.dat"]
 
 if os.path.exists(path):
@@ -64,25 +64,25 @@ for d in dtdirs:
                 shapesarr = [x.shape for x in readarrays]
                 typ = readarrays[1]
             except FileNotFoundError:
-                readarrays = [np.zeros((0,*x[1:])) for x in shapesarr]
+                readarrays = [np.zeros((0,x[1:])) for x in shapesarr]
 
             ncsub, nat, ndim = readarrays[0].shape
             nc += ncsub
-            readarrays[0] = readarrays[0].reshape(ncsub*nat,ndim)
+            readarrays[0] = readarrays[0].reshape(ncsub*nat, ndim)
 
             allarr.append(readarrays)
 
         xyz, typ, E = zip(*allarr)
 
         # Prepare coordinate arrays
-        xyz = np.concatenate(xyz).reshape((nc,3 * nat))
-        xyz = np.array(xyz,dtype=np.float32)
+        xyz = np.concatenate(xyz).reshape((nc, 3 * nat))
+        xyz = np.array(xyz, dtype=np.float32)
 
         # Prepare energy arrays
         E = np.concatenate(E).reshape(nc,1)
 
         # Prepare and store the data
-        dpack.store_data(gn + "/mol" + str(n),xyz,E,typ[0])
+        dpack.store_data(gn + "/mol" + str(n), coordinates=xyz, energies=E, species=typ[0])
 
         fcounter = fcounter + 1
 
