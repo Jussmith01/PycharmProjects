@@ -33,9 +33,9 @@ class anidataloader:
     def getnextdata(self):
         for x in self.store.get_node(""):
             child = [str(i) for i in x._v_children]
-            child = sorted(child, key=lambda x: int(x.split('mol')[1].split('.')[0]))
+            #child = sorted(child, key=lambda x: int(x.split('mol')[1].split('.')[0]))
             for i in child:
-                #print(x._v_name)
+                print(x._v_name)
                 ae = anidataextractor(self.store, x._v_name, i)
 
                 yield {'coordinates': np.array(ae.coords,order='C',dtype=np.float32),

@@ -2,12 +2,12 @@ import numpy as np
 import pyanitools as pyt
 from pyNeuroChem import cachegenerator as cg
 
-saef   = "/home/jujuman/Dropbox/ChemSciencePaper.AER/ANI-c08e-ntwk/sae_6-31gd.dat"
-h5file = "/home/jujuman/Research/ANI-DATASET/ani_data_c08e_gdb09divaug.h5"
+saef   = "/home/jujuman/Dropbox/ChemSciencePaper.AER/networks/ANI-c08e-ntwk/sae_6-31gd.dat"
+
+h5files = [#"/home/jujuman/Research/ANI-DATASET/GDB-09-Data/gdb9-2500-div-dim.h5",
+           "/home/jujuman/Research/ANI-DATASET/ani_data_c08e.h5",]
 
 store_dir = "/home/jujuman/Research/CrossValidation/GDB-09-Retrain-DIV/cache-c08e-"
-
-adl = pyt.anidataloader(h5file)
 
 #adl.split_load(10)
 N = 10
@@ -29,32 +29,33 @@ valid_idx = [[0]
 cachet = [cg('_train', saef, store_dir + str(r) + '/') for r in range(5)]
 cachev = [cg('_valid', saef, store_dir + str(r) + '/') for r in range(5)]
 
-for data in adl.getnextdata():
-    # Print file
-    print('Processing file: ', data['parent'], '/', data['child'])
+for fn in h5files:
+    adl = pyt.anidataloader(fn)
 
-    # Extract the data
-    xyz = data['coordinates']
-    erg = data['energies']
-    spc = data['species']
+    for data in adl.getnextdata():
+        # Print file
+        print('Processing file: ', data['parent'], '/', data['child'])
 
-    xyz = np.array_split(xyz, N)
-    erg = np.array_split(erg, N)
+        # Extract the data
+        xyz = data['coordinates']
+        erg = data['energies']
+        spc = data['species']
 
-    for i,(t,v) in enumerate(zip(cachet, cachev)):
-        xyz_t = np.array(np.concatenate([xyz[j] for j in train_idx[i]]), order='C', dtype=np.float32)
-        erg_t = np.array(np.concatenate([erg[j] for j in train_idx[i]]), order='C', dtype=np.float64)
+        xyz = np.array_split(xyz, N)
+        erg = np.array_split(erg, N)
 
-        xyz_v = np.array(np.concatenate([xyz[j] for j in valid_idx[i]]), order='C', dtype=np.float32)
-        erg_v = np.array(np.concatenate([erg[j] for j in valid_idx[i]]), order='C', dtype=np.float64)
+        for i,(t,v) in enumerate(zip(cachet, cachev)):
+            xyz_t = np.array(np.concatenate([xyz[j] for j in train_idx[i]]), order='C', dtype=np.float32)
+            erg_t = np.array(np.concatenate([erg[j] for j in train_idx[i]]), order='C', dtype=np.float64)
 
-        print(spc)
+            xyz_v = np.array(np.concatenate([xyz[j] for j in valid_idx[i]]), order='C', dtype=np.float32)
+            erg_v = np.array(np.concatenate([erg[j] for j in valid_idx[i]]), order='C', dtype=np.float64)
 
-        t.insertdata(xyz_t, erg_t, list(spc))
-        v.insertdata(xyz_v, erg_v, list(spc))
+            t.insertdata(xyz_t, erg_t, list(spc))
+            v.insertdata(xyz_v, erg_v, list(spc))
+
+    adl.cleanup()
 
 for t,v in zip(cachet, cachev):
     t.makemetadata()
     v.makemetadata()
-
-adl.cleanup()
