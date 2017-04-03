@@ -9,24 +9,24 @@ import pyanitools as pyt
 
 #path = "/home/jujuman/Research/ANI-DATASET/rxn_db_mig.h5"
 #path = "/home/jujuman/Research/ANI-DATASET/ani_data_c01test.h5"
-path = "/home/jujuman/Research/ANI-DATASET/Roman-DATA/ani-gdb01_test.h5"
+path = "/home/jujuman/DataTesting/ani-gdb01_test2.h5"
 
-dtdirs = [#"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_rxns/scans_double_bond_migration/data/",
-          #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_aminoacids/testdata/",
-          #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_dipeptides/testdata/",
-          #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_dipeptides/testdata2/",
-          #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_fixdata/data/",
-          #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_begdb/testdata/",
-          #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_dissociation/scans_cc_bonds_dft/double/data/",
-          #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_dissociation/scans_cc_bonds_dft/single/data/",
+dtdirs = ["/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_rxns/scans_double_bond_migration/data/",
+          "/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_dipeptides/testdata/",
+          "/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_dipeptides/testdata2/",
+          "/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_begdb/testdata2/",
+          "/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_aminoacids/testdata/",
+          "/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_fixdata/data/",
+          "/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_dissociation/scans_cc_bonds_dft/double/data/",
+          "/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_dissociation/scans_cc_bonds_dft/single/data/",
           "/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_01/testdata/",
-          #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_02/testdata/",
-          #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_03/testdata/",
-          #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_04/testdata/",
-          #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_05/testdata/",
-          #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_06/testdata/",
-          #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_07/testdata/",
-          #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_08/testdata/",
+          "/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_02/testdata/",
+          "/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_03/testdata/",
+          "/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_04/testdata/",
+          "/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_05/testdata/",
+          "/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_06/testdata/",
+          "/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_07/testdata/",
+          "/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_08/testdata/",
          ]
 
 namelist = ["_train.dat", "_valid.dat", "_test.dat"]
@@ -43,6 +43,7 @@ totaltime = 0.0
 for d in dtdirs:
 
     tmp = listdir(d)
+    print(d)
     files = list({("_".join(f.split("_")[:-1])) for f in tmp})
     files = sorted(files, key=lambda x: int(x.split('-')[1].split('.')[0]))
     gn = files[0].split("-")[0]

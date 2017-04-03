@@ -46,10 +46,6 @@ nc = pync.molecule(cnstfile, saefile, nnfdir, 0)
 #bz = read('C_100.xyz')
 bz = read('/home/jujuman/Research/ReactiondEtest/Numbering/prod.xyz')
 
-#L = 75.0
-#bz.set_cell(([[L,0,0],[0,L,0],[0,0,L]]))
-#bz.set_pbc((True, True, True))
-
 bz.set_calculator(ANI(False))
 bz.calc.setnc(nc)
 
@@ -58,9 +54,3 @@ dyn = LBFGS(bz)
 dyn.run(fmax=0.001)
 print('[ANI Total time:', time.time() - start_time, 'seconds]')
 
-# Write visualization of molecule
-f = open("optmol_begin.xyz",'w')
-f.write('\n' + str(len(bz)) + '\n')
-for i in bz:
-    f.write(str(i.symbol) + ' ' + str(i.x) + ' ' + str(i.y) + ' ' + str(i.z) + '\n')
-f.close()
