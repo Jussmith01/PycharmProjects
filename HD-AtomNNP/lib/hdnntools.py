@@ -209,7 +209,7 @@ def readxyz2 (file):
 def writexyzfile (fn,xyz,typ):
     f = open(fn, 'w')
     N = len(typ)
-    print('N ATOMS: ',typ)
+    #print('N ATOMS: ',typ)
     for m in xyz:
         f.write(str(N)+'\n comment \n')
         #print(m)

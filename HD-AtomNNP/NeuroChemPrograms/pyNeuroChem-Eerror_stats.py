@@ -86,12 +86,12 @@ print(nl)
 node = "gdb11_s10"
 
 #Network 1 Files
-wkdir = '/home/jujuman/Dropbox/ChemSciencePaper.AER/ANI-c08e-ntwk/'
+wkdir = '/home/jujuman/Dropbox/ChemSciencePaper.AER/networks/ANI-1-ntwk/'
 #wkdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/train_08_9/'
 #wkdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/train_01/'
 
 
-cnstfile = wkdir + 'rHCNO-4.6A_16-3.1A_a4-8.params'
+cnstfile = wkdir + 'rHCNO-4.6A_32-3.1A_a8-8.params'
 saefile  = wkdir + 'sae_6-31gd.dat'
 nnfdir   = wkdir + 'networks/'
 
@@ -132,8 +132,10 @@ for data in adl.getnodenextdata(node):
 
     if xyz.shape[0] > 0:
 
-        #print('FILE: ' + dtdir + fpref + str(i) + fpost)
-        print('FILE: ' + str(cnt))
+        #print('FILE: ' + dtdir + fpref + str(i) + fpost) 
+        #print('FILE: ' + str(cnt))
+
+        gt.writexyzfile(data['child']+'.xyz',xyz,spc)
 
         Nm = xyz.shape[0]
         Na = xyz.shape[1]
@@ -205,6 +207,7 @@ for data in adl.getnodenextdata(node):
 
             Ecmp += Ecmp_t
             Eact += Eact_t
+            print('FILE: ', data['child'],' Energy: ', gt.hatokcal * np.array(Eact_t).min(),' Error: ', gt.hatokcal * gt.calculaterootmeansqrerror(np.array(Eact_t),np.array(Ecmp_t)))
             cnt = cnt + 1
 
 _timeloop2 = (tm.time() - _timeloop)

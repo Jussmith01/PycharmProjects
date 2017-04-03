@@ -9,12 +9,7 @@ from ase_interface import ANI
 import pyNeuroChem as pync
 
 import  ase
-#from ase.build import molecule
-#from ase.neb import NEB
-#from ase.calculators.mopac import MOPAC
 from ase.md.langevin import Langevin
-from ase.io.trajectory import Trajectory
-from ase.io.trajectory import Trajectory
 from ase import units
 
 from ase.optimize.fire import FIRE as QuasiNewton
@@ -35,7 +30,7 @@ from ase.optimize import BFGS, LBFGS
 #%matplotlib inline
 
 # Set required files for pyNeuroChem
-anipath  = '/home/jujuman/Dropbox/ChemSciencePaper.AER/ANI-c08e-ccdissotest1-ntwk'
+anipath  = '/home/jujuman/Dropbox/ChemSciencePaper.AER/networks/ANI-c08f-ntwk/'
 cnstfile = anipath + '/rHCNO-4.6A_16-3.1A_a4-8.params'
 saefile  = anipath + '/sae_6-31gd.dat'
 nnfdir   = anipath + '/networks/'
@@ -43,11 +38,11 @@ nnfdir   = anipath + '/networks/'
 # Construct pyNeuroChem class
 nc = pync.molecule(cnstfile, saefile, nnfdir, 0)
 
-dir = '/home/jujuman/Dropbox/ChemSciencePaper.AER/JustinsDocuments/ACS_april_2017/ANI-MD-vDFT/glycineMD/'
+dir = '/home/jujuman/Dropbox/ChemSciencePaper.AER/JustinsDocuments/ACS_april_2017/ANI-MD-vDFT/benzeneMD/'
 
 #bz = read('C_100.xyz')
 #bz = read('/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_testdata/specialtest/test.xyz')
-bz = read(dir+'glycine.xyz')
+bz = read(dir+'benzene.xyz')
 
 #L = 16.0
 #bz.set_cell(([[L,0,0],[0,L,0],[0,0,L]]))
@@ -58,7 +53,7 @@ bz.calc.setnc(nc)
 
 start_time = time.time()
 dyn = LBFGS(bz)
-dyn.run(fmax=0.0001)
+dyn.run(fmax=0.00001)
 print('[ANI Total time:', time.time() - start_time, 'seconds]')
 
 # Write visualization of molecule
@@ -103,13 +98,13 @@ def printenergy(a=bz,b=mdcrd,d=dyn,t=temp):  # store a reference to atoms in the
           'Etot = %.3feV' % (d.get_number_of_steps(),epot, ekin, T, epot + ekin))
     t.write(str(d.get_number_of_steps()) + ' ' + str(d.get_time()) + ' ' + str(ekin / (1.5 * units.kB)) + ' ' + str(epot) + ' ' +  str(ekin) + ' ' + str(epot + ekin) + '\n')
 
-    if d.get_number_of_steps() > 15000:
+    if d.get_number_of_steps() > 19000:
         b.write(str(len(a)) + '\n       Temp: ' + str(T) + ' Step: ' + str(d.get_number_of_steps()) + '\n')
         c=a.get_positions(wrap=True)
         for j,i in zip(a,c):
             b.write(str(j.symbol) + ' ' + str(i[0]) + ' ' + str(i[1]) + ' ' + str(i[2]) + '\n')
 
-dyn.attach(printenergy, interval=24)
+dyn.attach(printenergy, interval=4)
 #dyn.attach(MDLogger(dyn, bz, 'bz_md_NVT_10ps_1fs.log', header=True, stress=False,
 #           peratom=False, mode="w"), interval=50)
 

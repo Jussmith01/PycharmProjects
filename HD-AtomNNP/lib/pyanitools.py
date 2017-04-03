@@ -52,6 +52,7 @@ class anidataloader(object):
 
     def size(self):
         return len(self.get_node_list())
-    
+
     def cleanup(self):
         self.store.close()
+
