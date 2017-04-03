@@ -59,3 +59,5 @@ for fn in h5files:
 for t,v in zip(cachet, cachev):
     t.makemetadata()
     v.makemetadata()
+
+adl.cleanup()

@@ -1,114 +1,58 @@
+import h5py
 import numpy as np
-import pandas as pd
+import platform
 
-# Extract and stores a molecules conformer data and eneriges
-class anidataextractor:
-    def __init__(self, store, subdir, dfname):
-        store_loc = subdir + "/" + dfname
-        self.extract_species_attrb(store,store_loc)
-        self.extract_from_df(store.select(store_loc))
+PY_VERSION = int(platform.python_version().split('.')[0]) > 3
 
-    def extract_from_df(self, df_data):
-        self.coords = np.asarray(df_data['coordinates'],dtype=np.float32)
-        self.coords = self.coords.reshape(self.coords.shape[0],self.Na,3)
-        self.energy = np.asarray(df_data['energy']).flatten()
-
-    def extract_species_attrb(self,store,store_loc):
-        self.species = store.get_storer(store_loc).attrs.species
-        self.Na      = np.array(self.species).shape[0]
-
-# Load an ANI data set stored as a pandas dataframe/HDF5 file format
-class anidataloader:
-
-    #----------------------------------------
-    # Construct the class and open the store
-    #----------------------------------------
-    def __init__(self, store_file, complib = 'blosc', complevel = 8):
+class datapacker(object):
+    def __init__(self, store_file, mode='w-', complib='gzip', complevel=6):
+        """Wrapper to store arrays within HFD5 file
+        """
         # opening file
-        self.store = pd.HDFStore(store_file, complib=complib, complevel=complevel)
-
-    # -----------------------------------------
-    # ----- Loads data set without split ------
-    # -----------------------------------------
-    def getnextdata(self):
-        for x in self.store.get_node(""):
-            child = [str(i) for i in x._v_children]
-            #child = sorted(child, key=lambda x: int(x.split('mol')[1].split('.')[0]))
-            for i in child:
-                print(x._v_name)
-                ae = anidataextractor(self.store, x._v_name, i)
-
-                yield {'coordinates': np.array(ae.coords,order='C',dtype=np.float32),
-                       'energies':    np.array(ae.energy,order='C',dtype=np.float64),
-                       'species':     ae.species,
-                       'parent': x._v_name,
-                       'child': i}
-
-    # -----------------------------------------
-    # ----- Loads data set without split ------
-    # -----------------------------------------
-    def getnodenextdata(self, node):
-        x = self.store.get_node(node)
-
-        print(x)
-        child = [str(i) for i in x._v_children]
-        child = sorted(child, key=lambda x: int(x.split('mol')[1].split('.')[0]))
-        for i in child:
-            # print(x._v_name)
-            ae = anidataextractor(self.store, x._v_name, i)
-
-            yield {'coordinates': np.array(ae.coords, order='C', dtype=np.float32),
-                   'energies': np.array(ae.energy, order='C', dtype=np.float64),
-                   'species': ae.species,
-                   'parent': x._v_name,
-                   'child': i}
-
-    #--------------------------------------------
-    #---------- Returns the Node list -----------
-    #--------------------------------------------
-    def get_node_list(self):
-        return [x._v_name for x in self.store.get_node("")]
-
-    #--------------------------------------------
-    #----- The number of data files loaded ------
-    #--------------------------------------------
-    def size(self):
-        return len(self.spc_list)
-
-    #--------------------------------------------
-    #----------- Close the store file -----------
-    #--------------------------------------------
-    def cleanup(self):
-        self.store.close()
-
-class datapacker:
-    # ----------------------------------------
-    # Construct the class and open the store
-    # ----------------------------------------
-    def __init__(self, store_file, complib='blosc', complevel=8):
-        # opening file
-        self.store = pd.HDFStore(store_file, complib=complib, complevel=complevel)
+        self.store = h5py.File(store_file, mode=mode)
         self.clib = complib
         self.clev = complevel
 
-    # ----------------------------------------
-    #            Store the data
-    # ----------------------------------------
-    def store_data(self, store_loc, xyz, energy, species):
-        cols = [["x" + str(z), "y" + str(z), "z" + str(z)] for z in list(range(int(xyz.shape[1]/3)))]
-        cols = [item for sublist in cols for item in sublist]
-        cols = [('coordinates',l) for l in cols]
-        cols = pd.MultiIndex.from_tuples(cols)  # Notice these are un-named
+    def store_data(self, store_loc, **kwargs):
+        """Put arrays to store
+        """
+        g = self.store.create_group(store_loc)
+        for k, v, in kwargs.items():
+            #print(type(v[0]))
 
-        df_xyz = pd.DataFrame(xyz, columns=cols)
-        df_xyz['energy'] = energy
-        df_xyz.index.name = 'conformer'
+            if type(v[0]) is np.str_ and PY_VERSION:
+                v = [a.encode('utf8') for a in v]
 
-        self.store.put(store_loc, df_xyz, complib=self.clib, complevel=self.clev, format='table')
-        self.store.get_storer(store_loc).attrs.species = species
+            g.create_dataset(k, data=v, compression=self.clib, compression_opts=self.clev)
 
-    # --------------------------------------------
-    # ----------- Close the store file -----------
-    # --------------------------------------------
+    def cleanup(self):
+        """Wrapper to close HDF5 file
+        """
+        self.store.close()
+
+
+class anidataloader(object):
+    def __init__(self, store_file):
+        self.store = h5py.File(store_file)
+
+    def __iter__(self):
+        for g in self.store.values():
+            yield dict((d, g[d].value) for d in g)
+
+    getnextdata = __iter__
+
+    def get_node_list(self):
+        data = [g for g in self.store]
+
+        for d in data:
+            if type(d[0]) is bytes and PY_VERSION:
+                d = d.astype(str)
+
+        return data
+
+    def size(self):
+        return len(self.get_node_list())
+
     def cleanup(self):
         self.store.close()
+
