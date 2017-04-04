@@ -44,7 +44,7 @@ nnfdir   = anipath + '/networks/'
 nc = pync.molecule(cnstfile, saefile, nnfdir, 0)
 
 #bz = read('C_100.xyz')
-bz = read('/home/jujuman/Research/ReactiondEtest/Numbering/prod.xyz')
+bz = read('/home/jujuman/Dropbox/ChemSciencePaper.AER/JustinsDocuments/ACS_april_2017/nctimecompare/mol92.xyz')
 
 #L = 75.0
 #bz.set_cell(([[L,0,0],[0,L,0],[0,0,L]]))
@@ -55,7 +55,7 @@ bz.calc.setnc(nc)
 
 start_time = time.time()
 dyn = LBFGS(bz)
-dyn.run(fmax=0.001)
+dyn.run(fmax=0.0001)
 print('[ANI Total time:', time.time() - start_time, 'seconds]')
 
 # Write visualization of molecule

@@ -4,10 +4,10 @@ from pyNeuroChem import cachegenerator as cg
 
 saef   = "/home/jujuman/Dropbox/ChemSciencePaper.AER/networks/ANI-c08e-ntwk/sae_6-31gd.dat"
 
-h5files = [#"/home/jujuman/Research/ANI-DATASET/GDB-09-Data/gdb9-2500-div-dim.h5",
-           "/home/jujuman/Research/ANI-DATASET/ani_data_c08e.h5",]
+h5files = ["/home/jujuman/Research/ANI-G09-DIV/gdb9-2500-div-dim_35.h5",
+           "/home/jujuman/Research/ANI-G09-DIV/ani_data_c08e.h5",]
 
-store_dir = "/home/jujuman/Research/CrossValidation/GDB-09-Retrain-DIV/cache-c08e-"
+store_dir = "/home/jujuman/Research/ANI-G09-DIV/GDB-09-Retrain-DIV/cache-c08e-"
 
 #adl.split_load(10)
 N = 10
