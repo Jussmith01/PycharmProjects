@@ -18,7 +18,7 @@ for i,x in enumerate(adl):
     erg = x['energies']
     spc = x['species']
 
-    dpk.store_data('/gdb-09-DIV/mol'+str(i), coordinates=xyz, energies=erg, species=spc)
+    dpk.store_data('/gdb-09-DIV/mol'+str(i), coordinates=xyz.reshape(erg.shape[0],len(spc)*3), energies=erg, species=spc)
 
 adl.cleanup()
 dpk.cleanup()

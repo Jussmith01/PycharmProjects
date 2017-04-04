@@ -2,12 +2,14 @@ import numpy as np
 import pyanitools as pyt
 from pyNeuroChem import cachegenerator as cg
 
-saef   = "/home/jujuman/Dropbox/ChemSciencePaper.AER/networks/ANI-c08e-ntwk/sae_6-31gd.dat"
+wkdir = '/home/jujuman/DataTesting'
 
-h5files = [#"/home/jujuman/Research/ANI-DATASET/GDB-09-Data/gdb9-2500-div-dim.h5",
-           "/home/jujuman/Research/ANI-DATASET/ani_data_c08e.h5",]
+saef   = "/home/jujuman/Dropbox/ChemSciencePaper.AER/networks/ANI-c08e-ntwk/sae_6-31gd_new.dat"
 
-store_dir = "/home/jujuman/Research/CrossValidation/GDB-09-Retrain-DIV/cache-c08e-"
+h5files = [wkdir + "/gdb9-2500-div-dim_35.h5",
+           wkdir + "/ani-gdb01_test.h5",]
+
+store_dir = wkdir + "/GDB-09-Retrain-DIV/cache-c08e-"
 
 #adl.split_load(10)
 N = 10
@@ -32,9 +34,9 @@ cachev = [cg('_valid', saef, store_dir + str(r) + '/') for r in range(5)]
 for fn in h5files:
     adl = pyt.anidataloader(fn)
 
-    for data in adl.getnextdata():
+    for c,data in enumerate(adl):
         # Print file
-        print('Processing file: ', data['parent'], '/', data['child'])
+        print('Processing file: ', c)
 
         # Extract the data
         xyz = data['coordinates']
@@ -51,8 +53,10 @@ for fn in h5files:
             xyz_v = np.array(np.concatenate([xyz[j] for j in valid_idx[i]]), order='C', dtype=np.float32)
             erg_v = np.array(np.concatenate([erg[j] for j in valid_idx[i]]), order='C', dtype=np.float64)
 
-            t.insertdata(xyz_t, erg_t, list(spc))
-            v.insertdata(xyz_v, erg_v, list(spc))
+            #print('shape: ', xyz_t.shape, ' V shape: ', xyz_v.shape)
+
+            t.insertdata(xyz_t, erg_t, list(spc.astype(str)))
+            v.insertdata(xyz_v, erg_v, list(spc.astype(str)))
 
     adl.cleanup()
 
