@@ -36,18 +36,17 @@ class anidataloader(object):
         self.store = h5py.File(store_file)
 
     def __iter__(self):
+        #for g in self.store.values():
+        #    yield dict((d, g[d].value) for d in g)
+
         for g in self.store.values():
-            yield dict((d, g[d].value) for d in g)
+            for e in g.items():
+                yield dict((k, e[1][k].value) for k in e[1])
 
     getnextdata = __iter__
 
     def get_node_list(self):
         data = [g for g in self.store]
-
-        for d in data:
-            if type(d[0]) is bytes and PY_VERSION:
-                d = d.astype(str)
-
         return data
 
     def size(self):
