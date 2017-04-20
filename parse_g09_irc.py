@@ -1,36 +1,28 @@
 import numpy as np
 import pygau09tools as pyg
+import hdnntools as hdt
 
-en1, cd1, ty  = pyg.read_irc('/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_rxns/scans_double_bond_migration/IRC_fwd.log')
-en2, cd2, ty2 = pyg.read_irc('/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_rxns/scans_double_bond_migration/IRC_bck.log')
+n = 14
 
-en = np.concatenate([np.fliplr(en2),en1])
-print(en)
+fpf = 'benz_rxn_' + str(n)
+wkdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_rxns/benz_dbm_rxns/scans_dbm_benz_'+str(n)+'/'
+dtdir = '/home/jujuman/Dropbox/IRC_DBondMig/Benzene_rxn/rxn_ben'+str(n)+'/'
 
-cd = cd1 + cd2
+en, cd, ty  = pyg.get_irc_data(dtdir+'IRC_fwd.log',dtdir+'IRC_bck.log')
 
 Na = len(ty)
 Nc = en.shape[0]
 
 print (cd.shape,' ',en.shape)
 
-import matplotlib.pyplot as plt
+for i,x in enumerate(cd):
+    hdt.write_rcdb_input(x,ty,i,wkdir,fpf,5,'wb97x/6-31g*','600.0',opt='0')
 
-plt.plot (en, color='blue',  label='SRC+ANI',  linewidth=2)
+hdt.writexyzfile(wkdir+'irc.xyz',cd,ty)
 
-#plt.plot (x, morse(x,1.0,1.9,1.53), color='grey',  label='SRC+ANI',  linewidth=2)
-
-plt.title("C-C Dissociation")
-
-plt.ylabel('E (kcal/mol)')
-plt.xlabel('Distance $\AA$')
-plt.legend(bbox_to_anchor=(0.05, 0.95), loc=2, borderaxespad=0.,fontsize=16)
-
-plt.show()
-
-f = open("irc.out",'w')
+f = open(wkdir+'irc.dat','w')
 f.write("comment\n")
-f.write(str(Nc-2)+'\n')
+f.write(str(Nc)+'\n')
 f.write(str(Na)+',')
 for j in ty: f.write(j+',')
 f.write('\n')
@@ -41,6 +33,6 @@ for l,i in enumerate(cd):
         for k in j:
             f.write(str(k)+',')
         f.write('')
-    f.write(str(en[l]) + ',')
+    f.write(str(en[l]) + ',' + '\n')
     mol += 1
 f.close()

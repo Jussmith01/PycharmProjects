@@ -2,14 +2,14 @@ import numpy as np
 import pyanitools as pyt
 from pyNeuroChem import cachegenerator as cg
 
-wkdir = '/home/jujuman/Research/ANI-G09-DIV'
+wkdir = '/home/jujuman/Research/ANI-DATASET'
 
-saef   = "/home/jujuman/Dropbox/ChemSciencePaper.AER/networks/ANI-c08e-ntwk/sae_6-31gd.dat"
+saef   = "/home/jujuman/Research/ANI-DATASET/ANI-G09-DIV/sae_6-31gd.dat"
 
-h5files = [wkdir + "/ani-gdb-c08e.h5",
-           wkdir + "/gdb9-2500-div-dim_35.h5",]
+h5files = [wkdir + "/h5data/gdb9-2500-div_new.h5",
+           wkdir + "/h5data/ani-gdb-c08e.h5",]
 
-store_dir = wkdir + "/GDB-09-Retrain-DIV/cache-c08e-"
+store_dir = wkdir + "/ANI-G09-DIV/cache-c08e-"
 
 #adl.split_load(10)
 N = 10
@@ -46,6 +46,9 @@ for fn in h5files:
         xyz = np.array_split(xyz, N)
         erg = np.array_split(erg, N)
 
+        #spc = [a.decode('utf-8') for a in spc]
+        #print(spc)
+
         for i,(t,v) in enumerate(zip(cachet, cachev)):
             xyz_t = np.array(np.concatenate([xyz[j] for j in train_idx[i]]), order='C', dtype=np.float32)
             erg_t = np.array(np.concatenate([erg[j] for j in train_idx[i]]), order='C', dtype=np.float64)
@@ -55,8 +58,8 @@ for fn in h5files:
 
             #print('shape: ', xyz_t.shape, ' V shape: ', xyz_v.shape)
 
-            t.insertdata(xyz_t, erg_t, list(spc.astype(str)))
-            v.insertdata(xyz_v, erg_v, list(spc.astype(str)))
+            t.insertdata(xyz_t, erg_t, list(spc))
+            v.insertdata(xyz_v, erg_v, list(spc))
 
     adl.cleanup()
 

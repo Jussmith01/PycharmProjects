@@ -36,9 +36,9 @@ saefile  = anipath + '/sae_6-31gd.dat'
 nnfdir   = anipath + '/networks/'
 
 # Construct pyNeuroChem class
-nc = pync.molecule(cnstfile, saefile, nnfdir, 0)
+nc = pync.molecule(cnstfile, saefile, nnfdir, 1)
 
-dir = '/home/jujuman/Dropbox/ChemSciencePaper.AER/JustinsDocuments/ACS_april_2017/ANI-MD-vDFT/benzeneMD/'
+dir = '/home/jujuman/Dropbox/ChemSciencePaper.AER/Presentations/ACSSF_april_2017/ANI-MD-vDFT/benzeneMD/'
 
 #bz = read('C_100.xyz')
 #bz = read('/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_testdata/specialtest/test.xyz')
@@ -98,13 +98,13 @@ def printenergy(a=bz,b=mdcrd,d=dyn,t=temp):  # store a reference to atoms in the
           'Etot = %.3feV' % (d.get_number_of_steps(),epot, ekin, T, epot + ekin))
     t.write(str(d.get_number_of_steps()) + ' ' + str(d.get_time()) + ' ' + str(ekin / (1.5 * units.kB)) + ' ' + str(epot) + ' ' +  str(ekin) + ' ' + str(epot + ekin) + '\n')
 
-    if d.get_number_of_steps() > 19000:
+    if d.get_number_of_steps() > 0:
         b.write(str(len(a)) + '\n       Temp: ' + str(T) + ' Step: ' + str(d.get_number_of_steps()) + '\n')
         c=a.get_positions(wrap=True)
         for j,i in zip(a,c):
             b.write(str(j.symbol) + ' ' + str(i[0]) + ' ' + str(i[1]) + ' ' + str(i[2]) + '\n')
 
-dyn.attach(printenergy, interval=4)
+dyn.attach(printenergy, interval=50)
 #dyn.attach(MDLogger(dyn, bz, 'bz_md_NVT_10ps_1fs.log', header=True, stress=False,
 #           peratom=False, mode="w"), interval=50)
 

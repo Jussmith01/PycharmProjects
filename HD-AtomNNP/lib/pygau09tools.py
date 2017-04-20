@@ -1,5 +1,6 @@
 import numpy as np
 import re
+import os
 
 def convertatomicnumber(X):
     X = int(X)
@@ -74,11 +75,22 @@ def read_irc (file):
         Nc += 1
 
     en = np.asarray(en, dtype=np.float32)
-    print(en)
+    #print(en)
     cd = np.asarray(cd[:-1], dtype=np.float32).reshape(Nc-1, Na, 3)
-    print(cd)
+    #print(cd)
 
     return [en, cd, ty[0:Na]]
+
+def get_irc_data(fwd_file,bkw_file):
+
+    en1, cd1, ty1 = read_irc(fwd_file)
+    en2, cd2, ty2 = read_irc(bkw_file)
+
+    en = np.concatenate([en2[::-1], en1])
+
+    cd = np.vstack([cd1[::-1], cd2])
+
+    return en, cd, ty1
 
 def read_scan (file):
     f = open(file,'r').read()
@@ -111,3 +123,62 @@ def read_scan (file):
     cd = np.concatenate(cd).reshape(en.shape[0],int(len(cd)/en.shape[0]),3)
 
     return [en, cd, ty[0:cd.shape[1]]]
+
+def create_input_str(wkdir,lot,options,chkpt,spc,xyz,mult,charge,nproc,mb):
+    if len(spc) != xyz.shape[0]:
+        print('spc and xyz shapes do not match!')
+        exit(1)
+
+    input = ''
+
+    input += "%\n%Mem=" + str(mb) + "mb" + "\n"
+    input += "%NProcShared=" + str(nproc) + "\n"
+    input += "%chk=" + wkdir + chkpt + "\n"
+    input += "# " + lot + " " + options + "\n\n"
+    input += "COMMENT LINE\n\n"
+    input += str(charge) + "  " + str(mult) + "\n"
+    for t,r in zip(spc,xyz):
+        input += t + ' ' + str(r[0]) + ' ' + str(r[1]) + ' ' + str(r[2]) + '\n'
+    input += '\n'
+    print(input)
+    return input
+
+def execg09(input):
+    command = "g09 << " + input
+    output = os.popen(command).read()
+    return output
+
+def read_energy(output):
+    import re
+    er = re.compile('SCF Done: +?E\(.+?\) +?= +?([-+]?\d+?\.\d+?) +?A\.U\.')
+    value = er.findall(output)
+    return np.asarray(value,dtype=np.float64)
+
+def read_normalmodes_fromchkpt(chkptfile):
+    import re
+
+    sscmd = "formchk  " + chkptfile + " " + chkptfile + ".fchk"
+    pipe = os.popen(sscmd).read()
+    print(pipe)
+
+    output = open(chkptfile + ".fchk").read()
+    print(output)
+
+    er = re.compile('SCF Done: +?E\(.+?\) +?= +?([-+]?\d+?\.\d+?) +?A\.U\.')
+    value = er.findall(output)
+    print(value)
+
+
+def g09_compute_normmodes(wkdir,lot,spc,xyz):
+
+    input = create_input_str(wkdir,lot,'freq','nmchk.chk',spc,xyz,1,0,8,1024)
+    output = execg09(input)
+
+    #print(output)
+    E = read_energy(output)
+    print(E)
+
+    read_normalmodes_fromchkpt(wkdir+'nmchk.chk')
+
+    #print('Output: ', output)
+

@@ -9,16 +9,16 @@ import pyanitools as pyt
 
 #path = "/home/jujuman/Research/ANI-DATASET/rxn_db_mig.h5"
 #path = "/home/jujuman/Research/ANI-DATASET/ani_data_c01test.h5"
-path = "/home/jujuman/DataTesting/ani-gdb01_test.h5"
+path = "/home/jujuman/Research/ANI-DATASET/ANI-1_release/ani-1_data_c08_test.h5"
 
-dtdirs = ["/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_rxns/scans_double_bond_migration/data/",
-          "/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_dipeptides/testdata/",
-          "/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_dipeptides/testdata2/",
-          "/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_begdb/testdata2/",
-          "/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_aminoacids/testdata/",
-          "/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_fixdata/data/",
-          "/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_dissociation/scans_cc_bonds_dft/double/data/",
-          "/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_dissociation/scans_cc_bonds_dft/single/data/",
+dtdirs = [#"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_rxns/scans_double_bond_migration/data/",
+          #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_dipeptides/testdata/",
+          #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_dipeptides/testdata2/",
+          #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_begdb/testdata2/",
+          #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_aminoacids/testdata/",
+          #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_fixdata/data/",
+          #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_dissociation/scans_cc_bonds_dft/double/data/",
+          #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_dissociation/scans_cc_bonds_dft/single/data/",
           "/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_01/testdata/",
           "/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_02/testdata/",
           "/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_03/testdata/",
@@ -27,10 +27,11 @@ dtdirs = ["/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_rxns/scans_double_bo
           "/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_06/testdata/",
           "/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_07/testdata/",
           "/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_08/testdata/",
+          #"/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_10/testdata/",
          ]
 
-namelist = ["_train.dat", "_valid.dat", "_test.dat"]
-#namelist = ["_test.dat"]
+#namelist = ["_train.dat", "_valid.dat", "_test.dat"]
+namelist = ["_train.dat"]
 
 if os.path.exists(path):
     os.remove(path)
@@ -40,6 +41,7 @@ if os.path.exists(path):
 dpack = pyt.datapacker(path)
 
 totaltime = 0.0
+Ns = 0
 for d in dtdirs:
 
     tmp = listdir(d)
@@ -72,24 +74,30 @@ for d in dtdirs:
                 nc += ncsub
                 readarrays[0] = readarrays[0].reshape(ncsub*nat, ndim)
 
+
                 allarr.append(readarrays)
 
         xyz, typ, E = zip(*allarr)
 
         # Prepare coordinate arrays
-        xyz = np.concatenate(xyz).reshape((nc, 3 * nat))
+        xyz = np.concatenate(xyz).reshape((nc,nat,3))
         xyz = np.array(xyz, dtype=np.float32)
 
         # Prepare energy arrays
         E = np.concatenate(E).reshape(nc)
 
+        Ns += nc
+
         # Prepare and store the data
-        spc = [a.encode('utf8') for a in typ[0]]
-        dpack.store_data(gn + "/mol" + str(n), coordinates=xyz.reshape(E.shape[0],len(spc)*3), energies=E, species=spc)
+        spc = typ[0]
+        #spc = [a.encode('utf8') for a in typ[0]]
+        dpack.store_data(gn + "/mol" + str(n), coordinates=xyz, energies=E, species=spc)
 
         fcounter = fcounter + 1
 
     print('Total load function time: ' + "{:.4f}".format(totaltime) + 's')
+
+print("Total Structures: ", Ns)
 
 dpack.cleanup()
 

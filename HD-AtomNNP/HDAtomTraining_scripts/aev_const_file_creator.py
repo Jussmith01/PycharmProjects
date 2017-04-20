@@ -220,20 +220,20 @@ def show2dcontradialgraph (ShfR,eta,Rc,func,title):
 #         Set Parameters
 #--------------------------------
 #File nam
-pf = 'rHCNOS-5.0A_16-3.1A_a4-8.params' # Output filename
+pf = 'rHCNOFS-4.6A_16-3.1A_a4-8.params' # Output filename
 
 Nrr = 16
-Na = 5
+Na = 6
 Nar = 4
 Nzt = 8
 
 TM = 1
-Rcr = 5.0
+Rcr = 4.6
 Rca = 3.1
 #Atyp = '[H,C,O,N]'
-Atyp = '[H,C,N,O,S]'
-EtaR = np.array([8.0])
-EtaA = np.array([4.0])
+Atyp = '[H,C,N,O,S,F]'
+EtaR = np.array([12.0])
+EtaA = np.array([12.0])
 Zeta = np.array([8.0])
 
 # ****************************************************

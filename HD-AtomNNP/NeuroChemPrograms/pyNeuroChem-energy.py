@@ -9,22 +9,31 @@ import time
 import matplotlib.pyplot as plt
 
 # Set required files for pyNeuroChem
-wkdir    = '/home/jujuman/Dropbox/ChemSciencePaper.AER/ANI-c08e-ntwk/'
+wkdir    = '/home/jujuman/Dropbox/ChemSciencePaper.AER/networks/ANI-c08e-ntwk/'
 cnstfile = wkdir + 'rHCNO-4.6A_16-3.1A_a4-8.params'
 saefile  = wkdir + 'sae_6-31gd.dat'
 nnfdir   = wkdir + 'networks/'
 
 dtdir = '/home/jujuman/Dropbox/ChemSciencePaper.AER/Poster-GTC-May-2017/Timings/'
 #xyz,typ,Eact,tmp    = gt.readncdat(dtdir + 'gdb11_s01-1_test.dat',np.float32)
-xyz,typ,Na = gt.readxyz(dtdir + 'benzene.xyz')
+#xyz,typ,Na = gt.readxyz(dtdir + 'benzene.xyz')
 
-print (xyz)
+#print (xyz)
 
 # Construct pyNeuroChem class
 mol = pync.molecule(cnstfile, saefile, nnfdir, 0)
-con = pync.conformers(cnstfile, saefile, nnfdir, 0)
+#con = pync.conformers(cnstfile, saefile, nnfdir, 0)
+
+params = mol.getntwkparams(0,3)
+
+print(params["weights"].shape)
+
+print(params["weights"])
+print(params["biases"])
 
 # Set the conformers in NeuroChem
+
+'''
 mol.setMolecule(coords=xyz[0],types=typ)
 con.setConformers(confs=xyz,types=typ)
 
@@ -82,7 +91,6 @@ print('\nCON E+F time: ', (conF_t+conE_t)*1000.0,'ms')
 print('MOL E+F time: ', (molE_t+molF_t)*1000.0,'ms')
 print('E+F dtime: ', ((conF_t+conE_t) - (molE_t+molF_t))*1000.0,'ms')
 
-'''
 AE = nc.aenergies()
 
 print('\nAE:')

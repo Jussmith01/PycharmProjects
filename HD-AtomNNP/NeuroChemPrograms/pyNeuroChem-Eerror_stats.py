@@ -86,13 +86,14 @@ print(nl)
 node = "gdb11_s10"
 
 #Network 1 Files
-wkdir = '/home/jujuman/Dropbox/ChemSciencePaper.AER/networks/ANI-1-ntwk/'
+#wkdir = '/home/jujuman/Dropbox/ChemSciencePaper.AER/networks/ANI-1-ntwk/'
+wkdir = '/home/jujuman/Dropbox/ChemSciencePaper.AER/networks/ANI-c08f09dd-ntwk-cv/cv_c08e_ntw_4/'
 #wkdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/train_08_9/'
 #wkdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/train_01/'
 
 
-cnstfile = wkdir + 'rHCNO-4.6A_32-3.1A_a8-8.params'
-saefile  = wkdir + 'sae_6-31gd.dat'
+cnstfile = wkdir + '../rHCNO-4.6A_16-3.1A_a4-8.params'
+saefile  = wkdir + '../sae_6-31gd.dat'
 nnfdir   = wkdir + 'networks/'
 
 E_max = 300.0 # an energy cuttoff for error considerations in kcal/mol
@@ -124,7 +125,7 @@ mNa = 100
 
 _timeloop = tm.time()
 
-for data in adl.getnodenextdata(node):
+for data in adl:
     # Extract the data
     xyz = data['coordinates']
     Eact_W = data['energies']
@@ -135,8 +136,9 @@ for data in adl.getnodenextdata(node):
         #print('FILE: ' + dtdir + fpref + str(i) + fpost) 
         #print('FILE: ' + str(cnt))
 
-        gt.writexyzfile(data['child']+'.xyz',xyz,spc)
+        #gt.writexyzfile(data['child']+'.xyz',xyz,spc)
 
+        print('shape:', xyz.shape)
         Nm = xyz.shape[0]
         Na = xyz.shape[1]
 
@@ -162,6 +164,7 @@ for data in adl.getnodenextdata(node):
             #print (Eact_W)
 
             # Set the conformers in NeuroChem
+            #spc = [i.decode('utf-8') for i in spc]
             nc.setConformers(confs=xyz[i1:i2],types=list(spc))
 
             # Print some data from the NeuroChem
@@ -207,7 +210,7 @@ for data in adl.getnodenextdata(node):
 
             Ecmp += Ecmp_t
             Eact += Eact_t
-            print('FILE: ', data['child'],' Energy: ', gt.hatokcal * np.array(Eact_t).min(),' Error: ', gt.hatokcal * gt.calculaterootmeansqrerror(np.array(Eact_t),np.array(Ecmp_t)))
+            #print('FILE: ', data['child'],' Energy: ', gt.hatokcal * np.array(Eact_t).min(),' Error: ', gt.hatokcal * gt.calculaterootmeansqrerror(np.array(Eact_t),np.array(Ecmp_t)))
             cnt = cnt + 1
 
 _timeloop2 = (tm.time() - _timeloop)
