@@ -147,7 +147,7 @@ for p in P:
     data2 = np.load(dir + 'data/minimized/angular/GDB-' + p + '_data.npz')['arr_0']
     spec2 = np.load(dir + 'data/minimized/angular/GDB-' + p + '_spec.npz')['arr_0']
 
-    make_polar_cont(axes,data,spec,an1,an2,0.5,0.1)
+    make_polar_cont(axes,data,spec,an1,an2,0.1,0.1)
     #make_polar_plot(axes, data, spec, an, 'blue', 0.2)
 
     make_polar_plot(axes, data2, spec2, an1, an2, 'red', 'green', 1.0)
