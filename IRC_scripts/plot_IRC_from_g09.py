@@ -11,10 +11,11 @@ import os
 def plot_irc_data(axes, file, title, ntwl, cnstfile, saefile, dir, trained):
     Eact, xyz, typ, Rc = pyg.read_irc(file)
     Rc = Rc[:,1]
+    Rc = Rc[::-1]
 
     # Shift reference to reactant
     #Eact = Eact[::-1]
-    Eact = hdt.hatokcal * (Eact - Eact[0])
+    Eact = hdt.hatokcal * (Eact - Eact[-1])
 
     # Plot reference results
     axes.plot (Rc,Eact, color='black',  linewidth=3)
@@ -25,7 +26,7 @@ def plot_irc_data(axes, file, title, ntwl, cnstfile, saefile, dir, trained):
     derr = np.zeros(len(ntwl))
     berr = np.zeros(len(ntwl))
     for i, (nt,c) in enumerate(zip(ntwl,color)):
-        ncr = pync.conformers(dir + cnstfile, dir + saefile, rcdir + nt[0] + 'networks/', 0)
+        ncr = pync.conformers(dir + nt[0] + cnstfile, dir + nt[0] + saefile, rcdir + nt[0] + 'networks/', 0)
 
         # Set the conformers in NeuroChem
         ncr.setConformers(confs=xyz, types=list(typ))
@@ -34,7 +35,7 @@ def plot_irc_data(axes, file, title, ntwl, cnstfile, saefile, dir, trained):
         E1 = ncr.energy()
 
         # Shift ANI E to reactant
-        E1 = hdt.hatokcal * (E1 - E1[0])
+        E1 = hdt.hatokcal * (E1 - E1[-1])
 
         # Calculate error
         errn = hdt.calculaterootmeansqrerror(E1,Eact)
@@ -44,11 +45,12 @@ def plot_irc_data(axes, file, title, ntwl, cnstfile, saefile, dir, trained):
         berr[i] = np.abs(E1.max() - Eact.max())
 
         # Plot
-        axes.plot(Rc,E1, 'r--', color=c, label="["+nt[1]+"]: "+"{:.2f}".format(errn), linewidth=2)
+        axes.plot(Rc,E1, 'r--', color=c, label="["+nt[1]+"]: "+"{:.2f}".format(berr[i]), linewidth=2)
         #axes.plot([Rc['x'][:,1].min(),Rc['x'][:,1].max()],[E1[-1],E1[-1]], 'r--', color=c)
         #axes.plot([Rc['x'][:,1].min(),Rc['x'][:,1].max()],[E1[0],E1[0]], 'r--', color=c)
 
     axes.set_xlim([Rc.min(), Rc.max()])
+    axes.set_ylim([-15, 70])
     axes.legend(loc="upper left",fontsize=8)
     if trained:
         axes.set_title(title,color='green',fontdict={'weight':'bold'})
@@ -60,14 +62,16 @@ main_dir = '/home/jujuman/Dropbox/IRC_DBondMig/Benzene_rxn2/'
 
 # Set required files for pyNeuroChem
 rcdir  = '/home/jujuman/Research/ANI-DATASET/RXN1_TNET/training/'
-cnstfile = 'rHCNO-4.6A_16-3.1A_a4-8.params'
-saefile  = 'sae_6-31gd.dat'
+#rcdir  = '/home/jujuman/Research/SingleNetworkTest/'
+cnstfile = '../../rHCNO-4.6A_16-3.1A_a4-8.params'
+saefile  = '../../sae_6-31gd.dat'
 
-ntwl = [('ANI-c08f-ntwk/', 'N'),
-        #('rxn1/ani_benz_rxn_ntwk/', '1'),
-        #('rxn2/ani_benz_rxn_ntwk/', '1,2'),
-        #('rxn-1-2-5-6/ani_benz_rxn_ntwk/', '1,2,5,6'),
-        ('rxn1to6/ani_benz_rxn_ntwk/','1-6'),
+ntwl = [('ANI-c08f-ntwk/', 'Org'),
+        ('rxn1/ani_benz_rxn_ntwk/', '1'),
+        ('rxn2/ani_benz_rxn_ntwk/', '1,2'),
+        ('rxn-1-2-5-6/ani_benz_rxn_ntwk/', '1,2,5,6'),
+        ('rxn1to6/ani_benz_rxn_ntwk/','6Rxn'),
+        #('train_04/', 'AllAtomNet'),
         ]
 
 t_list = ['1-1',
@@ -75,7 +79,8 @@ t_list = ['1-1',
           '2-5',
           '2-6',
           '3-1',
-          '4-1',]
+          '4-1',
+          ]
 
 # THE PROGRAM!
 sub_dir = list(chain.from_iterable([[main_dir+d+'/'+i+'/IRC.log' for i in os.listdir(main_dir+d)] for d in os.listdir(main_dir) if '.docx' not in d]))

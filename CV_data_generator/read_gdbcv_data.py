@@ -47,7 +47,7 @@ def plot_bar(grid, s, name_list, width, color, index, expr_list, label):
     fracs = np.array(fracs)
 
     plt.subplot(grid)
-    rects = plt.bar(x_pos+index*width, fracs, width, color=color, label=label, align='center', alpha=0.5)
+    rects = plt.bar(x_pos+index*width, fracs, width, color=color, label=label+' (s max: '+"{:.1f}".format(s.max())+')', align='center', alpha=0.7)
     plt.xticks(x_pos,expr_list)
     #plt.title(title+' '+expression+'')
     return rects, fracs.min(),fracs.max()
@@ -72,6 +72,48 @@ data = np.loadtxt(wkdir + 'gdb-' + N + '-cvsdev_c08f09div.dat', delimiter=':', d
 Na4  = np.asarray([np.float32(str(i).split("(")[-1].split(")")[0]) for i in data[:,0]])
 std4 = np.asarray([np.float32(str(i).split("=")[-1].split(" ")[0]) for i in data[:,3]])/Na4
 
+h11 = np.asarray([i for i in np.sort(std4) if i < 0.1])
+h12 = np.asarray([i for i in np.sort(std1) if i < 0.1])
+
+h21 = np.asarray([i for i in np.sort(std4) if i >= 0.1 and i < 0.6])
+h22 = np.asarray([i for i in np.sort(std1) if i >= 0.1 and i < 0.6])
+
+h31 = np.asarray([i for i in np.sort(std4) if i >= 0.6])
+h32 = np.asarray([i for i in np.sort(std1) if i >= 0.6])
+
+hist_grid = GridSpec(1, 3)
+
+bins=np.histogram(np.hstack((h11,h12)), bins=150)[1] #get the bin edges
+plt.subplot(hist_grid[0, 0])
+plt.hist(h11,bins,color='red',alpha=0.5,label='Diverse Dimers')
+plt.hist(h12,bins,color='blue',alpha=0.5,label='Original')
+plt.xlabel('Std. Dev. (kcal/mol/atom)')
+plt.ylabel('Count')
+plt.xlim([0,0.1])
+plt.title("s < 0.1")
+
+bins=np.histogram(np.hstack((h21,h22)), bins=150)[1] #get the bin edges
+plt.subplot(hist_grid[0, 1])
+plt.hist(h21,bins,color='red',alpha=0.5,label='Diverse Dimers')
+plt.hist(h22,bins,color='blue',alpha=0.5,label='Original')
+plt.xlabel('Std. Dev. (kcal/mol/atom)')
+plt.ylabel('Count')
+plt.xlim([0.1,0.6])
+plt.title("s >= 0.1 and s < 0.6")
+
+bins=np.histogram(np.hstack((h31,h32)), bins=150)[1] #get the bin edges
+plt.subplot(hist_grid[0, 2])
+plt.hist(h31,bins,color='red',alpha=0.5,label='Diverse Dimers')
+plt.hist(h32,bins,color='blue',alpha=0.5,label='Original')
+plt.xlabel('Std. Dev. (kcal/mol/atom)')
+plt.ylabel('Count')
+plt.xlim(0.6,max([h31.max(),h32.max()]))
+plt.title("s >= 0.6")
+
+#plt.xlim([0.0,0.4])
+plt.legend(loc='upper right', shadow=True)
+plt.show()
+
 the_grid = GridSpec(1, 1)
 
 name_list = ['Original', 'Worst 2500', 'Diverse dimers', 'Diverse 2500']
@@ -93,10 +135,10 @@ def autolabel(rects):
     """
     Attach a text label above each bar displaying its height
     """
-    for rect in rects:
+    for rect,r1 in zip(rects,rect1):
         height = 100.0 * (rect.get_height() / std1.shape[0])
         plt.text(rect.get_x() + rect.get_width()/2., 1.01*rect.get_height(),
-                "{:.1f}".format(height) + '%',
+                "{:.1f}".format(height) + '%\n' + str(int(rect.get_height()-r1.get_height())),
                 ha='center', va='bottom')
 
 autolabel(rect1)
