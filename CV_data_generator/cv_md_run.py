@@ -37,10 +37,11 @@ from ase.optimize import BFGS, LBFGS
 
 #import seaborn as sns
 #%matplotlib inline
-
+from sklearn.metrics.pairwise import cosine_similarity
+from scipy import sparse
 
 #--------------Parameters------------------
-wkdir = '/home/jujuman/Research/CrossValidation/GDB-09-Retrain/'
+wkdir = '/home/jujuman/Dropbox/ChemSciencePaper.AER/networks/ANI-c08f09dd-ntwk-cv/'
 cnstfile = wkdir + 'rHCNO-4.6A_16-3.1A_a4-8.params'
 saefile = wkdir + 'sae_6-31gd.dat'
 
@@ -59,10 +60,10 @@ ncl =  [pync.molecule(cnstfile, saefile, wkdir + 'cv_c08e_ntw_' + str(l) + '/net
 print('Complete.')
 
 # Set required files for pyNeuroChem
-anipath  = '/home/jujuman/Dropbox/ChemSciencePaper.AER/ANI-c08e-ccdissotest1-ntwk'
-cnstfile = anipath + '/rHCNO-4.6A_16-3.1A_a4-8.params'
-saefile  = anipath + '/sae_6-31gd.dat'
-nnfdir   = anipath + '/networks/'
+#anipath  = '/home/jujuman/Dropbox/ChemSciencePaper.AER/ANI-c08e-ccdissotest1-ntwk'
+#cnstfile = anipath + '/rHCNO-4.6A_16-3.1A_a4-8.params'
+#saefile  = anipath + '/sae_6-31gd.dat'
+#nnfdir   = anipath + '/networks/'
 
 # Construct pyNeuroChem class
 print('Constructing MD network...')
@@ -71,9 +72,9 @@ nc = ncl[1]
 print('FINISHED')
 
 #mol = read('/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_testdata/specialtest/test.xyz')
-#mol = read('/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_begdb/begdb-h2oclusters/xyz/4179_water2Cs.xyz')
+mol = read('/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_begdb/begdb-h2oclusters/xyz/4179_water2Cs.xyz')
 #mol = read('/home/jujuman/Research/CrossValidation/MD_CV/benzene.xyz')
-mol = read('/home/jujuman/Research/CrossValidation/GDB-09-High-sdev/bmol-11.xyz')
+#mol = read('/home/jujuman/Dropbox/ChemSciencePaper.AER/TestCases/Retinol/opt_test_NO.xyz')
 
 print(mol)
 #L = 16.0
@@ -85,7 +86,7 @@ mol.calc.setnc(nc)
 
 start_time = time.time()
 dyn = LBFGS(mol)
-dyn.run(fmax=0.0001)
+dyn.run(fmax=0.001)
 print('[ANI Total time:', time.time() - start_time, 'seconds]')
 
 # We want to run MD with constant energy using the Langevin algorithm
@@ -116,20 +117,30 @@ start_time2 = time.time()
 # get the chemical symbols
 spc = mol.get_chemical_symbols()
 
-xo = open(stdir + 'data/md-peptide-cvnms.xyz', 'w')
+#xo = open(stdir + 'data/md-peptide-cvnms.xyz', 'w')
 f = open(stdir + 'md-peptide-cv.dat','w')
 l_sigma = []
 
 for i in range(10000):
-    dyn.run(100)  # Do 5ps of MD
+    dyn.run(100)  # Do 100 steps of MD
 
     xyz = np.array(mol.get_positions(), dtype=np.float32).reshape(len(spc), 3)
     energies = np.zeros((5), dtype=np.float64)
+    forces = []
     N = 0
     for comp in ncl:
         comp.setMolecule(coords=xyz, types=list(spc))
         energies[N] = comp.energy()[0]
+        forces.append(comp.force().reshape(1, len(list(spc)), 3))
         N = N + 1
+
+    #print(np.vstack(forces))
+
+    csl = []
+    for j in range(0, len(list(spc))):
+        csm = cosine_similarity(np.vstack(forces)[:,j,:])
+        cse = np.mean(np.asarray(csm[np.triu_indices_from(csm,1)]))
+        csl.append((spc[j],cse))
 
     energies = hdt.hatokcal * energies
 
@@ -146,8 +157,9 @@ for i in range(10000):
     ekin = mol.get_kinetic_energy() / len(mol)
 
     output = '  ' + str(i) + ' (' + str(len(spc)) + ',', "{:.4f}".format(ekin / (1.5 * units.kB)),'K) : stps=' + str(dyn.get_number_of_steps()) + ' : std(kcal/mol)=' + "{:.4f}".format(sigma)
-    print(output)
+    print(output,csl)
 
+    '''
     if sigma > 0.5:
         vib = Vibrations(mol)
         vib.run()
@@ -187,8 +199,9 @@ for i in range(10000):
                 z) + '\n')
 
             #xo.write('\n')
+    '''
 
-xo.close()
+#xo.close()
 f.close()
 end_time2 = time.time()
 print('CV MD Total Time:', end_time2 - start_time2)

@@ -74,32 +74,32 @@ def corrEplot(ax,d1,d2,shr1,shr2):
     ax.set_xlabel('$E_{ref}$',fontdict=font)
 
 # Set data fields
-h5file = '/home/jujuman/Research/ANI-DATASET/ani_data_c10test.h5'
-#h5file = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/cache09f/testset/c08f-testset.h5'
+h5file = '/home/jujuman/Research/SingleNetworkTest/cache08f/testset/testset.h5'
+#h5file = '/home/jujuman/Research/ANI-DATASET/h5data/ani_data_c10test.h5'
 
 # Declare loader
 adl = pyt.anidataloader(h5file)
 
-nl = adl.get_node_list()
+nl = adl.get_group_list()
 print(nl)
 
-node = "gdb11_s10"
+#node = "gdb11_s10"
 
 #Network 1 Files
-#wkdir = '/home/jujuman/Dropbox/ChemSciencePaper.AER/networks/ANI-1-ntwk/'
-wkdir = '/home/jujuman/Dropbox/ChemSciencePaper.AER/networks/ANI-c08f09dd-ntwk-cv/cv_c08e_ntw_4/'
+#wkdir = '/home/jujuman/Dropbox/ChemSciencePaper.AER/networks/ANI-c08f-ntwk/'
+wkdir = '/home/jujuman/Research/SingleNetworkTest/train_04/'
 #wkdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/train_08_9/'
 #wkdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/train_01/'
 
 
-cnstfile = wkdir + '../rHCNO-4.6A_16-3.1A_a4-8.params'
-saefile  = wkdir + '../sae_6-31gd.dat'
+cnstfile = wkdir + 'rHCNO-4.6A_16-3.1A_a4-8.params'
+saefile  = wkdir + 'sae_6-31gd.dat'
 nnfdir   = wkdir + 'networks/'
 
 E_max = 300.0 # an energy cuttoff for error considerations in kcal/mol
 
 # Construct pyNeuroChem classes
-nc = pync.conformers(cnstfile, saefile, nnfdir, 1)
+nc = pync.conformers(cnstfile, saefile, nnfdir, 0, True)
 
 Ecmp = []
 Eact = []
@@ -131,6 +131,8 @@ for data in adl:
     Eact_W = data['energies']
     spc = data['species']
 
+    xyz = xyz.reshape(Eact_W.shape[0], len(spc),3)
+
     if xyz.shape[0] > 0:
 
         #print('FILE: ' + dtdir + fpref + str(i) + fpost) 
@@ -138,7 +140,7 @@ for data in adl:
 
         #gt.writexyzfile(data['child']+'.xyz',xyz,spc)
 
-        print('shape:', xyz.shape)
+        #print('shape:', xyz.shape)
         Nm = xyz.shape[0]
         Na = xyz.shape[1]
 
@@ -268,7 +270,7 @@ print (str(Ndps))
 #corrEplot(axes.flat[2],Eact,Ecmp,Eact.min(),Eact.max())
 #corrEplot(axes.flat[3],Eact,Ecmp,Eact.min(),Eact.max())
 
-plt.plot (Eact, Eact, color='black',  label='DFT', linewidth=1)
+plt.scatter (Eact, Eact, color='black',  label='DFT', linewidth=1)
 plt.scatter (Eact, Ecmp, marker=r'x', color='red',  label='TGM RMSE: ' + "{:.3f}".format(rmse1),  linewidth=1)
 
 plt.ylabel('$E_{cmp}$ (kcal/mol)')
