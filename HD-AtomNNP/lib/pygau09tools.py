@@ -39,19 +39,19 @@ def read_irc (file):
     f = open(file,'r').read()
 
     ty = []
-    ls = []
     en = []
     cd = []
-
-    for i in range(0, 10):
-        ls.append([])
 
     r1 = re.compile('SCF Done:\s+?E\(.+?\)\s+?=\s+?(.+?)A.U.')
     r2 = re.compile('Input orientation:.+\n.+\n.+\n.+\n.+\n([\S\s]+?)(?:---)')
     r3 = re.compile('\d+?\s+?(\d+?)\s+?\d+?\s+?(\S+?)\s+?(\S+?)\s+?(\S+)')
+    r4 = re.compile('(?:Point Number)\s+?(\d+?)\s+?(?:in FORWARD path direction.)')
+    rRc= re.compile('\s+?\d+?\s+?([-+]?\d+?\.\d+?)\s+?([-+]?\d+?\.\d+?)\s*?\n')
 
     s1 = r1.findall(f)
     s2 = r2.findall(f)
+    s3 = r4.findall(f)
+    #print('N fwd: ',s3[-1]+1)
 
     for i in s1:
         en.append(i.strip())
@@ -75,19 +75,32 @@ def read_irc (file):
         Nc += 1
 
     en = np.asarray(en, dtype=np.float32)
-    #print(en)
+    #print(en.shape)
     cd = np.asarray(cd[:-1], dtype=np.float32).reshape(Nc-1, Na, 3)
-    #print(cd)
+    #print(cd.shape)
 
-    return [en, cd, ty[0:Na]]
+    Nf = int(s3[-1])+1
+    en_t = np.concatenate([en[:Nf][::-1], en[Nf:]])
+    cd_t = np.vstack([cd[:Nf,:,:][::-1,:,:], cd[Nf:,:,:]])
 
-def get_irc_data(fwd_file,bkw_file):
+    Rc = np.array(rRc.findall(f), dtype=np.float32)
+
+    return [en_t, cd_t, ty[0:Na], Rc]
+
+def get_irc_data(fwd_file,bkw_file,trs_file):
 
     en1, cd1, ty1 = read_irc(fwd_file)
     en2, cd2, ty2 = read_irc(bkw_file)
+    en3, cd3, ty3 = read_irc(trs_file)
 
+    Et = np.array(en3[-1],dtype=np.float64).reshape(1)
+    Ct = np.array(cd3[-1],dtype=np.float32).reshape(1,len(ty1),3)
+
+    #print(cd2[::-1].shape,Ct.shape)
+
+    #en = np.concatenate([en2[::-1], Et, en1])
+    #cd = np.vstack([cd1[::-1], Ct, cd2])
     en = np.concatenate([en2[::-1], en1])
-
     cd = np.vstack([cd1[::-1], cd2])
 
     return en, cd, ty1

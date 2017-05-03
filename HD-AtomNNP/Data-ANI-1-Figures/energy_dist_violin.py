@@ -1,8 +1,10 @@
 __author__ = 'jujuman'
 
 import numpy as np
-import seaborn as sns
 import pandas as pd
+import seaborn as sns
+import pyanitools as pyt
+import hdnntools as hdt
 
 def convertatomicnumber(X):
     if X == 'H':
@@ -39,27 +41,37 @@ def compute_sae(spec):
             exit(1)
     return sae
 
-path = "/home/jujuman/Scratch/ANI-1-DATA-PAPER-FILES/data/data-ani-1.h5"
-#path = '/home/jujuman/Python/PycharmProjects/HD-AtomNNP/Data-ANI-1-Figures/ethane_CC_disso_data.h5'
+path = '/home/jujuman/Research/ANI-DATASET/ANI-1_release/ani-1_data_c08.h5'
+
 # opening file
-store = pd.HDFStore(path, complib='blosc',complevel=0)
-print(store)
+adl = pyt.anidataloader(path)
+
+gl = adl.get_group_list()[3:]
+
+print(gl)
 
 df_E = []
 
 maxi = 0.0
 mini = 100000000.0
 
-for x in store.get_node(""):
-    print("Name:", x._v_name)
+for g in gl:
+    print(g.name)
 
-    index = np.unique(np.asarray(store.select(x._v_name + "/" + x.energy._v_name).index.get_level_values('molecule')))
+    for i,data in enumerate(adl.iter_group(g)):
+        #print(g.name.split("_s")[1],' : ',data["name"])
 
+        E = data['energies']
+        Ne = getNumberElectrons(np.asarray(data['species']).flatten())
+        E = E/float(Ne)
+        df_E.append(pd.DataFrame(E, columns=[str(g.name.split("_s")[1])]))
+
+    '''
     for i in index:
         print('Index: ', i)
         energy = store.select(x._v_name + "/" + x.energy._v_name, 'molecule == ' + str(i))
         species = store.select(x._v_name + "/" + x.species._v_name, 'molecule == ' + str(i))
-        Ne = getNumberElectrons(np.asarray(species).flatten())
+
         #sae = compute_sae(np.asarray(species).flatten())
 
         # Subtract interaction energies
@@ -74,15 +86,17 @@ for x in store.get_node(""):
             mini = abs(E.min())
 
         #
-        df_E.append(pd.DataFrame(E, columns=[x._v_name]))
 
         #print (df_E)
+    '''
 
-store.close()
-
-print('Max: ', maxi,' Min: ',mini)
+adl.cleanup()
+#print('Max: ', maxi,' Min: ',mini)
 
 df_Ec =  pd.concat(df_E)
-ax = sns.violinplot(x=df_Ec)
+sns.set_style("whitegrid")
+ax = sns.violinplot(x=df_Ec, scale="area",bw=0.2)
+
+ax.set(xlabel='GDB subset', ylabel='Totale energy / number of electrons (Ha)')
 
 sns.plt.show()

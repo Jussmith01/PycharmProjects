@@ -219,22 +219,25 @@ def show2dcontradialgraph (ShfR,eta,Rc,func,title):
 #--------------------------------
 #         Set Parameters
 #--------------------------------
-#File nam
-pf = 'rHCNOFS-4.6A_16-3.1A_a4-8.params' # Output filename
+#File name
+pf = 'rHCNOF-6.0A_8-4.0A_a4-8.params' # Output filename
 
-Nrr = 16
-Na = 6
-Nar = 4
-Nzt = 8
+Nrr = 8 # Number of shifting radial functions
+Na = 5 # Number of atom types
+Nar = 4 # Number of shifting angular/radial parameters
+Nzt = 8 # Number of angular shifting parameters
 
 TM = 1
-Rcr = 4.6
-Rca = 3.1
+Rcr = 6.0 # radial cutoff
+Rca = 4.0 # Angular cutoff
+
+xs = 1.3
+
 #Atyp = '[H,C,O,N]'
-Atyp = '[H,C,N,O,S,F]'
-EtaR = np.array([12.0])
-EtaA = np.array([12.0])
-Zeta = np.array([8.0])
+Atyp = '[H,C,N,O,F]'
+EtaR = np.array([6.0]) # Radial eta parameters
+EtaA = np.array([8.0]) # Angular/Radial eta parameters
+Zeta = np.array([8.0]) # Angular zeta parameters
 
 # ****************************************************
 cmap = mpl.cm.brg
@@ -256,8 +259,8 @@ ShfR = np.zeros(Nrr)
 
 #Now instead of multiple etaR we use multiple shifts with a single large EtaR
 for i in range(0,Nrr):
-    stepsize = (Rcr-1.2) / float(Nrr)
-    step = i * stepsize + 1.2
+    stepsize = (Rcr-xs) / float(Nrr)
+    step = i * stepsize + xs
     color = i/float(Nrr)
     computeradialdataset(0.0, Rcr, 1000, EtaR[0], Rcr,step, plt, cmap(color), '$R_s$ = '+ "{:.2f}".format(step))
     ShfR[i] = step
@@ -314,8 +317,8 @@ plt.show()
 ShfA = np.zeros(Nar)
 
 for i in range(0,Nar):
-    stepsize = (Rca-1.2) / float(Nar)
-    step = (i * stepsize + 1.2)
+    stepsize = (Rca-xs) / float(Nar)
+    step = (i * stepsize + xs)
     color = i/float(Nrr)
     computeangularradialdataset(0.0, Rca, 1000, EtaA[0], Rca,step, plt, cmap(color), r"${R_s}$ = " + "{:.2f}".format(step))
     ShfA[i] = step

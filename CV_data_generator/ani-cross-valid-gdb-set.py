@@ -43,7 +43,7 @@ def formatsmilesfile(file):
 #def make_atoms
 
 #--------------Parameters------------------
-smfile = '/home/jujuman/Research/RawGDB11Database/gdb11_size10.smi' # Smiles file
+smfile = '/home/jujuman/Research/RawGDB11Database/gdb11_size06.smi' # Smiles file
 
 wkdir1 = '/home/jujuman/Dropbox/ChemSciencePaper.AER/networks/ANI-c08f-ntwk-cv/'
 wkdir2 = '/home/jujuman/Dropbox/ChemSciencePaper.AER/networks/ANI-c08f09bad-ntwk-cv/'
@@ -72,10 +72,10 @@ total_mol = 0
 total_bad = 0
 
 #mols = [molecules[i] for i in range(217855,217865)]
-f1 = open('/home/jujuman/Research/CrossValidation/GDB-10-High-sdev/gdb-10-cvsdev_c08f.dat','w')
-f2 = open('/home/jujuman/Research/CrossValidation/GDB-10-High-sdev/gdb-10-cvsdev_c08f09bad.dat','w')
-f3 = open('/home/jujuman/Research/CrossValidation/GDB-10-High-sdev/gdb-10-cvsdev_c08f09dd.dat','w')
-f4 = open('/home/jujuman/Research/CrossValidation/GDB-10-High-sdev/gdb-10-cvsdev_c08f09div.dat','w')
+f1 = open('/home/jujuman/Research/CrossValidation/GDB-06-High-sdev/gdb-06-cvsdev_c08f.dat','w')
+f2 = open('/home/jujuman/Research/CrossValidation/GDB-06-High-sdev/gdb-06-cvsdev_c08f09bad.dat','w')
+f3 = open('/home/jujuman/Research/CrossValidation/GDB-06-High-sdev/gdb-06-cvsdev_c08f09dd.dat','w')
+f4 = open('/home/jujuman/Research/CrossValidation/GDB-06-High-sdev/gdb-06-cvsdev_c08f09div.dat','w')
 for k,m in enumerate(molecules):
     if m is None: continue
 
@@ -142,7 +142,7 @@ for k,m in enumerate(molecules):
                 N = N + 1
 
             if np.std(hdt.hatokcal * energies) > 5.0:
-                hdt.writexyzfile('/home/jujuman/Research/CrossValidation/GDB-10-High-sdev/CV1bmol-'+str(total_mol)+'.xyz',xyz.reshape(1,xyz.shape[0],xyz.shape[1]),spc)
+                hdt.writexyzfile('/home/jujuman/Research/CrossValidation/GDB-06-High-sdev/CV1bmol-'+str(total_mol)+'.xyz',xyz.reshape(1,xyz.shape[0],xyz.shape[1]),spc)
                 total_bad = total_bad + 1
 
             perc = int(100.0 * total_bad / float(total_mol))
@@ -163,7 +163,7 @@ for k,m in enumerate(molecules):
                 N = N + 1
 
             if np.std(hdt.hatokcal * energies) > 5.0:
-                hdt.writexyzfile('/home/jujuman/Research/CrossValidation/GDB-10-High-sdev/CV2bmol-'+str(total_mol)+'.xyz',xyz.reshape(1,xyz.shape[0],xyz.shape[1]),spc)
+                hdt.writexyzfile('/home/jujuman/Research/CrossValidation/GDB-06-High-sdev/CV2bmol-'+str(total_mol)+'.xyz',xyz.reshape(1,xyz.shape[0],xyz.shape[1]),spc)
                 total_bad = total_bad + 1
 
             perc = int(100.0 * total_bad / float(total_mol))
@@ -184,7 +184,7 @@ for k,m in enumerate(molecules):
                 N = N + 1
 
             if np.std(hdt.hatokcal * energies) > 5.0:
-                hdt.writexyzfile('/home/jujuman/Research/CrossValidation/GDB-10-High-sdev/CV3bmol-'+str(total_mol)+'.xyz',xyz.reshape(1,xyz.shape[0],xyz.shape[1]),spc)
+                hdt.writexyzfile('/home/jujuman/Research/CrossValidation/GDB-06-High-sdev/CV3bmol-'+str(total_mol)+'.xyz',xyz.reshape(1,xyz.shape[0],xyz.shape[1]),spc)
                 total_bad = total_bad + 1
 
             perc = int(100.0 * total_bad / float(total_mol))
@@ -205,7 +205,7 @@ for k,m in enumerate(molecules):
                 N = N + 1
 
             if np.std(hdt.hatokcal * energies) > 5.0:
-                hdt.writexyzfile('/home/jujuman/Research/CrossValidation/GDB-10-High-sdev/CV4bmol-'+str(total_mol)+'.xyz',xyz.reshape(1,xyz.shape[0],xyz.shape[1]),spc)
+                hdt.writexyzfile('/home/jujuman/Research/CrossValidation/GDB-06-High-sdev/CV4bmol-'+str(total_mol)+'.xyz',xyz.reshape(1,xyz.shape[0],xyz.shape[1]),spc)
                 total_bad = total_bad + 1
 
             perc = int(100.0 * total_bad / float(total_mol))
