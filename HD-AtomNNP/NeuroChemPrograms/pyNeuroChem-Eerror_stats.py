@@ -74,8 +74,8 @@ def corrEplot(ax,d1,d2,shr1,shr2):
     ax.set_xlabel('$E_{ref}$',fontdict=font)
 
 # Set data fields
-h5file = '/home/jujuman/Research/SingleNetworkTest/cache08f/testset/testset.h5'
-#h5file = '/home/jujuman/Research/ANI-DATASET/h5data/ani_data_c10test.h5'
+#h5file = '/home/jujuman/Research/SingleNetworkTest/cache08f/testset/testset.h5'
+h5file = '/home/jujuman/Research/ANI-DATASET/h5data/ani_data_c10test.h5'
 
 # Declare loader
 adl = pyt.anidataloader(h5file)
@@ -182,8 +182,8 @@ for data in adl:
 
             #print(Eact_t-Ecmp_t)
 
-            #Ecmp_t = Ecmp_t - Ecmp_t.min()
-            #Eact_t = Eact_t - Eact_t.min()
+            Ecmp_t = Ecmp_t - Ecmp_t.min()
+            Eact_t = Eact_t - Eact_t.min()
 
             Ecmp_t = setmaxE(Eact_t, Ecmp_t, E_max)
             Eact_t = setmaxE(Eact_t, Eact_t, E_max)
