@@ -30,19 +30,20 @@ from ase.optimize import BFGS, LBFGS
 #%matplotlib inline
 
 # Set required files for pyNeuroChem
-anipath  = '/home/jujuman/Dropbox/ChemSciencePaper.AER/networks/ANI-c08f-ntwk/'
+anipath  = '/home/jujuman/Scratch/Research/SingleNetworkTest/train_05'
+#anipath  = '/home/jujuman/Dropbox/ChemSciencePaper.AER/networks/ANI-c08f-ntwk'
 cnstfile = anipath + '/rHCNO-4.6A_16-3.1A_a4-8.params'
 saefile  = anipath + '/sae_6-31gd.dat'
 nnfdir   = anipath + '/networks/'
 
 # Construct pyNeuroChem class
-nc = pync.molecule(cnstfile, saefile, nnfdir, 1)
+nc = pync.molecule(cnstfile, saefile, nnfdir, 0, True)
 
-dir = '/home/jujuman/Dropbox/ChemSciencePaper.AER/Presentations/ACSSF_april_2017/ANI-MD-vDFT/benzeneMD/'
+dir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnntsgdb11_02/'
 
 #bz = read('C_100.xyz')
 #bz = read('/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_testdata/specialtest/test.xyz')
-bz = read(dir+'benzene.xyz')
+bz = read(dir+'molecule-0.xyz')
 
 #L = 16.0
 #bz.set_cell(([[L,0,0],[0,L,0],[0,0,L]]))
@@ -53,7 +54,7 @@ bz.calc.setnc(nc)
 
 start_time = time.time()
 dyn = LBFGS(bz)
-dyn.run(fmax=0.00001)
+dyn.run(fmax=0.0001)
 print('[ANI Total time:', time.time() - start_time, 'seconds]')
 
 # Write visualization of molecule
@@ -76,7 +77,7 @@ dyn = Langevin(bz, 0.25 * units.fs, T * units.kB, 0.01)
 #from ase.md.verlet import VelocityVerlet
 #dyn = VelocityVerlet(bz,0.25 * units.fs)
 
-mdcrd = open(dir+"mdcrd.xyz",'w')
+mdcrd = open(dir+"mdcrd2.xyz",'w')
 temp = open(dir+"temp.dat",'w')
 
 #print(bz.get_positions())

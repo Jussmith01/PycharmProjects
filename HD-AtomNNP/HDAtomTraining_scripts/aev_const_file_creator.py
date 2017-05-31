@@ -220,24 +220,24 @@ def show2dcontradialgraph (ShfR,eta,Rc,func,title):
 #         Set Parameters
 #--------------------------------
 #File name
-pf = 'rHCNOF-6.0A_8-4.0A_a4-8.params' # Output filename
+pf = 'rHCNOSF-4.6A_8-3.1A_a4-8.params' # Output filename
 
-Nrr = 8 # Number of shifting radial functions
-Na = 5 # Number of atom types
+Nrr = 16 # Number of shifting radial functions
+Na = 6 # Number of atom types
 Nar = 4 # Number of shifting angular/radial parameters
 Nzt = 8 # Number of angular shifting parameters
 
 TM = 1
-Rcr = 6.0 # radial cutoff
-Rca = 4.0 # Angular cutoff
+Rcr = 4.6 # radial cutoff
+Rca = 3.1 # Angular cutoff
 
 xs = 1.3
 
 #Atyp = '[H,C,O,N]'
-Atyp = '[H,C,N,O,F]'
-EtaR = np.array([6.0]) # Radial eta parameters
-EtaA = np.array([8.0]) # Angular/Radial eta parameters
-Zeta = np.array([8.0]) # Angular zeta parameters
+Atyp = '[H,C,N,O,S,F]'
+EtaR = np.array([8.0]) # Radial eta parameters
+EtaA = np.array([18.0]) # Angular/Radial eta parameters
+Zeta = np.array([12.0]) # Angular zeta parameters
 
 # ****************************************************
 cmap = mpl.cm.brg

@@ -10,20 +10,25 @@ hdf5files = [#'/home/jujuman/Research/ANI-DATASET/RXN1_TNET/rxn_h5_data/ani_benz
              #'/home/jujuman/Research/ANI-DATASET/RXN1_TNET/rxn_h5_data/ani_benz_rxn_test_3.h5',
              #'/home/jujuman/Research/ANI-DATASET/RXN1_TNET/rxn_h5_data/ani_benz_rxn_test_4.h5',
              #'/home/jujuman/Research/ANI-DATASET/RXN1_TNET/rxn_h5_data/ani_benz_rxn_test_5.h5',
-             #'/home/jujuman/Research/ANI-DATASET/RXN1_TNET/rxn_h5_data/ani_benz_rxn_test_6.h5',
+             #'/home/jujuman/Research/ANI-DATASET/h5data/ani-gdb-c01.h5',
+             #'/home/jujuman/Research/ANI-DATASET/h5data/ani-gdb-c02.h5',
+             #'/home/jujuman/Research/ANI-DATASET/h5data/ani-gdb-c03.h5',
+             #'/home/jujuman/Research/ANI-DATASET/h5data/ani-gdb-c04.h5',
+             #'/home/jujuman/Research/ANI-DATASET/h5data/ani-gdb-c05.h5',
+             #'/home/jujuman/Research/ANI-DATASET/h5data/ani-gdb-c06.h5',
              #'/home/jujuman/Research/ANI-DATASET/h5data/ani-gdb-c08f.h5',
-             '/home/jujuman/Research/ANI-DATASET/h5data/ani-gdb-c08f.h5',
+             '/home/jujuman/Research/ANI-DATASET/h5data/ani-begdb_h2o.h5',
+             #'/home/jujuman/Research/SingleNetworkTest/datah5/ani-homo_water.h5',
              ]
 
 #hdf5file = '/home/jujuman/Research/ANI-DATASET/ani-1_data_c03.h5'
-storecac = '/home/jujuman/Research/SingleNetworkTest/cache08f/'
+storecac = '/home/jujuman/Research/SingleNetworkTest/cache06/'
 saef   = "/home/jujuman/Research/SingleNetworkTest/sae_6-31gd.dat"
-path = "/home/jujuman/Research/SingleNetworkTest/cache08f/testset/testset.h5"
-
+path = "/home/jujuman/Research/SingleNetworkTest/cache06/testset/testset.h5"
 
 # Declare data cache
-cachet = cg('_train', saef, storecac)
-cachev = cg('_valid', saef, storecac)
+cachet = cg('_train', saef, storecac, False)
+cachev = cg('_valid', saef, storecac, False)
 
 # Declare test cache
 dpack = pyt.datapacker(path)
@@ -38,7 +43,7 @@ for f in hdf5files:
     # Loop over data in set
     dc = 0
     for i,data in enumerate(adl):
-
+        #if (i == 2):
         xyz = np.array_split(data['coordinates'], 10)
         eng = np.array_split(data['energies'], 10)
         spc = data['species']

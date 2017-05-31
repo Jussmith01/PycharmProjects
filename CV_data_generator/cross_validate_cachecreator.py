@@ -2,14 +2,16 @@ import numpy as np
 import pyanitools as pyt
 from pyNeuroChem import cachegenerator as cg
 
-wkdir = '/home/jujuman/Research/ANI-DATASET'
+wkdir = '/home/jujuman/Research/WaterData'
 
-saef   = "/home/jujuman/Research/ANI-DATASET/ANI-G09-DIV/sae_6-31gd.dat"
+saef   = "/home/jujuman/Research/WaterData/CV/sae_6-31gd.dat"
 
-h5files = [wkdir + "/h5data/gdb9-2500-div_new.h5",
-           wkdir + "/h5data/ani-gdb-c08e.h5",]
+h5files = ['/home/jujuman/Research/ANI-DATASET/h5data/ani-begdb_h2o.h5',
+           #wkdir + "/h5data/gdb9-2500-div_new.h5",
+           #wkdir + "/h5data/ani-gdb-c08e.h5",
+           ]
 
-store_dir = wkdir + "/ANI-G09-DIV/cache-c08e-"
+store_dir = wkdir + "/CV/cache-c08e-"
 
 #adl.split_load(10)
 N = 10
@@ -28,8 +30,8 @@ valid_idx = [[0]
             ,[8]
              ]
 
-cachet = [cg('_train', saef, store_dir + str(r) + '/') for r in range(5)]
-cachev = [cg('_valid', saef, store_dir + str(r) + '/') for r in range(5)]
+cachet = [cg('_train', saef, store_dir + str(r) + '/',False) for r in range(5)]
+cachev = [cg('_valid', saef, store_dir + str(r) + '/',False) for r in range(5)]
 
 for fn in h5files:
     adl = pyt.anidataloader(fn)
