@@ -56,7 +56,7 @@ stdir = '/home/jujuman/Research/CrossValidation/MD_CV/'
 
 # Construct pyNeuroChem classes
 print('Constructing CV network list...')
-ncl =  [pync.molecule(cnstfile, saefile, wkdir + 'cv_c08e_ntw_' + str(l) + '/networks/', 1) for l in range(5)]
+ncl =  [pync.molecule(cnstfile, saefile, wkdir + 'cv_c08e_ntw_' + str(l) + '/networks/', 0) for l in range(5)]
 print('Complete.')
 
 # Set required files for pyNeuroChem
@@ -72,6 +72,7 @@ nc = ncl[1]
 print('FINISHED')
 
 #mol = read('/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_testdata/specialtest/test.xyz')
+#mol = read('/home/jujuman/Dropbox/ChemSciencePaper.AER/TestCases/water.pdb')
 mol = read('/home/jujuman/Research/GDB-11-wB97X-6-31gd/dnnts_begdb/begdb-h2oclusters/xyz/4179_water2Cs.xyz')
 #mol = read('/home/jujuman/Research/CrossValidation/MD_CV/benzene.xyz')
 #mol = read('/home/jujuman/Dropbox/ChemSciencePaper.AER/TestCases/Retinol/opt_test_NO.xyz')
@@ -86,7 +87,7 @@ mol.calc.setnc(nc)
 
 start_time = time.time()
 dyn = LBFGS(mol)
-dyn.run(fmax=0.001)
+dyn.run(fmax=1.0)
 print('[ANI Total time:', time.time() - start_time, 'seconds]')
 
 # We want to run MD with constant energy using the Langevin algorithm
@@ -111,7 +112,7 @@ def printenergy(a=mol,b=mdcrd,d=dyn,t=temp):  # store a reference to atoms in th
         b.write(str(j.symbol) + ' ' + str(i[0]) + ' ' + str(i[1]) + ' ' + str(i[2]) + '\n')
 
 dyn.attach(printenergy, interval=50)
-dyn.set_temperature(1500.0 * units.kB)
+dyn.set_temperature(600.0 * units.kB)
 start_time2 = time.time()
 
 # get the chemical symbols
@@ -122,7 +123,7 @@ f = open(stdir + 'md-peptide-cv.dat','w')
 l_sigma = []
 
 for i in range(10000):
-    dyn.run(100)  # Do 100 steps of MD
+    dyn.run(1)  # Do 100 steps of MD
 
     xyz = np.array(mol.get_positions(), dtype=np.float32).reshape(len(spc), 3)
     energies = np.zeros((5), dtype=np.float64)
@@ -138,6 +139,8 @@ for i in range(10000):
 
     csl = []
     for j in range(0, len(list(spc))):
+        print(np.vstack(forces)[:,j,:])
+        print(np.sum(np.power(np.vstack(forces)[:,j,:],2.0),axis=0))
         csm = cosine_similarity(np.vstack(forces)[:,j,:])
         cse = np.mean(np.asarray(csm[np.triu_indices_from(csm,1)]))
         csl.append((spc[j],cse))

@@ -74,8 +74,10 @@ def corrEplot(ax,d1,d2,shr1,shr2):
     ax.set_xlabel('$E_{ref}$',fontdict=font)
 
 # Set data fields
-#h5file = '/home/jujuman/Research/SingleNetworkTest/cache08f/testset/testset.h5'
-h5file = '/home/jujuman/Research/ANI-DATASET/h5data/ani_data_c10test.h5'
+#h5file = '/home/jujuman/Research/SingleNetworkTest/cache02/testset/testset.h5'
+h5file = '/home/jujuman/Research/DataReductionMethods/models/cache/testset/testset.h5'
+
+#h5file = '/home/jujuman/Research/ANI-DATASET/h5data/ani-gdb-c03.h5'
 
 # Declare loader
 adl = pyt.anidataloader(h5file)
@@ -86,8 +88,9 @@ print(nl)
 #node = "gdb11_s10"
 
 #Network 1 Files
+#wkdir = '/home/jujuman/Scratch/Dropbox/ChemSciencePaper.AER/networks/ANI-SN_CHNOSF-1/'
+wkdir = '/home/jujuman/Research/DataReductionMethods/models/train_c08f/'
 #wkdir = '/home/jujuman/Dropbox/ChemSciencePaper.AER/networks/ANI-c08f-ntwk/'
-wkdir = '/home/jujuman/Research/SingleNetworkTest/train_04/'
 #wkdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/train_08_9/'
 #wkdir = '/home/jujuman/Research/GDB-11-wB97X-6-31gd/train_01/'
 
@@ -176,20 +179,25 @@ for data in adl:
             # Compute Energies of Conformations
             #print('Computing energies...')
             _t1b = tm.time()
-            Ecmp_t = nc.energy()
+            Ecmp_t = nc.energy().copy()
             _t2b = (tm.time() - _t1b) * 1000.0
             #print('Computation complete. Time: ' + "{:.4f}".format(_t2b)  + 'ms')
 
             #print(Eact_t-Ecmp_t)
 
-            Ecmp_t = Ecmp_t - Ecmp_t.min()
-            Eact_t = Eact_t - Eact_t.min()
+            #Ecmp_t = Ecmp_t - Ecmp_t.min()
+            #Eact_t = Eact_t - Eact_t.min()
 
-            Ecmp_t = setmaxE(Eact_t, Ecmp_t, E_max)
-            Eact_t = setmaxE(Eact_t, Eact_t, E_max)
+            #Ecmp_t = setmaxE(Eact_t, Ecmp_t, E_max)
+            #Eact_t = setmaxE(Eact_t, Eact_t, E_max)
 
             #Ecmp_t = setminE(Eact_t, Ecmp_t)
             #Eact_t = setminE(Eact_t, Eact_t)
+
+            Ecmp_t = list(Ecmp_t)
+            Eact_t = list(Eact_t)
+
+            #print(type(Ecmp_t))
 
             deltas = gt.hatokcal * np.abs(Ecmp_t - np.array(Eact_t, dtype=float))
             Me = max (deltas)

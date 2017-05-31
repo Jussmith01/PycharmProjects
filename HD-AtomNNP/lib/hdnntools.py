@@ -254,6 +254,9 @@ def readncdatwforce (file,N = 0):
             if cnt >= N and N > 0:
                 break
 
+        xyz = np.asarray(xyz,dtype=np.float32).reshape(cnt, Na, 3)
+        frc = np.asarray(frc,dtype=np.float32).reshape(cnt, Na, 3)
+        Eact = np.asarray(Eact,dtype=np.float64)
 
     return xyz,frc,typ,Eact,readf
 
@@ -638,9 +641,9 @@ def to_precision(x,p):
 
     return "".join(out)
 
-def write_rcdb_input (xyz,typ,Nc,wkdir,fpf,TSS,LOT,Temp,rdm='uniform',type='nmrandom',SCF='Tight',freq='1',opt='1'):
+def write_rcdb_input (xyz,typ,Nc,wkdir,fpf,TSS,LOT,Temp,rdm='uniform',type='nmrandom',SCF='Tight',freq='1',opt='1', comment=''):
 
-    f = open(wkdir + 'inputs/' + fpf + '-' + str(Nc).zfill(4) + '.ipt', 'w')
+    f = open(wkdir + 'inputs/' + fpf + '-' + str(Nc).zfill(6) + '.ipt', 'w')
 
     Na = len(typ)
 
@@ -669,6 +672,8 @@ def write_rcdb_input (xyz,typ,Nc,wkdir,fpf,TSS,LOT,Temp,rdm='uniform',type='nmra
     f.write('edfname=' + edfname + ' \n')
     f.write('optimize='+ opt + ' \n')
     f.write('frequency='+ freq + ' \n')
+
+    f.write('#Comment: ' + comment)
 
     f.write('\n\n')
     f.write('$coordinates\n')

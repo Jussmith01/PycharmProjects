@@ -42,21 +42,40 @@ def read_irc (file):
     en = []
     cd = []
 
-    r1 = re.compile('SCF Done:\s+?E\(.+?\)\s+?=\s+?(.+?)A.U.')
-    r2 = re.compile('Input orientation:.+\n.+\n.+\n.+\n.+\n([\S\s]+?)(?:---)')
-    r3 = re.compile('\d+?\s+?(\d+?)\s+?\d+?\s+?(\S+?)\s+?(\S+?)\s+?(\S+)')
+    r1 = re.compile('Corrected End Point Energy =\s+?([+-]?\d+?\.\d+?)\n.*?\n.*?\n.*?\n.*?\n.*?\n.*?\n\s+?(?:Delta-x Convergence Met)')
+    r2 = re.compile('Cartesian Coordinates \(Ang\):.+\n.+\n.+\n.+\n.+\n([\S\s]+?)(?:---)')
+    r3 = re.compile('\d+?\s+?(\d+?)\s+?(\S+?)\s+?(\S+?)\s+?(\S+)')
+    r32 = re.compile('\d+?\s+?(\d+?)\s+?\d+?\s+?(\S+?)\s+?(\S+?)\s+?(\S+)')
     r4 = re.compile('(?:Point Number)\s+?(\d+?)\s+?(?:in FORWARD path direction.)')
     rRc= re.compile('\s+?\d+?\s+?([-+]?\d+?\.\d+?)\s+?([-+]?\d+?\.\d+?)\s*?\n')
+
+    r1s = re.compile('SCF Done:\s+?E\(.+?\)\s+?=\s+?(.+?)A.U.')
+    r2s = re.compile('Input orientation:.+\n.+\n.+\n.+\n.+\n([\S\s]+?)(?:---)')
+
+    tse = r1s.search(f)
+    tsx = r2s.search(f)
+
+    en.append(tse.group(1))
+
+    xyz = []
+    #print(tsx.group(1))
+    sm = r32.findall(tsx.group(1))
+    for j in sm:
+        xyz.append(float(j[1]))
+        xyz.append(float(j[2]))
+        xyz.append(float(j[3]))
+    cd.append(xyz)
 
     s1 = r1.findall(f)
     s2 = r2.findall(f)
     s3 = r4.findall(f)
+
     #print('N fwd: ',s3[-1]+1)
 
     for i in s1:
         en.append(i.strip())
 
-    Nc = 0
+    Nc = 1
     for i in s2:
 
         sm = r3.findall(i.strip())
@@ -75,13 +94,17 @@ def read_irc (file):
         Nc += 1
 
     en = np.asarray(en, dtype=np.float32)
-    #print(en.shape)
-    cd = np.asarray(cd[:-1], dtype=np.float32).reshape(Nc-1, Na, 3)
-    #print(cd.shape)
+    cd = np.asarray(cd, dtype=np.float32).reshape(Nc, Na, 3)
 
-    Nf = int(s3[-1])+1
-    en_t = np.concatenate([en[:Nf][::-1], en[Nf:]])
-    cd_t = np.vstack([cd[:Nf,:,:][::-1,:,:], cd[Nf:,:,:]])
+    #print(en)
+
+    Nf = int(s3[-1])
+    #print(Nf)
+    en_t = np.concatenate([en[:Nf+1][::-1], en[Nf+1:]])
+    cd_t = np.vstack([cd[:Nf+1,:,:][::-1,:,:], cd[Nf+1:,:,:]])
+
+    #en_t = np.concatenate([en])
+    #cd_t = np.vstack([cd])
 
     Rc = np.array(rRc.findall(f), dtype=np.float32)
 
